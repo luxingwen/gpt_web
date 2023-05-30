@@ -10,12 +10,12 @@ export default function IndexPage() {
       <HeaderComponent />
       <ContainerComponent>
         <Row>
-          <Col span={12}>
-            hhh
-          </Col>
-          <Col span={12}>
-            aaa
-          </Col>
+          <Col span={12}>hhh</Col>
+          <Col span={12}>aaa</Col>
+        </Row>
+
+        <Row>
+          <h3>最近使用</h3>
         </Row>
       </ContainerComponent>
     </div>
