@@ -1,5 +1,5 @@
-import React from 'react';
-import { Layout, Menu, Col, Row } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Layout, Menu, Col, Row, Avatar, Dropdown } from 'antd';
 import {
   HomeOutlined,
   QuestionCircleOutlined,
@@ -12,9 +12,25 @@ import './Header.less';
 
 import logoImage from '../assets/images/logo.png';
 
+import { wxlogin } from '@/service/user';
+
+import { getUserInfo } from '@/service/api';
+
+import storage from '@/utils/storage';
+
 const { Header } = Layout;
 
 const HeaderComponent = () => {
+  const [userInfo, setUserInfo] = useState(storage.getItem('userInfo'));
+
+  useEffect(() => {
+    getUserInfo().then((res) => {
+      console.log('getUserInfo:', res);
+      storage.setItem('userInfo', res.data);
+      setUserInfo(res.data);
+    });
+  }, []);
+
   const location = useLocation();
 
   const getSelectedKeys = () => {
@@ -22,7 +38,24 @@ const HeaderComponent = () => {
     if (path === '/') return ['home'];
     if (path.startsWith('/ai')) return ['ai'];
     if (path.startsWith('/tips/bag')) return ['bag'];
+    if (path.startsWith('/user/info')) return ['user'];
   };
+
+  const hanldelClickLogin = () => {
+    console.log('login');
+    wxlogin();
+  };
+
+  const userMenu = (
+    <Menu>
+      <Menu.Item>
+        <NavLink to="/user/info" exact activeClassName="active-link">
+          我的主页
+        </NavLink>
+      </Menu.Item>
+      <Menu.Item>登出</Menu.Item>
+    </Menu>
+  );
 
   return (
     <Header className="header">
@@ -68,14 +101,24 @@ const HeaderComponent = () => {
         </Col>
         <Col span={4}>
           <Menu theme="light" mode="horizontal" className="menu">
-            <Menu.Item
-              key="login"
-              icon={<LoginOutlined />}
-              className="menu-item"
-              style={{ float: 'right' }}
-            >
-              登录
-            </Menu.Item>
+            {userInfo ? (
+              <Menu.Item key="user" className="menu-item">
+                <Dropdown overlay={userMenu}>
+                  <Avatar src={userInfo.avatar} alt="user avatar" />
+                </Dropdown>
+                {userInfo.name}
+              </Menu.Item>
+            ) : (
+              <Menu.Item
+                key="login"
+                icon={<LoginOutlined />}
+                className="menu-item"
+                style={{ float: 'right' }}
+                onClick={hanldelClickLogin}
+              >
+                登录
+              </Menu.Item>
+            )}
           </Menu>
         </Col>
       </Row>

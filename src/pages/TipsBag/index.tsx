@@ -1,33 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input, Tag, Row, Col, Card } from 'antd';
 
 import ContentLayout from '@/layouts/index';
 import TipsCard from '@/components/TipsCard';
 
+import { getAllScenes } from '@/service/api';
+
 import './index.less';
 
 const TipsBagPage = () => {
   const [selectedTag, setSelectedTag] = useState(null);
+  const [allCardData, setAllCardData] = useState([]);
+  const [hotCardData, setHotCardData] = useState([]);
+  const [scenesByCategoryId, setScenesByCategoryId] = useState({});
+  const [cardData, setCardData] = useState([]);
+  const [categoryList, setCategoryList] = useState([]);
 
-  const handleTagClick = (tag) => {
+  useEffect(() => {
+    getAllScenes().then((res) => {
+      console.log('getAllScenes', res.data);
+      setAllCardData(res.data.all_scenes);
+
+      let categorySenes = {};
+      res.data.all_scenes.forEach((scene) => {
+        const categoryId = scene.cat_id;
+        if (categorySenes[categoryId]) {
+          categorySenes[categoryId].push(scene);
+        } else {
+          categorySenes[categoryId] = [scene];
+        }
+      });
+      setScenesByCategoryId(categorySenes);
+      setCategoryList(res.data.categories);
+      setHotCardData(res.data.hot_scenes);
+      setCardData(res.data.all_scenes);
+    });
+  }, []);
+
+  const handleTagClick = (tag, cid) => {
     setSelectedTag(tag);
+    if (cid) {
+      setCardData(scenesByCategoryId[cid]);
+    } else {
+      if (tag == '全部') {
+        setCardData(allCardData);
+      } else {
+        setCardData(hotCardData);
+      }
+    }
   };
-
-  const cardData = [
-    { title: '标题1', description: '描述1' },
-    { title: '标题2', description: '描述2' },
-    { title: '标题3', description: '描述3' },
-    { title: '标题1', description: '描述1' },
-    { title: '标题2', description: '描述2' },
-    { title: '标题3', description: '描述3' },
-    { title: '标题1', description: '描述1' },
-    { title: '标题2', description: '描述2' },
-    {
-      title: '标题3',
-      description: '描述31111111111111111111111111111111s222111111111',
-    },
-    // 更多数据...
-  ];
 
   return (
     <ContentLayout>
@@ -48,32 +69,18 @@ const TipsBagPage = () => {
         >
           热门
         </Tag>
-        <Tag
-          className={`custom-tag ${selectedTag === '职业' ? 'selected' : ''}`}
-          onClick={() => handleTagClick('职业')}
-        >
-          职业
-        </Tag>
-        <Tag
-          className={`custom-tag ${selectedTag === '编程' ? 'selected' : ''}`}
-          onClick={() => handleTagClick('编程')}
-        >
-          编程
-        </Tag>
-        <Tag
-          className={`custom-tag ${
-            selectedTag === '内容创作' ? 'selected' : ''
-          }`}
-          onClick={() => handleTagClick('内容创作')}
-        >
-          内容创作
-        </Tag>
-        <Tag
-          className={`custom-tag ${selectedTag === '文案' ? 'selected' : ''}`}
-          onClick={() => handleTagClick('文案')}
-        >
-          文案
-        </Tag>
+
+        {categoryList.map((category, index) => (
+          <Tag
+            key={index}
+            className={`custom-tag ${
+              selectedTag === category.name ? 'selected' : ''
+            }`}
+            onClick={() => handleTagClick(category.name, category.id)}
+          >
+            {category.name}
+          </Tag>
+        ))}
       </div>
 
       <div style={{ marginTop: '24px' }}>
@@ -81,8 +88,8 @@ const TipsBagPage = () => {
           {cardData.map((card, index) => (
             <Col key={index} xs={24} sm={12} md={6}>
               <TipsCard
-                title={card.title}
-                description={card.description}
+                title={card.name}
+                description={card.scene_desc}
                 style={{ height: '120px' }}
               />
             </Col>

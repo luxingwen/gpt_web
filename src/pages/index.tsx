@@ -4,6 +4,8 @@ import { Row, Col, Card, Typography } from 'antd';
 import HeaderComponent from '../components/Header';
 import ContainerComponent from '../components/Container';
 import TipsCard from '../components/TipsCard';
+import HomeImg1 from '@/assets/images/home-img-1.png';
+import HomeImg2 from '@/assets/images/home-img-2.png';
 
 const { Title } = Typography;
 
@@ -27,10 +29,21 @@ export default function IndexPage() {
   return (
     <div>
       <HeaderComponent />
+
       <ContainerComponent>
-        <Row>
-          <Col span={12}>hhh</Col>
-          <Col span={12}>aaa</Col>
+        <Row style={{ marginTop: '24px', marginBottom: '24px' }}>
+          <Col span={12}>
+            <img
+              src={HomeImg1}
+              style={{ height: '280px', borderRadius: '12px' }}
+            />
+          </Col>
+          <Col span={12}>
+            <img
+              src={HomeImg2}
+              style={{ height: '280px', borderRadius: '12px' }}
+            />
+          </Col>
         </Row>
 
         <Row gutter={[16, 16]}>
