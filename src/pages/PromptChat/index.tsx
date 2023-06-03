@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Input, Button, Avatar, message } from 'antd';
+import { Input, Button, Avatar, message, Modal } from 'antd';
 import { UserOutlined, RobotOutlined } from '@ant-design/icons';
 import HeaderComponent from '@/components/Header';
 import { wssocket } from '@/utils/ws_socket';
@@ -12,8 +12,13 @@ import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import breaks from 'remark-breaks';
 import remarkGfm from 'remark-gfm';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { useParams } from 'react-router-dom';
 
-import { queryQuestion, getHistoryChatMessage } from '@/service/api';
+import {
+  queryQuestion,
+  getHistoryChatMessage,
+  getPromptScenesInfo,
+} from '@/service/api';
 
 const { TextArea } = Input;
 
@@ -148,11 +153,16 @@ const ChatPage = () => {
   const [userInfo, setUserInfo] = useState({});
   const [isMsgEnd, setIsMsgEnd] = useState(true);
   const [loadAllMsg, setLoadAllMsg] = useState(false);
+  const { scene } = useParams();
   const [historyQuery, setHistoryQuery] = useState<HistoryQuery>({
     page: 0,
     per_page: 10,
+    scene: scene,
   });
   const [newMessageReceived, setNewMessageReceived] = useState(true);
+  const [isExampleModalVisible, setIsExampleModalVisible] = useState(false);
+
+  const [sceneInfo, setSceneInfo] = useState({});
 
   useEffect(() => {
     const handleScroll = (event) => {
@@ -217,7 +227,7 @@ const ChatPage = () => {
     }
 
     if (input) {
-      queryQuestion(input)
+      queryQuestion(input, parseInt(scene))
         .then((res) => {
           console.log('queryQuestion', res.data);
           setMessages([
@@ -243,6 +253,15 @@ const ChatPage = () => {
   };
 
   useEffect(() => {
+    getPromptScenesInfo({ scene: scene })
+      .then((res) => {
+        console.log('getPromptScenesInfo', res.data);
+        setSceneInfo(res.data);
+      })
+      .catch((err) => {
+        console.log('getPromptScenesInfo', err);
+      });
+
     getHistoryChatMessage(historyQuery)
       .then((res) => {
         console.log('getHistoryChatMessage', res.data);
@@ -302,6 +321,20 @@ const ChatPage = () => {
     }
   }, [messages]);
 
+  const handleConversationHistory = () => {};
+
+  const handleExample = () => {
+    setIsExampleModalVisible(true);
+  };
+
+  const handleExampleOk = () => {
+    setIsExampleModalVisible(false);
+  };
+
+  const handleExampleCopy = () => {
+    console.log('复制成功');
+  };
+
   return (
     <div
       style={{
@@ -324,10 +357,63 @@ const ChatPage = () => {
       </div>
 
       <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          position: 'fixed',
+          top: '64px',
+          width: '60%',
+          margin: 'auto',
+          left: '20%',
+          right: '20%',
+          padding: '10px',
+          zIndex: '1',
+          backgroundColor: '#fff',
+        }}
+      >
+        <h2>{sceneInfo.name}</h2>
+        <div>
+          <Button
+            style={{ marginRight: '18px' }}
+            onClick={handleConversationHistory}
+          >
+            会话记录
+          </Button>
+          <Button onClick={handleExample}>示例</Button>
+        </div>
+      </div>
+
+      <Modal title="示例如下" visible={isExampleModalVisible} footer={null}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <h2>可以这样子提问</h2>
+          <CopyToClipboard text={sceneInfo.question} onCopy={handleExampleCopy}>
+            <Button>复制</Button>
+          </CopyToClipboard>
+        </div>
+        <div>
+          <p>{sceneInfo.question}</p>
+        </div>
+        <Button
+          type="primary"
+          onClick={handleExampleOk}
+          style={{ marginTop: '24px' }}
+        >
+          我明白了
+        </Button>
+      </Modal>
+
+      <div
         className="hideScrollbar"
         style={{
           flex: '1',
-          marginTop: '64px',
+          marginTop: '128px',
           paddingTop: '10px',
           marginBottom: '160px',
           backgroundColor: 'white',

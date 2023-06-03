@@ -5,7 +5,7 @@ import ContentLayout from '@/layouts/index';
 import TipsCard from '@/components/TipsCard';
 
 import { getAllScenes } from '@/service/api';
-
+import { NavLink, useLocation } from 'react-router-dom';
 import './index.less';
 
 const TipsBagPage = () => {
@@ -40,7 +40,7 @@ const TipsBagPage = () => {
   const handleTagClick = (tag, cid) => {
     setSelectedTag(tag);
     if (cid) {
-      setCardData(scenesByCategoryId[cid]);
+      setCardData(scenesByCategoryId[cid] ? scenesByCategoryId[cid] : []);
     } else {
       if (tag == '全部') {
         setCardData(allCardData);
@@ -87,11 +87,13 @@ const TipsBagPage = () => {
         <Row gutter={[16, 16]}>
           {cardData.map((card, index) => (
             <Col key={index} xs={24} sm={12} md={6}>
-              <TipsCard
-                title={card.name}
-                description={card.scene_desc}
-                style={{ height: '120px' }}
-              />
+              <NavLink to={`/tips/bag/chat/${card.id}`}>
+                <TipsCard
+                  title={card.name}
+                  description={card.scene_desc}
+                  style={{ height: '120px' }}
+                />
+              </NavLink>
             </Col>
           ))}
           {/* 其他 TipsCard 组件... */}

@@ -2,7 +2,7 @@ import { extend } from 'umi-request';
 import Cookies from 'js-cookie';
 
 let defaultToken =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiIyMTE5IiwiZXhwIjoxNzA0MzgwODg5LCJpYXQiOjE2ODU2MzIwODksImlzcyI6InRlc3QifQ.M30XNPK4cMUvi8yWHN4xLxlOwQL1C4RJllGJdziBqVI';
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiIyMTE5IiwiZXhwIjoxNzA0NDYyMzk1LCJpYXQiOjE2ODU3MTM1OTUsImlzcyI6InRlc3QifQ.jfVomRADsD1IaiEjV37Ovvjuukzarflqx_BFDo0kG5o';
 
 const request = extend({
   errorHandler: function (error) {

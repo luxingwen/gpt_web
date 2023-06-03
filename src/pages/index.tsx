@@ -6,25 +6,25 @@ import ContainerComponent from '../components/Container';
 import TipsCard from '../components/TipsCard';
 import HomeImg1 from '@/assets/images/home-img-1.png';
 import HomeImg2 from '@/assets/images/home-img-2.png';
+import { getLatestUsedScenes } from '@/service/api';
+import { useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
 const { Title } = Typography;
 
 export default function IndexPage() {
-  const cardData = [
-    { title: '标题1', description: '描述1' },
-    { title: '标题2', description: '描述2' },
-    { title: '标题3', description: '描述3' },
-    { title: '标题1', description: '描述1' },
-    { title: '标题2', description: '描述2' },
-    { title: '标题3', description: '描述3' },
-    { title: '标题1', description: '描述1' },
-    { title: '标题2', description: '描述2' },
-    {
-      title: '标题3',
-      description: '描述31111111111111111111111111111111s222111111111',
-    },
-    // 更多数据...
-  ];
+  const [cardData, setCardData] = useState([]);
+
+  useEffect(() => {
+    getLatestUsedScenes()
+      .then((res) => {
+        console.log('getLatestUsedScenes', res.data);
+        setCardData(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <div>
@@ -52,11 +52,13 @@ export default function IndexPage() {
           </Col>
           {cardData.map((card, index) => (
             <Col key={index} xs={24} sm={12} md={6}>
-              <TipsCard
-                title={card.title}
-                description={card.description}
-                style={{ height: '120px' }}
-              />
+              <NavLink to={`/tips/bag/chat/${card.id}`}>
+                <TipsCard
+                  title={card.name}
+                  description={card.scene_desc}
+                  style={{ height: '120px' }}
+                />
+              </NavLink>
             </Col>
           ))}
           {/* 其他 TipsCard 组件... */}
