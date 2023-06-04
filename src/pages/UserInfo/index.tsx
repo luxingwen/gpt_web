@@ -98,21 +98,25 @@ const UserInfoPage = () => {
           }}
           onClick={handleGuanZhuClick}
         />
-        <MenuItem
-          item={{
-            title: '邀请奖励',
-            icon: Yaoqing,
-          }}
-          onClick={() => console.log(`Item 邀请奖励 clicked`)}
-        />
+        <NavLink to="/user/invitation">
+          <MenuItem
+            item={{
+              title: '邀请奖励',
+              icon: Yaoqing,
+            }}
+            onClick={() => console.log(`Item 邀请奖励 clicked`)}
+          />
+        </NavLink>
 
-        <MenuItem
-          item={{
-            title: '口令兑换/加入社群',
-            icon: Exchange,
-          }}
-          onClick={() => console.log(`Item 口令兑换/加入社群 clicked`)}
-        />
+        <NavLink to="/user/redemption">
+          <MenuItem
+            item={{
+              title: '口令兑换/加入社群',
+              icon: Exchange,
+            }}
+            onClick={() => console.log(`Item 口令兑换/加入社群 clicked`)}
+          />
+        </NavLink>
       </Card>
 
       <Modal

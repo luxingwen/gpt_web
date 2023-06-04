@@ -9,4 +9,14 @@ export default [
     path: '/tips/bag/chat/:scene',
     component: '@/pages/PromptChat/index',
   },
+  {
+    exact: true,
+    path: '/user/invitation',
+    component: '@/pages/Invitation/index',
+  },
+  {
+    exact: true,
+    path: '/user/redemption',
+    component: '@/pages/Redemption/index',
+  },
 ];
