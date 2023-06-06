@@ -1,11 +1,16 @@
-import React, { useEffect } from 'react';
-import { Card, Button } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Card, Button, message, Modal, Row, Col } from 'antd';
 import { DollarOutlined } from '@ant-design/icons';
 import ContentLayout from '@/layouts/index';
-import { getGoods } from '@/service/api';
+import { getGoods, orderSubmit, prePay } from '@/service/api';
+import QRCode from 'qrcode.react';
+import { useHistory } from 'react-router-dom';
 
 const ProductPage = () => {
-  const [goods, setGoods] = React.useState([]);
+  const history = useHistory();
+  const [goods, setGoods] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [paymentData, setPaymentData] = useState(null);
 
   useEffect(() => {
     getGoods()
@@ -18,8 +23,50 @@ const ProductPage = () => {
       });
   }, []);
 
+  const ChatPrePay = (orderId) => {
+    console.log('ChatPrePay', orderId);
+    prePay({ order_id: orderId, client: 'web' })
+      .then((res) => {
+        console.log('prePay', res);
+        if (res.errno === 0) {
+          setPaymentData(res.data.code_url);
+          setIsModalVisible(true);
+        } else {
+          message.error('充值失败');
+        }
+      })
+      .catch((err) => {
+        console.log('prePay err', err);
+        message.error('充值失败');
+      });
+  };
+
   const handleClick = (productId) => {
     console.log('User clicked on product id: ', productId);
+    orderSubmit({ id: productId })
+      .then((res) => {
+        console.log('orderSubmit', res);
+        if (res.errno === 0) {
+          ChatPrePay(res.data.id);
+        } else {
+          message.error('充值失败');
+        }
+      })
+      .catch((err) => {
+        console.log('orderSubmit err', err);
+        message.error('充值失败');
+      });
+  };
+
+  const handleCompletePayment = () => {
+    // TODO: Add logic for completing payment
+    setIsModalVisible(false);
+    history.push('/user/info');
+  };
+
+  const handleCancelPayment = () => {
+    // TODO: Add logic for canceling payment
+    setIsModalVisible(false);
   };
 
   return (
@@ -69,6 +116,24 @@ const ProductPage = () => {
           <li>4. 最终解释权归本公司所有</li>
         </ul>
       </div>
+
+      <Modal
+        title="请使用微信扫码支付"
+        visible={isModalVisible}
+        onCancel={handleCancelPayment}
+        footer={[
+          <Button key="complete" type="primary" onClick={handleCompletePayment}>
+            我已完成支付
+          </Button>,
+          <Button key="cancel" onClick={handleCancelPayment}>
+            取消支付
+          </Button>,
+        ]}
+      >
+        <Row justify="center" align="middle">
+          <QRCode value={paymentData} alt="WeChat Pay QR Code" />
+        </Row>
+      </Modal>
     </ContentLayout>
   );
 };

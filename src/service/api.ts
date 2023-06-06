@@ -81,3 +81,47 @@ export async function getPromptScenesInfo(props: any) {
     });
   } catch (error) {}
 }
+
+export async function invitionCode(props: any) {
+  try {
+    return request(`/api/chat/invite/code`, {
+      method: 'POST',
+      data: props,
+    });
+  } catch (error) {}
+}
+
+export async function getInvitionStatic() {
+  try {
+    return request(`/api/chat/invite/statistics`, {
+      method: 'GET',
+    });
+  } catch (error) {}
+}
+
+export async function exchangeByCode(params: any) {
+  try {
+    return request(`/api/chat/code`, {
+      method: 'GET',
+      params: params,
+    });
+  } catch (error) {}
+}
+
+export async function orderSubmit(params: any) {
+  try {
+    return request(`/api/chat/order/submit`, {
+      method: 'POST',
+      data: params,
+    });
+  } catch (error) {}
+}
+
+export async function prePay(params: any) {
+  try {
+    return request(`/api/chat/order/pay/prepay`, {
+      method: 'POST',
+      data: params,
+    });
+  } catch (error) {}
+}

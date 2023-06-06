@@ -24,11 +24,14 @@
     "@umijs/preset-react": "1.x",
     "js-cookie": "^3.0.5",
     "prismjs": "^1.29.0",
+    "qrcode.react": "^3.1.0",
     "react-copy-to-clipboard": "^5.1.0",
     "react-markdown": "^8.0.7",
+    "react-sidebar": "^3.0.2",
     "react-syntax-highlighter": "^15.5.0",
     "remark-breaks": "^3.0.3",
     "remark-gfm": "^3.0.1",
+    "styled-components": "^6.0.0-rc.3",
     "umi": "^3.3.15"
   },
   "devDependencies": {

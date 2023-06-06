@@ -43,13 +43,20 @@ request.interceptors.request.use((url, options) => {
 
 // 添加响应拦截器
 request.interceptors.response.use(async (response) => {
-  const data = await response.clone().json();
-  console.log('res >>>>>', data);
-  if (data.errno === 401) {
-    // TODO: 根据具体逻辑进行处理
-    //   userLogin();
+  const contentType = response.headers.get('content-type');
+  if (contentType && contentType.indexOf('application/json') !== -1) {
+    const data = await response.clone().json();
+    console.log('res >>>>>', data);
+    if (data.errno === 401) {
+      // TODO: 根据具体逻辑进行处理
+      //   userLogin();
+    }
+    return response;
+  } else {
+    const data = await response.clone().text();
+    console.log('res >>>>>', data);
+    // TODO: Handle the non-JSON response as needed
+    return response;
   }
-  return response;
 });
-
 export default request;

@@ -9,6 +9,7 @@ import Xufei from '@/assets/images/xufei.svg';
 import Yaoqing from '@/assets/images/yaoqing.svg';
 import Exchange from '@/assets/images/exchange.svg';
 import storage from '@/utils/storage';
+import vipImg from '@/assets/images/vip.jpg';
 
 import { getUserInfo } from '@/service/api';
 
@@ -72,6 +73,17 @@ const UserInfoPage = () => {
     <ContentLayout>
       <Card className="user-info">
         <UserInfo user={userInfo} />
+      </Card>
+
+      <Card
+        className="custom-vip-card"
+        style={{ marginTop: '24px', position: 'relative' }}
+      >
+        <img
+          src={vipImg}
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        />
+        <div className="custom-vip-text">Your Text Here</div>
       </Card>
 
       <Card style={{ marginTop: '24px' }}>

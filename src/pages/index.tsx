@@ -1,18 +1,19 @@
 import styles from './index.less';
 import { Row, Col, Card, Typography } from 'antd';
-
 import HeaderComponent from '../components/Header';
-import ContainerComponent from '../components/Container';
+import ContentLayout from '@/layouts/index';
 import TipsCard from '../components/TipsCard';
 import HomeImg1 from '@/assets/images/home-img-1.png';
 import HomeImg2 from '@/assets/images/home-img-2.png';
 import { getLatestUsedScenes } from '@/service/api';
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const { Title } = Typography;
 
 export default function IndexPage() {
+  const history = useHistory();
   const [cardData, setCardData] = useState([]);
 
   useEffect(() => {
@@ -26,23 +27,34 @@ export default function IndexPage() {
       });
   }, []);
 
+  const handleHotCardClick = () => {
+    history.push(`/tips/bag`);
+  };
+
+  const handleGiftCardClick = () => {
+    history.push(`/user/redemption`);
+  };
+
   return (
     <div>
-      <HeaderComponent />
-
-      <ContainerComponent>
-        <Row style={{ marginTop: '24px', marginBottom: '24px' }}>
-          <Col span={12}>
-            <img
-              src={HomeImg1}
-              style={{ height: '280px', borderRadius: '12px' }}
-            />
+      <ContentLayout>
+        <Row
+          gutter={[16, 16]}
+          style={{ marginTop: '24px', marginBottom: '24px' }}
+        >
+          <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+            <Card onClick={handleHotCardClick}>
+              <div className={styles['image-container']}>
+                <img src={HomeImg1} alt="Home Image 1" />
+              </div>
+            </Card>
           </Col>
-          <Col span={12}>
-            <img
-              src={HomeImg2}
-              style={{ height: '280px', borderRadius: '12px' }}
-            />
+          <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+            <Card>
+              <div className={styles['image-container']}>
+                <img src={HomeImg2} alt="Home Image 2" />
+              </div>
+            </Card>
           </Col>
         </Row>
 
@@ -61,9 +73,8 @@ export default function IndexPage() {
               </NavLink>
             </Col>
           ))}
-          {/* 其他 TipsCard 组件... */}
         </Row>
-      </ContainerComponent>
+      </ContentLayout>
     </div>
   );
 }

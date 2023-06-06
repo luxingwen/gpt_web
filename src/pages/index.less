@@ -1,3 +1,22 @@
 .title {
   background: rgb(121, 242, 157);
 }
+
+.image-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.image-container img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.image-container:hover,
+.image-container:active {
+  transform: scale(1.1);
+}

@@ -14,6 +14,7 @@ import remarkGfm from 'remark-gfm';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import { queryQuestion, getHistoryChatMessage } from '@/service/api';
+import styled from 'styled-components';
 
 const { TextArea } = Input;
 
@@ -302,6 +303,42 @@ const ChatPage = () => {
     }
   }, [messages]);
 
+  const ChatContainer = styled.div`
+    width: 90%;
+    margin-top: 80px;
+
+    @media (min-width: 600px) {
+      width: 60%;
+    }
+  `;
+
+  const SendStyledDiv = styled.div`
+    width: 100%;
+    position: relative;
+
+    @media (min-width: 600px) {
+      width: 40%;
+    }
+  `;
+
+  const SendStyledTextArea = styled(TextArea)`
+    padding-right: 60px;
+    border-radius: 18px;
+
+    &.ant-input {
+      @media (min-width: 600px) {
+        min-height: 2em;
+        max-height: 6em;
+      }
+    }
+  `;
+
+  const SendStyledButton = styled(Button)`
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+  `;
+
   return (
     <div
       style={{
@@ -346,7 +383,7 @@ const ChatPage = () => {
             height: '100%',
           }}
         >
-          <div style={{ width: '60%' }}>
+          <ChatContainer>
             {messages.map((item, index) => (
               <ChatMessage
                 key={index}
@@ -355,7 +392,7 @@ const ChatPage = () => {
                 userAvatar={userInfo.avatar}
               />
             ))}
-          </div>
+          </ChatContainer>
         </div>
       </div>
 
@@ -371,8 +408,8 @@ const ChatPage = () => {
           zIndex: '2',
         }}
       >
-        <div style={{ width: '40%', position: 'relative' }}>
-          <TextArea
+        <SendStyledDiv>
+          <SendStyledTextArea
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onPressEnter={handleSend}
@@ -380,13 +417,13 @@ const ChatPage = () => {
             rows={4}
             autoSize={{ minRows: 2, maxRows: 6 }}
           />
-          <Button
+          <SendStyledButton
             onClick={handleSend}
             style={{ position: 'absolute', right: '10px', bottom: '10px' }}
           >
             发送
-          </Button>
-        </div>
+          </SendStyledButton>
+        </SendStyledDiv>
       </div>
     </div>
   );

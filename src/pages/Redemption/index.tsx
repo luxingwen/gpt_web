@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Input, Button, Typography, Image } from 'antd';
+import { Input, Button, Typography, Image, message } from 'antd';
 
 import ContentLayout from '@/layouts/index';
 import QRCodeImage from '@/assets/images/group-qrcode.png';
 import LogoImage from '@/assets/images/redemption-code.png';
+
+import { exchangeByCode } from '@/service/api';
 
 import './index.less';
 
@@ -19,6 +21,15 @@ const RedemptionPage = () => {
   const handleRedeem = () => {
     // 处理兑换逻辑
     console.log('兑换口令：', redeemCode);
+
+    exchangeByCode({ code: redeemCode })
+      .then((res) => {
+        message.info(res);
+      })
+      .catch((err) => {
+        console.log(err);
+        message.error(err);
+      });
   };
 
   return (

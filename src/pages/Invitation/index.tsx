@@ -1,33 +1,45 @@
-import React, { useState } from 'react';
-import { Input, Button, Typography, Image } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Input, Button, Typography, Image, message } from 'antd';
 
 import ContentLayout from '@/layouts/index';
 import AppLogo from '@/assets/images/app_logo.svg';
+import { invitionCode, getInvitionStatic } from '@/service/api';
 
 import './index.less';
 
 const { Title, Text } = Typography;
 
 const InvitationPage = () => {
-  const [invitationCode, setInvitationCode] = useState('2119');
+  const [invitationCode, setInvitationCode] = useState('');
   const [inviteCount, setInviteCount] = useState(10);
   const [rewardDescription, setRewardDescription] = useState('');
+  const [invitationInfo, setInvitationInfo] = useState({} as any);
 
   const handleCodeChange = (e) => {
     setInvitationCode(e.target.value);
   };
 
   const handleSubmit = () => {
-    // 处理提交邀请码的逻辑
-    // 可以在此处调用API验证邀请码等
-    // 根据验证结果更新邀请人数和奖励描述信息
-    // 示例中直接设置默认值
-
-    setInviteCount(10); // 假设邀请人数为10
-    setRewardDescription(
-      '邀请奖励：每成功邀请一位好友，你将获得5次免费问答的奖励',
-    ); // 假设奖励描述信息
+    invitionCode({ parent_id: parseInt(invitationCode) })
+      .then((res) => {
+        message.info(res);
+      })
+      .catch((err) => {
+        message.error('提交失败');
+      });
   };
+
+  useEffect(() => {
+    getInvitionStatic()
+      .then((res) => {
+        if (res.errno === 0) {
+          setInvitationInfo(res.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <ContentLayout>
@@ -40,7 +52,7 @@ const InvitationPage = () => {
 
         <div className="invitation-section">
           <Text strong>我的邀请码：</Text>
-          <Text code>{invitationCode}</Text>
+          <Text code>{invitationInfo.user_id}</Text>
         </div>
 
         <div className="invitation-section">
@@ -67,10 +79,10 @@ const InvitationPage = () => {
         <div className="invitation-reward-section">
           <Title level={3}>邀请奖励</Title>
           <Text strong>邀请人数：</Text>
-          <Text>{inviteCount}</Text>
+          <Text>{invitationInfo.invite_user_num}</Text>
           <br />
           <Text strong>奖励免费问答次数：</Text>
-          <Text>{inviteCount * 5}</Text>
+          <Text>{invitationInfo.chat_times}</Text>
           <br />
           <Text strong>邀请奖励说明：</Text>
           <br />
