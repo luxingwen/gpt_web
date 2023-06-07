@@ -125,15 +125,15 @@ const HeaderComponent = () => {
 
   const handleClickLogin = () => {
     console.log('login');
-    // wxlogin();
+    wxlogin();
 
-    Cookies.set('token', defaultToken);
+    // Cookies.set('token', defaultToken);
 
-    getUserInfo().then((res) => {
-      console.log('getUserInfo:', res);
-      storage.setItem('userInfo', res.data);
-      setUserInfo(res.data);
-    });
+    // getUserInfo().then((res) => {
+    //   console.log('getUserInfo:', res);
+    //   storage.setItem('userInfo', res.data);
+    //   setUserInfo(res.data);
+    // });
   };
 
   const handleLogout = () => {

@@ -41,16 +41,9 @@ const ChatContainer = styled.div`
 `;
 
 const SendStyContentDiv = styled.div`
-  width: '100%';
-  display: 'flex';
-  justify-content: 'center';
-  padding-bottom: '80px';
-  position: 'fixed';
-  bottom: '0';
-  backgroundcolor: '#fff';
-  z-index: '2';
-  @media (min-width: 600px) {
-    padding-bottom: '2px';
+  padding-bottom: 80px;
+  @media (max-width: 768px) {
+    padding-bottom: 2px;
   }
 `;
 
@@ -409,7 +402,17 @@ const ChatPage = () => {
         </div>
       </HideScrollbar>
 
-      <SendStyContentDiv>
+      <SendStyContentDiv
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          position: 'fixed',
+          bottom: '0',
+          backgroundcolor: '#fff',
+          zIndex: '2',
+        }}
+      >
         <SendStyledDiv>
           <TextArea
             value={input}

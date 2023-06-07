@@ -16,6 +16,8 @@ import { getUserInfo } from '@/service/api';
 import { NavLink, useLocation } from 'react-router-dom';
 import Qrcode from '@/assets/images/qrcode.jpg';
 
+import { formatTimestamp, getCurrentTimestampInSeconds } from '@/utils/utils';
+
 import './index.less';
 
 const { Title, Text } = Typography;
@@ -27,7 +29,9 @@ const UserInfo = ({ user }) => {
       <div className="user-details">
         <Title level={4}>{user.nickname}</Title>
         <Text>ID: {user.id}</Text>
-        <Text>剩余次数: {user.chat_times}</Text>
+        {getCurrentTimestampInSeconds() > user.chat_expired_at && (
+          <Text>剩余次数: {user.chat_times}</Text>
+        )}
       </div>
     </div>
   );
@@ -75,16 +79,20 @@ const UserInfoPage = () => {
         <UserInfo user={userInfo} />
       </Card>
 
-      <Card
-        className="custom-vip-card"
-        style={{ marginTop: '24px', position: 'relative' }}
-      >
-        <img
-          src={vipImg}
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-        />
-        <div className="custom-vip-text">Your Text Here</div>
-      </Card>
+      {userInfo.is_vip && (
+        <Card
+          className="custom-vip-card"
+          style={{ marginTop: '24px', position: 'relative' }}
+        >
+          <img
+            src={vipImg}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+          <div className="custom-vip-text">
+            {formatTimestamp(userInfo.chat_expired_at)} 到期
+          </div>
+        </Card>
+      )}
 
       <Card style={{ marginTop: '24px' }}>
         <NavLink to="/user/goods">
