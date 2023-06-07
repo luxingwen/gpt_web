@@ -30,6 +30,7 @@ import { wxlogin } from '@/service/user';
 import { getUserInfo } from '@/service/api';
 
 import storage from '@/utils/storage';
+import Cookies from 'js-cookie';
 
 const { Header } = Layout;
 const { Text } = Typography;
@@ -80,6 +81,9 @@ const AvatarImage = styled.img`
   margin-right: 8px;
 `;
 
+const defaultToken =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiIyMTE5IiwiZXhwIjoxNzA0NDYyMzk1LCJpYXQiOjE2ODU3MTM1OTUsImlzcyI6InRlc3QifQ.jfVomRADsD1IaiEjV37Ovvjuukzarflqx_BFDo0kG5o';
+
 const HeaderComponent = () => {
   const [userInfo, setUserInfo] = useState(storage.getItem('userInfo'));
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -121,12 +125,22 @@ const HeaderComponent = () => {
 
   const handleClickLogin = () => {
     console.log('login');
-    wxlogin();
+    // wxlogin();
+
+    Cookies.set('token', defaultToken);
+
+    getUserInfo().then((res) => {
+      console.log('getUserInfo:', res);
+      storage.setItem('userInfo', res.data);
+      setUserInfo(res.data);
+    });
   };
 
   const handleLogout = () => {
     console.log('logout');
     storage.removeItem('userInfo');
+    Cookies.remove('token');
+    setUserInfo(null);
   };
 
   const userMenu = (

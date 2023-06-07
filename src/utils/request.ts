@@ -29,7 +29,7 @@ request.interceptors.request.use((url, options) => {
     header['X-Nideshop-Token'] === 'undefined'
   ) {
     console.log('token不存在');
-    header['X-Nideshop-Token'] = defaultToken;
+    // header['X-Nideshop-Token'] = defaultToken;
   }
 
   return {

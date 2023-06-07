@@ -4,17 +4,10 @@ import { UserOutlined, RobotOutlined } from '@ant-design/icons';
 import HeaderComponent from '@/components/Header';
 import { wssocket } from '@/utils/ws_socket';
 import storage from '@/utils/storage';
-import AiLogo from '@/assets/images/logo.png';
-import ReactMarkdown from 'react-markdown';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
-
-import breaks from 'remark-breaks';
-import remarkGfm from 'remark-gfm';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-
 import { queryQuestion, getHistoryChatMessage } from '@/service/api';
 import styled from 'styled-components';
+import { wxlogin } from '@/service/user';
+import ChatMessage from '@/components/ChatMessage';
 
 const { TextArea } = Input;
 
@@ -32,114 +25,6 @@ type HistoryQuery = {
 
 const TRYING_MSG = '正在努力思考...';
 const END_MSG = '###### [END] ######';
-const ChatMessage = ({ messageText, self, userAvatar }) => {
-  const chatMessageStyle = {
-    display: 'flex',
-    justifyContent: self ? 'flex-end' : 'flex-start',
-    marginBottom: '10px',
-    alignItems: 'flex-start', // 修改为 'flex-start'，使头像和内容上对齐
-  };
-
-  const messageBoxStyle = {
-    borderRadius: '10px',
-    padding: '10px',
-    color: 'white',
-    background: self ? '#007bff' : '#6c757d',
-    maxWidth: '60%',
-    wordBreak: 'break-word', // 修改为 'break-word'，超出容器宽度时自动换行
-    whiteSpace: 'pre-wrap', // 修改为 'pre-wrap'，保留用户输入的空格和换行符并自动换行
-    boxShadow: '0 0 10px rgba(0,0,0,0.1)', // 添加阴影效果
-  };
-
-  const avatarStyle = {
-    marginLeft: self ? '10px' : '0', // 用户头像的 marginLeft 为 10px，AI 头像的 marginLeft 为 0
-    marginRight: self ? '0' : '10px', // 用户头像的 marginRight 为 0，AI 头像的 marginRight 为 10px
-  };
-
-  const codeBlockStyle = {
-    background: '#000000', // 设置代码块背景颜色为黑色
-  };
-
-  const themes = {
-    dark: prism,
-  };
-  const renderCodeBlock = ({ language, value }) => {
-    console.log('renderCodeBlock:', language, value);
-    return (
-      <div style={{ position: 'relative' }}>
-        <SyntaxHighlighter
-          showLineNumbers={false}
-          style={themes.dark}
-          language={language || 'text'} // use 'text' as the default language
-          PreTag="div"
-        >
-          {value.replace(/\n$/, '')}
-        </SyntaxHighlighter>
-        <CopyToClipboard text={value}>
-          <button
-            style={{
-              position: 'absolute',
-              right: '5px',
-              bottom: '5px',
-              zIndex: 2,
-              background: '#6c757d',
-              color: 'white',
-              border: 'none',
-              padding: '5px 10px',
-              borderRadius: '3px',
-              cursor: 'pointer',
-            }}
-            onClick={() => {
-              message.success('复制成功');
-            }}
-          >
-            Copy
-          </button>
-        </CopyToClipboard>
-      </div>
-    );
-  };
-  return (
-    <div style={chatMessageStyle}>
-      {!self && <Avatar src={AiLogo} style={avatarStyle} />}
-      <div style={messageBoxStyle}>
-        {self ? (
-          <div>
-            {messageText.split('\n').map((line, index) => (
-              <div key={index}>{line}</div>
-            ))}
-          </div>
-        ) : (
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            components={{
-              code: ({ node, inline, className, children, ...props }) => {
-                const match = /language-(\w+)/.exec(className || '');
-                return !inline ? (
-                  renderCodeBlock({
-                    language: match ? match[1] : null,
-                    value: String(children).replace(/\n$/, ''),
-                  })
-                ) : (
-                  <code className={className} {...props}>
-                    {children}
-                  </code>
-                );
-              },
-              img: ({ node, ...props }) => {
-                // 注意这里：我们可以添加一个样式来限制图片的最大宽度。
-                return <img {...props} style={{ maxWidth: '100%' }} />;
-              },
-            }}
-          >
-            {messageText}
-          </ReactMarkdown>
-        )}
-      </div>
-      {self && <Avatar src={userAvatar} style={avatarStyle} />}
-    </div>
-  );
-};
 
 const ChatPage = () => {
   const [messages, setMessages] = useState([]);
@@ -244,6 +129,16 @@ const ChatPage = () => {
   };
 
   useEffect(() => {
+    let uinfo = storage.getItem('userInfo');
+    console.log('uinfo:', uinfo);
+    if (!uinfo) {
+      message.error('请先登录');
+      wxlogin();
+      return;
+    }
+    setUserInfo(uinfo);
+    console.log('uinfo.id:', uinfo.id);
+
     getHistoryChatMessage(historyQuery)
       .then((res) => {
         console.log('getHistoryChatMessage', res.data);
@@ -260,10 +155,6 @@ const ChatPage = () => {
         console.log('getHistoryChatMessage', err);
       });
 
-    let uinfo = storage.getItem('userInfo');
-    console.log('uinfo:', uinfo);
-    setUserInfo(uinfo);
-    console.log('uinfo.id:', uinfo.id);
     wssocket.create(uinfo.id);
 
     wssocket.addHandler((msg) => {
@@ -305,10 +196,22 @@ const ChatPage = () => {
 
   const ChatContainer = styled.div`
     width: 90%;
-    margin-top: 80px;
-
     @media (min-width: 600px) {
       width: 60%;
+    }
+  `;
+
+  const SendStyContentDiv = styled.div`
+    width: '100%';
+    display: 'flex';
+    justify-content: 'center';
+    padding-bottom: '80px';
+    position: 'fixed';
+    bottom: '0';
+    backgroundcolor: '#fff';
+    z-index: '2';
+    @media (min-width: 600px) {
+      padding-bottom: '2px';
     }
   `;
 
@@ -339,48 +242,51 @@ const ChatPage = () => {
     bottom: 10px;
   `;
 
+  const HideScrollbar = styled.div`
+    flex: 1;
+    padding-top: 0px;
+    margin-bottom: 160px;
+    background-color: white;
+    overflow-y: auto;
+    height: calc(100vh - 160px);
+    position: relative;
+    z-index: 0;
+
+    @media (max-width: 768px) {
+      margin-top: 64px;
+      height: calc(100vh - 80px);
+      margin-bottom: 10px;
+    }
+  `;
+
   return (
     <div
       style={{
         display: 'flex',
         flexDirection: 'column',
+        justifyContent: 'space-between',
         height: '100vh',
         width: '100%',
       }}
     >
-      <div
+      {/* <div
         style={{
           width: '100%',
           position: 'fixed',
           top: '0',
-          zIndex: '1',
+          zIndex: '100',
           backgroundColor: '#fff',
         }}
-      >
-        <HeaderComponent />
-      </div>
+      > */}
+      <HeaderComponent />
+      {/* </div> */}
 
-      <div
-        className="hideScrollbar"
-        style={{
-          flex: '1',
-          marginTop: '64px',
-          paddingTop: '10px',
-          marginBottom: '160px',
-          backgroundColor: 'white',
-          overflowY: 'auto',
-          height: 'calc(100vh - 160px)',
-          position: 'relative',
-          zIndex: '0',
-        }}
-        ref={messagesContainerRef}
-      >
+      <HideScrollbar className="hideScrollbar" ref={messagesContainerRef}>
         <div
           style={{
             display: 'flex',
             justifyContent: 'center',
             width: '100%',
-            height: '100%',
           }}
         >
           <ChatContainer>
@@ -394,20 +300,9 @@ const ChatPage = () => {
             ))}
           </ChatContainer>
         </div>
-      </div>
+      </HideScrollbar>
 
-      <div
-        style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          paddingBottom: '80px',
-          position: 'fixed',
-          bottom: '0',
-          backgroundColor: '#fff',
-          zIndex: '2',
-        }}
-      >
+      <SendStyContentDiv>
         <SendStyledDiv>
           <SendStyledTextArea
             value={input}
@@ -424,7 +319,7 @@ const ChatPage = () => {
             发送
           </SendStyledButton>
         </SendStyledDiv>
-      </div>
+      </SendStyContentDiv>
     </div>
   );
 };

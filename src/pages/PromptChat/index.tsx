@@ -1,24 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Input, Button, Avatar, message, Modal } from 'antd';
-import { UserOutlined, RobotOutlined } from '@ant-design/icons';
+import { Input, Button, message, Modal } from 'antd';
 import HeaderComponent from '@/components/Header';
 import { wssocket } from '@/utils/ws_socket';
 import storage from '@/utils/storage';
-import AiLogo from '@/assets/images/logo.png';
-import ReactMarkdown from 'react-markdown';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-import breaks from 'remark-breaks';
-import remarkGfm from 'remark-gfm';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useParams } from 'react-router-dom';
+import ChatMessage from '@/components/ChatMessage';
+import styled from 'styled-components';
 
 import {
   queryQuestion,
   getHistoryChatMessage,
   getPromptScenesInfo,
 } from '@/service/api';
+import { wxlogin } from '@/service/user';
 
 const { TextArea } = Input;
 
@@ -36,114 +32,71 @@ type HistoryQuery = {
 
 const TRYING_MSG = '正在努力思考...';
 const END_MSG = '###### [END] ######';
-const ChatMessage = ({ messageText, self, userAvatar }) => {
-  const chatMessageStyle = {
-    display: 'flex',
-    justifyContent: self ? 'flex-end' : 'flex-start',
-    marginBottom: '10px',
-    alignItems: 'flex-start', // 修改为 'flex-start'，使头像和内容上对齐
-  };
 
-  const messageBoxStyle = {
-    borderRadius: '10px',
-    padding: '10px',
-    color: 'white',
-    background: self ? '#007bff' : '#6c757d',
-    maxWidth: '60%',
-    wordBreak: 'break-word', // 修改为 'break-word'，超出容器宽度时自动换行
-    whiteSpace: 'pre-wrap', // 修改为 'pre-wrap'，保留用户输入的空格和换行符并自动换行
-    boxShadow: '0 0 10px rgba(0,0,0,0.1)', // 添加阴影效果
-  };
+const ChatContainer = styled.div`
+  width: 90%;
+  @media (min-width: 600px) {
+    width: 60%;
+  }
+`;
 
-  const avatarStyle = {
-    marginLeft: self ? '10px' : '0', // 用户头像的 marginLeft 为 10px，AI 头像的 marginLeft 为 0
-    marginRight: self ? '0' : '10px', // 用户头像的 marginRight 为 0，AI 头像的 marginRight 为 10px
-  };
+const SendStyContentDiv = styled.div`
+  width: '100%';
+  display: 'flex';
+  justify-content: 'center';
+  padding-bottom: '80px';
+  position: 'fixed';
+  bottom: '0';
+  backgroundcolor: '#fff';
+  z-index: '2';
+  @media (min-width: 600px) {
+    padding-bottom: '2px';
+  }
+`;
 
-  const codeBlockStyle = {
-    background: '#000000', // 设置代码块背景颜色为黑色
-  };
+const SendStyledDiv = styled.div`
+  width: 100%;
+  position: relative;
 
-  const themes = {
-    dark: prism,
-  };
-  const renderCodeBlock = ({ language, value }) => {
-    console.log('renderCodeBlock:', language, value);
-    return (
-      <div style={{ position: 'relative' }}>
-        <SyntaxHighlighter
-          showLineNumbers={false}
-          style={themes.dark}
-          language={language || 'text'} // use 'text' as the default language
-          PreTag="div"
-        >
-          {value.replace(/\n$/, '')}
-        </SyntaxHighlighter>
-        <CopyToClipboard text={value}>
-          <button
-            style={{
-              position: 'absolute',
-              right: '5px',
-              bottom: '5px',
-              zIndex: 2,
-              background: '#6c757d',
-              color: 'white',
-              border: 'none',
-              padding: '5px 10px',
-              borderRadius: '3px',
-              cursor: 'pointer',
-            }}
-            onClick={() => {
-              message.success('复制成功');
-            }}
-          >
-            Copy
-          </button>
-        </CopyToClipboard>
-      </div>
-    );
-  };
-  return (
-    <div style={chatMessageStyle}>
-      {!self && <Avatar src={AiLogo} style={avatarStyle} />}
-      <div style={messageBoxStyle}>
-        {self ? (
-          <div>
-            {messageText.split('\n').map((line, index) => (
-              <div key={index}>{line}</div>
-            ))}
-          </div>
-        ) : (
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            components={{
-              code: ({ node, inline, className, children, ...props }) => {
-                const match = /language-(\w+)/.exec(className || '');
-                return !inline ? (
-                  renderCodeBlock({
-                    language: match ? match[1] : null,
-                    value: String(children).replace(/\n$/, ''),
-                  })
-                ) : (
-                  <code className={className} {...props}>
-                    {children}
-                  </code>
-                );
-              },
-              img: ({ node, ...props }) => {
-                // 注意这里：我们可以添加一个样式来限制图片的最大宽度。
-                return <img {...props} style={{ maxWidth: '100%' }} />;
-              },
-            }}
-          >
-            {messageText}
-          </ReactMarkdown>
-        )}
-      </div>
-      {self && <Avatar src={userAvatar} style={avatarStyle} />}
-    </div>
-  );
-};
+  @media (min-width: 600px) {
+    width: 40%;
+  }
+`;
+
+const SendStyledTextArea = styled(TextArea)`
+  padding-right: 60px;
+  border-radius: 18px;
+
+  &.ant-input {
+    @media (min-width: 600px) {
+      min-height: 2em;
+      max-height: 6em;
+    }
+  }
+`;
+
+const SendStyledButton = styled(Button)`
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+`;
+
+const HideScrollbar = styled.div`
+  flex: 1;
+  padding-top: 10px;
+  margin-bottom: 160px;
+  background-color: white;
+  overflow-y: auto;
+  height: calc(100vh - 160px);
+  position: relative;
+  z-index: 0;
+
+  @media (max-width: 768px) {
+    margin-top: 144px;
+    height: calc(100vh - 80px);
+    margin-bottom: 10px;
+  }
+`;
 
 const ChatPage = () => {
   const [messages, setMessages] = useState([]);
@@ -253,6 +206,17 @@ const ChatPage = () => {
   };
 
   useEffect(() => {
+    let uinfo = storage.getItem('userInfo');
+    console.log('uinfo:', uinfo);
+    if (!uinfo) {
+      message.error('请先登录');
+      wxlogin();
+      return;
+    }
+
+    setUserInfo(uinfo);
+    console.log('uinfo.id:', uinfo.id);
+
     getPromptScenesInfo({ scene: scene })
       .then((res) => {
         console.log('getPromptScenesInfo', res.data);
@@ -278,10 +242,6 @@ const ChatPage = () => {
         console.log('getHistoryChatMessage', err);
       });
 
-    let uinfo = storage.getItem('userInfo');
-    console.log('uinfo:', uinfo);
-    setUserInfo(uinfo);
-    console.log('uinfo.id:', uinfo.id);
     wssocket.create(uinfo.id);
 
     wssocket.addHandler((msg) => {
@@ -335,6 +295,42 @@ const ChatPage = () => {
     console.log('复制成功');
   };
 
+  const StyledHeader = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 64px;
+    width: 60%;
+    margin: auto;
+    left: 20%;
+    right: 20%;
+    padding: 10px;
+    z-index: 1;
+    background-color: #fff;
+
+    @media (max-width: 767px) {
+      width: 90%;
+      left: 5%;
+      right: 5%;
+    }
+  `;
+
+  const StyledTitle = styled.h2`
+    margin: 0;
+  `;
+
+  const StyledButtonWrapper = styled.div`
+    display: flex;
+    align-items: center;
+
+    @media (max-width: 767px) {
+      flex-direction: column;
+      align-items: flex-end;
+      margin-top: 10px;
+    }
+  `;
+
   return (
     <div
       style={{
@@ -344,7 +340,7 @@ const ChatPage = () => {
         width: '100%',
       }}
     >
-      <div
+      {/* <div
         style={{
           width: '100%',
           position: 'fixed',
@@ -352,37 +348,19 @@ const ChatPage = () => {
           zIndex: '1',
           backgroundColor: '#fff',
         }}
-      >
-        <HeaderComponent />
-      </div>
+      > */}
+      <HeaderComponent />
+      {/* </div> */}
 
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          position: 'fixed',
-          top: '64px',
-          width: '60%',
-          margin: 'auto',
-          left: '20%',
-          right: '20%',
-          padding: '10px',
-          zIndex: '1',
-          backgroundColor: '#fff',
-        }}
-      >
-        <h2>{sceneInfo.name}</h2>
-        <div>
-          <Button
-            style={{ marginRight: '18px' }}
-            onClick={handleConversationHistory}
-          >
+      <StyledHeader>
+        <StyledTitle>{sceneInfo.name}</StyledTitle>
+        <StyledButtonWrapper>
+          {/* <Button style={{ marginRight: '18px' }} onClick={handleConversationHistory}>
             会话记录
-          </Button>
+          </Button> */}
           <Button onClick={handleExample}>示例</Button>
-        </div>
-      </div>
+        </StyledButtonWrapper>
+      </StyledHeader>
 
       <Modal title="示例如下" visible={isExampleModalVisible} footer={null}>
         <div
@@ -409,21 +387,7 @@ const ChatPage = () => {
         </Button>
       </Modal>
 
-      <div
-        className="hideScrollbar"
-        style={{
-          flex: '1',
-          marginTop: '128px',
-          paddingTop: '10px',
-          marginBottom: '160px',
-          backgroundColor: 'white',
-          overflowY: 'auto',
-          height: 'calc(100vh - 160px)',
-          position: 'relative',
-          zIndex: '0',
-        }}
-        ref={messagesContainerRef}
-      >
+      <HideScrollbar className="hideScrollbar" ref={messagesContainerRef}>
         <div
           style={{
             display: 'flex',
@@ -432,7 +396,7 @@ const ChatPage = () => {
             height: '100%',
           }}
         >
-          <div style={{ width: '60%' }}>
+          <ChatContainer>
             {messages.map((item, index) => (
               <ChatMessage
                 key={index}
@@ -441,23 +405,12 @@ const ChatPage = () => {
                 userAvatar={userInfo.avatar}
               />
             ))}
-          </div>
+          </ChatContainer>
         </div>
-      </div>
+      </HideScrollbar>
 
-      <div
-        style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          paddingBottom: '80px',
-          position: 'fixed',
-          bottom: '0',
-          backgroundColor: '#fff',
-          zIndex: '2',
-        }}
-      >
-        <div style={{ width: '40%', position: 'relative' }}>
+      <SendStyContentDiv>
+        <SendStyledDiv>
           <TextArea
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -466,14 +419,14 @@ const ChatPage = () => {
             rows={4}
             autoSize={{ minRows: 2, maxRows: 6 }}
           />
-          <Button
+          <SendStyledButton
             onClick={handleSend}
             style={{ position: 'absolute', right: '10px', bottom: '10px' }}
           >
             发送
-          </Button>
-        </div>
-      </div>
+          </SendStyledButton>
+        </SendStyledDiv>
+      </SendStyContentDiv>
     </div>
   );
 };
