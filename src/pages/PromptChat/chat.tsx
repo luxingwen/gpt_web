@@ -4,12 +4,10 @@ import HeaderComponent from '@/components/Header';
 import { wssocket } from '@/utils/ws_socket';
 import storage from '@/utils/storage';
 
-import { getUserInfo } from '@/service/api';
-
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useParams } from 'react-router-dom';
 import ChatMessage from '@/components/ChatMessage';
-import './index.less';
+import styled from 'styled-components';
 
 import {
   queryQuestion,
@@ -35,12 +33,70 @@ type HistoryQuery = {
 const TRYING_MSG = '正在努力思考...';
 const END_MSG = '###### [END] ######';
 
+const ChatContainer = styled.div`
+  width: 90%;
+  @media (min-width: 600px) {
+    width: 60%;
+  }
+`;
+
+const SendStyContentDiv = styled.div`
+  padding-bottom: 80px;
+  @media (max-width: 768px) {
+    padding-bottom: 2px;
+  }
+`;
+
+const SendStyledDiv = styled.div`
+  width: 100%;
+  position: relative;
+
+  @media (min-width: 600px) {
+    width: 40%;
+  }
+`;
+
+const SendStyledTextArea = styled(TextArea)`
+  padding-right: 60px;
+  border-radius: 18px;
+
+  &.ant-input {
+    @media (min-width: 600px) {
+      min-height: 2em;
+      max-height: 6em;
+    }
+  }
+`;
+
+const SendStyledButton = styled(Button)`
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+`;
+
+const HideScrollbar = styled.div`
+  flex: 1;
+  padding-top: 10px;
+  margin-bottom: 160px;
+  background-color: white;
+  overflow-y: auto;
+  height: calc(100vh - 160px);
+  position: relative;
+  z-index: 0;
+
+  @media (max-width: 768px) {
+    margin-top: 144px;
+    height: calc(100vh - 80px);
+    margin-bottom: 10px;
+  }
+`;
+
 const ChatPage = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
-  const [userInfo, setUserInfo] = useState(storage.getItem('userInfo'));
+  const [userInfo, setUserInfo] = useState({});
   const [isMsgEnd, setIsMsgEnd] = useState(true);
   const [loadAllMsg, setLoadAllMsg] = useState(false);
   const { scene } = useParams();
@@ -143,22 +199,16 @@ const ChatPage = () => {
   };
 
   useEffect(() => {
-    getUserInfo().then((res) => {
-      if (res.errno === 401) {
-        message.error('请先登录');
-        wxlogin();
-        return;
-      }
-      if (res.errno == 0) {
-        storage.setItem('userInfo', res.data);
-        setUserInfo(res.data);
-      }
-    });
-
-    if (!userInfo) {
+    let uinfo = storage.getItem('userInfo');
+    console.log('uinfo:', uinfo);
+    if (!uinfo) {
       message.error('请先登录');
+      wxlogin();
       return;
     }
+
+    setUserInfo(uinfo);
+    console.log('uinfo.id:', uinfo.id);
 
     getPromptScenesInfo({ scene: scene })
       .then((res) => {
@@ -185,7 +235,7 @@ const ChatPage = () => {
         console.log('getHistoryChatMessage', err);
       });
 
-    wssocket.create(userInfo.id);
+    wssocket.create(uinfo.id);
 
     wssocket.addHandler((msg) => {
       console.log('msg------->:', msg);
@@ -238,6 +288,42 @@ const ChatPage = () => {
     console.log('复制成功');
   };
 
+  const StyledHeader = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 64px;
+    width: 60%;
+    margin: auto;
+    left: 20%;
+    right: 20%;
+    padding: 10px;
+    z-index: 1;
+    background-color: #fff;
+
+    @media (max-width: 767px) {
+      width: 90%;
+      left: 5%;
+      right: 5%;
+    }
+  `;
+
+  const StyledTitle = styled.h2`
+    margin: 0;
+  `;
+
+  const StyledButtonWrapper = styled.div`
+    display: flex;
+    align-items: center;
+
+    @media (max-width: 767px) {
+      flex-direction: column;
+      align-items: flex-end;
+      margin-top: 10px;
+    }
+  `;
+
   return (
     <div
       style={{
@@ -258,26 +344,16 @@ const ChatPage = () => {
       > */}
       <HeaderComponent />
       {/* </div> */}
-      <div
-        style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <div className="chat-example-header">
-          <div className="left-content">
-            <h2>{sceneInfo.name}</h2>
-          </div>
-          <div className="right-content">
-            {/* <Button style={{ marginRight: '18px' }} onClick={handleConversationHistory}>
-      会话记录
-    </Button> */}
-            <Button onClick={handleExample}>示例</Button>
-          </div>
-        </div>
-      </div>
+
+      <StyledHeader>
+        <StyledTitle>{sceneInfo.name}</StyledTitle>
+        <StyledButtonWrapper>
+          {/* <Button style={{ marginRight: '18px' }} onClick={handleConversationHistory}>
+            会话记录
+          </Button> */}
+          <Button onClick={handleExample}>示例</Button>
+        </StyledButtonWrapper>
+      </StyledHeader>
 
       <Modal title="示例如下" visible={isExampleModalVisible} footer={null}>
         <div
@@ -304,17 +380,16 @@ const ChatPage = () => {
         </Button>
       </Modal>
 
-      <div className="hide-scrollbar" ref={messagesContainerRef}>
+      <HideScrollbar className="hideScrollbar" ref={messagesContainerRef}>
         <div
           style={{
             display: 'flex',
-            flex: '1',
             justifyContent: 'center',
             width: '100%',
             height: '100%',
           }}
         >
-          <div className="chat-container">
+          <ChatContainer>
             {messages.map((item, index) => (
               <ChatMessage
                 key={index}
@@ -323,12 +398,11 @@ const ChatPage = () => {
                 userAvatar={userInfo.avatar}
               />
             ))}
-          </div>
+          </ChatContainer>
         </div>
-      </div>
+      </HideScrollbar>
 
-      <div
-        className="send-content-div"
+      <SendStyContentDiv
         style={{
           width: '100%',
           display: 'flex',
@@ -339,7 +413,7 @@ const ChatPage = () => {
           zIndex: '2',
         }}
       >
-        <div className="send-div">
+        <SendStyledDiv>
           <TextArea
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -348,11 +422,14 @@ const ChatPage = () => {
             rows={4}
             autoSize={{ minRows: 2, maxRows: 6 }}
           />
-          <Button onClick={handleSend} className="send-button">
+          <SendStyledButton
+            onClick={handleSend}
+            style={{ position: 'absolute', right: '10px', bottom: '10px' }}
+          >
             发送
-          </Button>
-        </div>
-      </div>
+          </SendStyledButton>
+        </SendStyledDiv>
+      </SendStyContentDiv>
     </div>
   );
 };

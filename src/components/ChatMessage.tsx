@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Avatar, message } from 'antd';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -6,60 +6,17 @@ import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import remarkGfm from 'remark-gfm';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import AiLogo from '@/assets/images/logo.png';
-import styled from 'styled-components';
 
-const ChatMessageWrapper = styled.div`
-  display: flex;
-  justify-content: ${(props) => (props.self ? 'flex-end' : 'flex-start')};
-  margin-bottom: 10px;
-  align-items: flex-start;
-`;
-
-const MessageBox = styled.div`
-  border-radius: 10px;
-  padding: 10px;
-  color: white;
-  background: ${(props) => (props.self ? '#007bff' : '#6c757d')};
-  max-width: 60%;
-  word-break: break-word;
-  white-space: pre-wrap;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-
-  @media (max-width: 767px) {
-    max-width: 80%;
-  }
-`;
-
-const AvatarStyle = styled(Avatar)`
-  margin-left: ${(props) => (props.self ? '10px' : '0')};
-  margin-right: ${(props) => (props.self ? '0' : '10px')};
-`;
-
-const CodeBlock = styled.div`
-  background: #000000;
-`;
-
-const CopyButton = styled.button`
-  position: absolute;
-  right: 5px;
-  bottom: 5px;
-  z-index: 2;
-  background: #6c757d;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 3px;
-  cursor: pointer;
-`;
+import './ChatMessage.less';
 
 const themes = {
   dark: prism,
 };
 
 const renderCodeBlock = ({ language, value }) => {
-  console.log('renderCodeBlock:', language, value);
+  //  console.log('renderCodeBlock:', language, value);
   return (
-    <CodeBlock>
+    <div className="chat-message-code-block">
       <SyntaxHighlighter
         showLineNumbers={false}
         style={themes.dark}
@@ -69,57 +26,109 @@ const renderCodeBlock = ({ language, value }) => {
         {value.replace(/\n$/, '')}
       </SyntaxHighlighter>
       <CopyToClipboard text={value}>
-        <CopyButton
+        <div
+          className="chat-message-code-copy-button"
           onClick={() => {
             message.success('复制成功');
           }}
         >
           Copy
-        </CopyButton>
+        </div>
       </CopyToClipboard>
-    </CodeBlock>
+    </div>
   );
 };
 
-const ChatMessage = ({ messageText, self, userAvatar }) => {
+const ChatMessage = ({ messageText, self, userAvatar, msgEnd }) => {
+  const paragraphs = messageText.split('\n');
+
+  const renderMessageText = () => {
+    if (self) {
+      return (
+        <div>
+          {messageText.split('\n').map((line, index) => (
+            <div key={index}>{line}</div>
+          ))}
+        </div>
+      );
+    }
+
+    return (
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        components={{
+          p: ({ node, children, ...props }) => (
+            <p {...props}>
+              {children}
+              {msgEnd &&
+                node.children[0].value ===
+                  paragraphs[paragraphs.length - 1] && (
+                  <span
+                    className="typing-cursor"
+                    style={{ display: 'inline-block' }}
+                  />
+                )}
+            </p>
+          ),
+
+          code: ({ node, inline, className, children, ...props }) => {
+            const match = /language-(\w+)/.exec(className || '');
+            return !inline ? (
+              renderCodeBlock({
+                language: match ? match[1] : null,
+                value: String(children).replace(/\n$/, ''),
+              })
+            ) : (
+              <code className={className} {...props}>
+                {children}
+              </code>
+            );
+          },
+          img: ({ node, ...props }) => {
+            return <img {...props} style={{ maxWidth: '100%' }} />;
+          },
+        }}
+      >
+        {messageText}
+      </ReactMarkdown>
+    );
+  };
+
+  console.log('msgEnd: ', msgEnd);
   return (
-    <ChatMessageWrapper self={self}>
-      {!self && <AvatarStyle src={AiLogo} self={self} />}
-      <MessageBox self={self}>
-        {self ? (
-          <div>
-            {messageText.split('\n').map((line, index) => (
-              <div key={index}>{line}</div>
-            ))}
-          </div>
-        ) : (
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            components={{
-              code: ({ node, inline, className, children, ...props }) => {
-                const match = /language-(\w+)/.exec(className || '');
-                return !inline ? (
-                  renderCodeBlock({
-                    language: match ? match[1] : null,
-                    value: String(children).replace(/\n$/, ''),
-                  })
-                ) : (
-                  <code className={className} {...props}>
-                    {children}
-                  </code>
-                );
-              },
-              img: ({ node, ...props }) => {
-                return <img {...props} style={{ maxWidth: '100%' }} />;
-              },
-            }}
-          >
-            {messageText}
-          </ReactMarkdown>
-        )}
-      </MessageBox>
-      {self && <AvatarStyle src={userAvatar} self={self} />}
-    </ChatMessageWrapper>
+    <div
+      className="chat-message-wrapper"
+      style={{
+        justifyContent: self ? 'flex-end' : 'flex-start',
+      }}
+    >
+      {!self && (
+        <Avatar
+          src={AiLogo}
+          style={{
+            marginLeft: self ? '10px' : '0',
+            marginRight: self ? '0' : '10px',
+          }}
+        />
+      )}
+      <div
+        className="chat-message-box"
+        style={{
+          background: self ? '#007bff' : '#6c757d',
+        }}
+      >
+        {renderMessageText()}
+      </div>
+      {self && (
+        <Avatar
+          src={userAvatar}
+          style={{
+            marginLeft: self ? '10px' : '0',
+            marginRight: self ? '0' : '10px',
+          }}
+        />
+      )}
+    </div>
   );
 };
 

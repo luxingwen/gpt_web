@@ -1,5 +1,5 @@
 import styles from './index.less';
-import { Row, Col, Card, Typography } from 'antd';
+import { Row, Col, Card, Typography, message } from 'antd';
 import HeaderComponent from '../components/Header';
 import ContentLayout from '@/layouts/index';
 import TipsCard from '../components/TipsCard';
@@ -10,11 +10,14 @@ import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
+import storage from '@/utils/storage';
+
 const { Title } = Typography;
 
 export default function IndexPage() {
   const history = useHistory();
   const [cardData, setCardData] = useState([]);
+  const [userInfo, setUserInfo] = useState(storage.getItem('userInfo'));
 
   useEffect(() => {
     getLatestUsedScenes()
@@ -32,6 +35,10 @@ export default function IndexPage() {
   };
 
   const handleGiftCardClick = () => {
+    if (!userInfo) {
+      message.error('请先登录');
+      return;
+    }
     history.push(`/user/redemption`);
   };
 
@@ -50,7 +57,7 @@ export default function IndexPage() {
             </Card>
           </Col>
           <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-            <Card>
+            <Card onClick={handleGiftCardClick}>
               <div className={styles['image-container']}>
                 <img src={HomeImg2} alt="Home Image 2" />
               </div>

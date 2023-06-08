@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Avatar, Typography, Space, Modal, Image } from 'antd';
+import { Card, Avatar, Typography, Space, Modal, Image, message } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import ContentLayout from '@/layouts/index';
 import { RightOutlined } from '@ant-design/icons';
@@ -12,17 +12,21 @@ import storage from '@/utils/storage';
 import vipImg from '@/assets/images/vip.jpg';
 
 import { getUserInfo } from '@/service/api';
-
 import { NavLink, useLocation } from 'react-router-dom';
 import Qrcode from '@/assets/images/qrcode.jpg';
 
 import { formatTimestamp, getCurrentTimestampInSeconds } from '@/utils/utils';
 
 import './index.less';
+import { wxlogin } from '@/service/user';
 
 const { Title, Text } = Typography;
 
 const UserInfo = ({ user }) => {
+  if (!user) {
+    return null;
+  }
+
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <Avatar size={64} src={user.avatar} className="user-avatar" />
@@ -67,11 +71,21 @@ const UserInfoPage = () => {
 
   useEffect(() => {
     getUserInfo().then((res) => {
-      console.log('getUserInfo:', res);
-      storage.setItem('userInfo', res.data);
-      setUserInfo(res.data);
+      if (res.errno === 401) {
+        message.error('请先登录');
+        wxlogin();
+        return;
+      }
+      if (res.errno == 0) {
+        storage.setItem('userInfo', res.data);
+        setUserInfo(res.data);
+      }
     });
   }, []);
+
+  if (!userInfo) {
+    return null;
+  }
 
   return (
     <ContentLayout>

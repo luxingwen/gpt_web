@@ -4,24 +4,17 @@ import { UserOutlined, RobotOutlined } from '@ant-design/icons';
 import HeaderComponent from '@/components/Header';
 import { wssocket } from '@/utils/ws_socket';
 import storage from '@/utils/storage';
-import { queryQuestion, getHistoryChatMessage } from '@/service/api';
-import styled from 'styled-components';
-import { wxlogin } from '@/service/user';
+import {
+  queryQuestion,
+  getHistoryChatMessage,
+  getUserInfo,
+} from '@/service/api';
+
 import ChatMessage from '@/components/ChatMessage';
+import { wxlogin } from '@/service/user';
+import './index.less';
 
 const { TextArea } = Input;
-
-type Message = {
-  msg_id: number;
-  msg: string;
-  role: string;
-};
-
-type HistoryQuery = {
-  page?: number;
-  per_page?: number;
-  scene?: string;
-};
 
 const TRYING_MSG = '正在努力思考...';
 const END_MSG = '###### [END] ######';
@@ -31,10 +24,10 @@ const ChatPage = () => {
   const [input, setInput] = useState('');
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo] = useState(storage.getItem('userInfo'));
   const [isMsgEnd, setIsMsgEnd] = useState(true);
   const [loadAllMsg, setLoadAllMsg] = useState(false);
-  const [historyQuery, setHistoryQuery] = useState<HistoryQuery>({
+  const [historyQuery, setHistoryQuery] = useState({
     page: 0,
     per_page: 10,
   });
@@ -46,10 +39,10 @@ const ChatPage = () => {
       const { scrollTop } = event.target;
       if (scrollTop === 0) {
         // Request older messages
-
         requestOlderMessages();
       }
     };
+
     const messagesContainer = messagesContainerRef.current;
     if (messagesContainer) {
       messagesContainer.addEventListener('scroll', handleScroll);
@@ -81,12 +74,11 @@ const ChatPage = () => {
           message.success('没有更多消息了');
           return;
         }
-
         let msgList = [];
         res.data.data.forEach((item) => {
           msgList.push(
-            { msg: item.question, self: true },
-            { msg: item.answer, self: false, msg_id: item.id },
+            { msg: item.question, self: true, is_end: true },
+            { msg: item.answer, self: false, msg_id: item.id, is_end: true },
           );
         });
         setMessages((prev) => [...msgList, ...prev]); // prepend the older messages to the start of the list
@@ -108,8 +100,13 @@ const ChatPage = () => {
           console.log('queryQuestion', res.data);
           setMessages([
             ...messages,
-            { msg: input, self: true },
-            { msg: TRYING_MSG, self: false, msg_id: res.data.id },
+            { msg: input, self: true, is_end: true },
+            {
+              msg: TRYING_MSG,
+              self: false,
+              msg_id: res.data.id,
+              is_end: false,
+            },
           ]);
           setIsMsgEnd(false);
         })
@@ -122,6 +119,7 @@ const ChatPage = () => {
   };
 
   const scrollToBottom = () => {
+    console.log('scrollToBottom');
     const messagesContainer = messagesContainerRef.current;
     if (messagesContainer) {
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -129,15 +127,22 @@ const ChatPage = () => {
   };
 
   useEffect(() => {
-    let uinfo = storage.getItem('userInfo');
-    console.log('uinfo:', uinfo);
-    if (!uinfo) {
+    getUserInfo().then((res) => {
+      if (res.errno === 401) {
+        message.error('请先登录');
+        wxlogin();
+        return;
+      }
+      if (res.errno == 0) {
+        storage.setItem('userInfo', res.data);
+        setUserInfo(res.data);
+      }
+    });
+
+    if (!userInfo) {
       message.error('请先登录');
-      wxlogin();
       return;
     }
-    setUserInfo(uinfo);
-    console.log('uinfo.id:', uinfo.id);
 
     getHistoryChatMessage(historyQuery)
       .then((res) => {
@@ -145,8 +150,8 @@ const ChatPage = () => {
         let msgList = [];
         res.data.data.forEach((item) => {
           msgList.unshift(
-            { msg: item.question, self: true },
-            { msg: item.answer, self: false, msg_id: item.id },
+            { msg: item.question, self: true, is_end: true },
+            { msg: item.answer, self: false, msg_id: item.id, is_end: true },
           );
         });
         setMessages([...messages, ...msgList]);
@@ -155,7 +160,7 @@ const ChatPage = () => {
         console.log('getHistoryChatMessage', err);
       });
 
-    wssocket.create(uinfo.id);
+    wssocket.create(userInfo.id);
 
     wssocket.addHandler((msg) => {
       console.log('msg------->:', msg);
@@ -194,87 +199,11 @@ const ChatPage = () => {
     }
   }, [messages]);
 
-  const ChatContainer = styled.div`
-    width: 90%;
-    @media (min-width: 600px) {
-      width: 60%;
-    }
-  `;
-
-  const SendStyContentDiv = styled.div`
-    padding-bottom: 80px;
-    @media (max-width: 768px) {
-      padding-bottom: 2px;
-    }
-  `;
-
-  const SendStyledDiv = styled.div`
-    width: 100%;
-    position: relative;
-
-    @media (min-width: 600px) {
-      width: 40%;
-    }
-  `;
-
-  const SendStyledTextArea = styled(TextArea)`
-    padding-right: 60px;
-    border-radius: 18px;
-
-    &.ant-input {
-      @media (min-width: 600px) {
-        min-height: 2em;
-        max-height: 6em;
-      }
-    }
-  `;
-
-  const SendStyledButton = styled(Button)`
-    position: absolute;
-    right: 10px;
-    bottom: 10px;
-  `;
-
-  const HideScrollbar = styled.div`
-    flex: 1;
-    padding-top: 0px;
-    margin-bottom: 160px;
-    background-color: white;
-    overflow-y: auto;
-    height: calc(100vh - 160px);
-    position: relative;
-    z-index: 0;
-
-    @media (max-width: 768px) {
-      margin-top: 64px;
-      height: calc(100vh - 80px);
-      margin-bottom: 10px;
-    }
-  `;
-
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        height: '100vh',
-        width: '100%',
-      }}
-    >
-      {/* <div
-        style={{
-          width: '100%',
-          position: 'fixed',
-          top: '0',
-          zIndex: '100',
-          backgroundColor: '#fff',
-        }}
-      > */}
+    <div className="chat-page">
       <HeaderComponent />
-      {/* </div> */}
 
-      <HideScrollbar className="hideScrollbar" ref={messagesContainerRef}>
+      <div className="hide-scrollbar" ref={messagesContainerRef}>
         <div
           style={{
             display: 'flex',
@@ -282,20 +211,22 @@ const ChatPage = () => {
             width: '100%',
           }}
         >
-          <ChatContainer>
+          <div className="chat-container">
             {messages.map((item, index) => (
               <ChatMessage
                 key={index}
                 messageText={item.msg}
                 self={item.self}
                 userAvatar={userInfo.avatar}
+                msgEnd={index === messages.length - 1 && !isMsgEnd}
               />
             ))}
-          </ChatContainer>
+          </div>
         </div>
-      </HideScrollbar>
+      </div>
 
-      <SendStyContentDiv
+      <div
+        className="send-content-div"
         style={{
           width: '100%',
           display: 'flex',
@@ -306,23 +237,20 @@ const ChatPage = () => {
           zIndex: '2',
         }}
       >
-        <SendStyledDiv>
-          <SendStyledTextArea
+        <div className="send-div">
+          <TextArea
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onPressEnter={handleSend}
-            style={{ paddingRight: '60px', borderRadius: '18px' }}
+            className="send-textarea"
             rows={4}
             autoSize={{ minRows: 2, maxRows: 6 }}
           />
-          <SendStyledButton
-            onClick={handleSend}
-            style={{ position: 'absolute', right: '10px', bottom: '10px' }}
-          >
+          <Button onClick={handleSend} className="send-button">
             发送
-          </SendStyledButton>
-        </SendStyledDiv>
-      </SendStyContentDiv>
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };

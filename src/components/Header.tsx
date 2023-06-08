@@ -31,6 +31,7 @@ import { getUserInfo } from '@/service/api';
 
 import storage from '@/utils/storage';
 import Cookies from 'js-cookie';
+import { useHistory } from 'react-router-dom';
 
 const { Header } = Layout;
 const { Text } = Typography;
@@ -85,6 +86,7 @@ const defaultToken =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiIyMTE5IiwiZXhwIjoxNzA0NDYyMzk1LCJpYXQiOjE2ODU3MTM1OTUsImlzcyI6InRlc3QifQ.jfVomRADsD1IaiEjV37Ovvjuukzarflqx_BFDo0kG5o';
 
 const HeaderComponent = () => {
+  const history = useHistory();
   const [userInfo, setUserInfo] = useState(storage.getItem('userInfo'));
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -97,9 +99,9 @@ const HeaderComponent = () => {
     window.addEventListener('resize', handleResize);
 
     getUserInfo().then((res) => {
-      console.log('getUserInfo:', res);
-      storage.setItem('userInfo', res.data);
-      setUserInfo(res.data);
+      if (res.code === 0) {
+        setUserInfo(res.data);
+      }
     });
 
     return () => window.removeEventListener('resize', handleResize);
@@ -107,8 +109,6 @@ const HeaderComponent = () => {
 
   useEffect(() => {
     getUserInfo().then((res) => {
-      console.log('getUserInfo:', res);
-      storage.setItem('userInfo', res.data);
       setUserInfo(res.data);
     });
   }, []);
@@ -124,16 +124,14 @@ const HeaderComponent = () => {
   };
 
   const handleClickLogin = () => {
-    console.log('login');
-    wxlogin();
+    // console.log('login');
+    // wxlogin();
 
-    // Cookies.set('token', defaultToken);
+    Cookies.set('token', defaultToken);
 
-    // getUserInfo().then((res) => {
-    //   console.log('getUserInfo:', res);
-    //   storage.setItem('userInfo', res.data);
-    //   setUserInfo(res.data);
-    // });
+    getUserInfo().then((res) => {
+      setUserInfo(res.data);
+    });
   };
 
   const handleLogout = () => {
@@ -141,6 +139,7 @@ const HeaderComponent = () => {
     storage.removeItem('userInfo');
     Cookies.remove('token');
     setUserInfo(null);
+    history.push('/');
   };
 
   const userMenu = (

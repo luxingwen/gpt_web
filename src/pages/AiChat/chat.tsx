@@ -1,11 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Input, Button, Avatar, message } from 'antd';
+import { UserOutlined, RobotOutlined } from '@ant-design/icons';
+import HeaderComponent from '@/components/Header';
+import { wssocket } from '@/utils/ws_socket';
+import storage from '@/utils/storage';
+import { queryQuestion, getHistoryChatMessage } from '@/service/api';
+import styled from 'styled-components';
+import { wxlogin } from '@/service/user';
+import ChatMessage from '@/components/ChatMessage';
 
-import ChatLayout from '@/layouts/chat';
+const { TextArea } = Input;
 
-import { getHistoryChatMessage } from '@/service/api';
-import { List, Input, Button, Avatar } from 'antd';
-
-import AiBotImg from '@/assets/images/logo.png';
+type Message = {
+  msg_id: number;
+  msg: string;
+  role: string;
+};
 
 type HistoryQuery = {
   page?: number;
@@ -13,118 +23,308 @@ type HistoryQuery = {
   scene?: string;
 };
 
-const IndexPage = () => {
-  const [historyMessage, setHistoryMessage] = useState([]);
+const TRYING_MSG = '正在努力思考...';
+const END_MSG = '###### [END] ######';
+
+const ChatPage = () => {
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState('');
+  const messagesEndRef = useRef(null);
+  const messagesContainerRef = useRef(null);
+  const [userInfo, setUserInfo] = useState({});
+  const [isMsgEnd, setIsMsgEnd] = useState(true);
+  const [loadAllMsg, setLoadAllMsg] = useState(false);
   const [historyQuery, setHistoryQuery] = useState<HistoryQuery>({
     page: 0,
     per_page: 10,
   });
+  const [newMessageReceived, setNewMessageReceived] = useState(true);
 
-  const [userAvatar, setUserAvatar] = useState(AiBotImg);
+  useEffect(() => {
+    const handleScroll = (event) => {
+      // Check if we're at the top of the container
+      const { scrollTop } = event.target;
+      if (scrollTop === 0) {
+        // Request older messages
 
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
+        requestOlderMessages();
+      }
+    };
+    const messagesContainer = messagesContainerRef.current;
+    if (messagesContainer) {
+      messagesContainer.addEventListener('scroll', handleScroll);
+      return () => {
+        // Clean up the event listener when the component unmounts
+        messagesContainer.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, [messagesContainerRef, requestOlderMessages]);
 
-  const sendMessage = () => {
-    if (input.trim() !== '') {
-      let msgs = [
-        ...messages,
-        { author: 'user', content: input },
-        { author: 'system', content: '我是系统' },
-      ];
-      setMessages(msgs);
+  const requestOlderMessages = () => {
+    if (loadAllMsg) {
+      message.success('没有更多消息了');
+      return;
+    }
+
+    historyQuery.page = historyQuery.page + 1;
+
+    // if (historyQuery.page > 1) {
+    setNewMessageReceived(false);
+    // }
+    // update the page number
+    setHistoryQuery(historyQuery);
+
+    getHistoryChatMessage(historyQuery)
+      .then((res) => {
+        if (res.data.data.length === 0) {
+          setLoadAllMsg(true);
+          message.success('没有更多消息了');
+          return;
+        }
+
+        let msgList = [];
+        res.data.data.forEach((item) => {
+          msgList.push(
+            { msg: item.question, self: true },
+            { msg: item.answer, self: false, msg_id: item.id },
+          );
+        });
+        setMessages((prev) => [...msgList, ...prev]); // prepend the older messages to the start of the list
+      })
+      .catch((err) => {
+        console.log('getHistoryChatMessage', err);
+      });
+  };
+
+  const handleSend = () => {
+    if (!isMsgEnd) {
+      message.error('请等待机器人回复后再发送消息');
+      return;
+    }
+
+    if (input) {
+      queryQuestion(input)
+        .then((res) => {
+          console.log('queryQuestion', res.data);
+          setMessages([
+            ...messages,
+            { msg: input, self: true },
+            { msg: TRYING_MSG, self: false, msg_id: res.data.id },
+          ]);
+          setIsMsgEnd(false);
+        })
+        .catch((err) => {
+          console.log('queryQuestion', err);
+        });
+
       setInput('');
     }
   };
 
+  const scrollToBottom = () => {
+    const messagesContainer = messagesContainerRef.current;
+    if (messagesContainer) {
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+  };
+
   useEffect(() => {
-    getHistoryChatMessage(historyQuery).then((res) => {
-      console.log('getAiChatMessage', res.data);
-      setHistoryMessage(res.data);
+    let uinfo = storage.getItem('userInfo');
+    console.log('uinfo:', uinfo);
+    if (!uinfo) {
+      message.error('请先登录');
+      wxlogin();
+      return;
+    }
+    setUserInfo(uinfo);
+    console.log('uinfo.id:', uinfo.id);
+
+    getHistoryChatMessage(historyQuery)
+      .then((res) => {
+        console.log('getHistoryChatMessage', res.data);
+        let msgList = [];
+        res.data.data.forEach((item) => {
+          msgList.unshift(
+            { msg: item.question, self: true },
+            { msg: item.answer, self: false, msg_id: item.id },
+          );
+        });
+        setMessages([...messages, ...msgList]);
+      })
+      .catch((err) => {
+        console.log('getHistoryChatMessage', err);
+      });
+
+    wssocket.create(uinfo.id);
+
+    wssocket.addHandler((msg) => {
+      console.log('msg------->:', msg);
+      handleReceive(msg.response.data);
     });
   }, []);
 
-  const renderMessage = (message) => {
-    const isUserMessage = message.author === 'user';
-    return (
-      <div
+  const handleReceive = (itemMsg) => {
+    setNewMessageReceived(true);
+    if (itemMsg.msg.includes(END_MSG)) {
+      setIsMsgEnd(true);
+      return;
+    }
+
+    setMessages((prevMessages) => {
+      const updatedMessages = prevMessages.map((item) => {
+        if (item.msg_id === itemMsg.msg_id) {
+          if (item.msg === TRYING_MSG) {
+            item.msg = '';
+          }
+          return {
+            ...item,
+            msg: item.msg + itemMsg.msg,
+          };
+        }
+        return item;
+      });
+      return updatedMessages;
+    });
+  };
+
+  useEffect(() => {
+    console.log('newMessageReceived', newMessageReceived);
+    if (newMessageReceived) {
+      scrollToBottom();
+    }
+  }, [messages]);
+
+  const ChatContainer = styled.div`
+    width: 90%;
+    @media (min-width: 600px) {
+      width: 60%;
+    }
+  `;
+
+  const SendStyContentDiv = styled.div`
+    padding-bottom: 80px;
+    @media (max-width: 768px) {
+      padding-bottom: 2px;
+    }
+  `;
+
+  const SendStyledDiv = styled.div`
+    width: 100%;
+    position: relative;
+
+    @media (min-width: 600px) {
+      width: 40%;
+    }
+  `;
+
+  const SendStyledTextArea = styled(TextArea)`
+    padding-right: 60px;
+    border-radius: 18px;
+
+    &.ant-input {
+      @media (min-width: 600px) {
+        min-height: 2em;
+        max-height: 6em;
+      }
+    }
+  `;
+
+  const SendStyledButton = styled(Button)`
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+  `;
+
+  const HideScrollbar = styled.div`
+    flex: 1;
+    padding-top: 0px;
+    margin-bottom: 160px;
+    background-color: white;
+    overflow-y: auto;
+    height: calc(100vh - 160px);
+    position: relative;
+    z-index: 0;
+
+    @media (max-width: 768px) {
+      margin-top: 64px;
+      height: calc(100vh - 80px);
+      margin-bottom: 10px;
+    }
+  `;
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        height: '100vh',
+        width: '100%',
+      }}
+    >
+      {/* <div
         style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
           width: '100%',
+          position: 'fixed',
+          top: '0',
+          zIndex: '100',
+          backgroundColor: '#fff',
         }}
-      >
+      > */}
+      <HeaderComponent />
+      {/* </div> */}
+
+      <HideScrollbar className="hideScrollbar" ref={messagesContainerRef}>
         <div
           style={{
             display: 'flex',
-            justifyContent: isUserMessage ? 'flex-end' : 'flex-start',
+            justifyContent: 'center',
             width: '100%',
           }}
         >
-          <List.Item
-            style={{
-              display: 'flex',
-              flexDirection: isUserMessage ? 'row-reverse' : 'row',
-              width: '800px',
-            }}
-          >
-            <Avatar
-              src={isUserMessage ? userAvatar : AiBotImg}
-              style={{ flexShrink: 0, alignSelf: 'start' }}
-            />
-            <div style={{ wordBreak: 'break-word' }}>
-              <span>{message.content}</span>
-            </div>
-          </List.Item>
+          <ChatContainer>
+            {messages.map((item, index) => (
+              <ChatMessage
+                key={index}
+                messageText={item.msg}
+                self={item.self}
+                userAvatar={userInfo.avatar}
+              />
+            ))}
+          </ChatContainer>
         </div>
-      </div>
-    );
-  };
+      </HideScrollbar>
 
-  return (
-    <ChatLayout>
-      <div
+      <SendStyContentDiv
         style={{
+          width: '100%',
           display: 'flex',
-          flexDirection: 'column',
-          height: '100vh',
-          overflow: 'auto',
+          justifyContent: 'center',
+          position: 'fixed',
+          bottom: '0',
+          backgroundcolor: '#fff',
+          zIndex: '2',
         }}
       >
-        <List
-          style={{ width: '100vw', flexGrow: 1, paddingRight: '10px' }}
-          dataSource={messages}
-          renderItem={renderMessage}
-        />
-        <div
-          style={{
-            position: 'sticky',
-            bottom: 0,
-            display: 'flex',
-            justifyContent: 'center',
-            width: '100vw',
-            backgroundColor: 'white',
-            borderTop: '1px solid #ddd',
-            padding: '10px 0',
-          }}
-        >
-          <div style={{ display: 'flex', width: '80%', padding: '0 20px' }}>
-            <Input
-              placeholder="请输入消息"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onPressEnter={sendMessage}
-              style={{ marginRight: '10px', flexGrow: 1 }}
-            />
-            <Button type="primary" onClick={sendMessage}>
-              发送
-            </Button>
-          </div>
-        </div>
-      </div>
-    </ChatLayout>
+        <SendStyledDiv>
+          <SendStyledTextArea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onPressEnter={handleSend}
+            style={{ paddingRight: '60px', borderRadius: '18px' }}
+            rows={4}
+            autoSize={{ minRows: 2, maxRows: 6 }}
+          />
+          <SendStyledButton
+            onClick={handleSend}
+            style={{ position: 'absolute', right: '10px', bottom: '10px' }}
+          >
+            发送
+          </SendStyledButton>
+        </SendStyledDiv>
+      </SendStyContentDiv>
+    </div>
   );
 };
 
-export default IndexPage;
+export default ChatPage;

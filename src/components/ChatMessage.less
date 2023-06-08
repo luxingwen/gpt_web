@@ -1,0 +1,55 @@
+.typing-cursor {
+  display: inline-block;
+  width: 6px;
+  height: 20px;
+  background-color: #fffcc2; /* 光标颜色 */
+  margin-left: 3px; /* 增加左边距来分隔光标和文本 */
+  animation: cursor-blink 0.8s infinite;
+}
+
+@keyframes cursor-blink {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.chat-message-wrapper {
+  display: flex;
+  margin-bottom: 10px;
+  align-items: flex-start;
+}
+
+.chat-message-box {
+  border-radius: 10px;
+  padding: 10px;
+  color: white;
+  max-width: 60%;
+  word-break: break-word;
+  white-space: pre-wrap;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 767px) {
+    max-width: 80%;
+  }
+}
+
+.chat-message-code-block {
+  background: #000000;
+}
+
+.chat-message-code-copy-button {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  z-index: 2;
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
