@@ -231,6 +231,16 @@ const HeaderComponent = () => {
                   百宝袋
                 </NavLink>
               </Menu.Item>
+
+              <Menu.Item
+                key="smart-scene"
+                icon={<ShoppingCartOutlined />}
+                className="menu-item"
+              >
+                <NavLink to="/smart-chat/scene" activeClassName="active-link">
+                  个人知识库
+                </NavLink>
+              </Menu.Item>
             </Menu>
           </Col>
         )}

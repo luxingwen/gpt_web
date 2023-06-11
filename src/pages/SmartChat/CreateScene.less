@@ -1,0 +1,49 @@
+/* App.css */
+.custom-radio-group .ant-radio-wrapper {
+  display: inline-block;
+  border: 1px solid #d9d9d9;
+  padding: 10px 20px;
+  margin-right: 8px;
+  border-radius: 10px;
+  transition: all 0.3s;
+}
+
+.custom-radio-group .ant-radio-wrapper:hover {
+  border-color: #add8e6;
+}
+
+.custom-radio-group
+  .ant-radio-wrapper-checked:not(.ant-radio-wrapper-disabled) {
+  color: #fff;
+  background-color: #1890ff;
+  border-color: #add8e6;
+}
+
+.custom-radio-group .ant-radio-wrapper:not(:first-child)::before {
+  content: none;
+}
+
+.custom-radio-group .ant-radio-inner,
+.custom-radio-group .ant-radio-input {
+  display: none; /* 隐藏默认的圆形按钮 */
+}
+
+.upload-card {
+  border: 2px dashed #ccc; /* 虚线边框 */
+  border-radius: 10px;
+  padding: 20px;
+  height: 150px; /* 自定义高度，你可以根据需要调整 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.upload-card:hover {
+  border-color: #add8e6;
+}
+
+.upload-card .ant-upload {
+  display: inline-block;
+}

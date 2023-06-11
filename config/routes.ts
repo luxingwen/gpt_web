@@ -19,4 +19,9 @@ export default [
     path: '/user/redemption',
     component: '@/pages/Redemption/index',
   },
+  {
+    exact: true,
+    path: '/smart-chat/scene',
+    component: '@/pages/SmartChat/index',
+  },
 ];
