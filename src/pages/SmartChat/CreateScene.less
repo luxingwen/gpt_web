@@ -47,3 +47,93 @@
 .upload-card .ant-upload {
   display: inline-block;
 }
+
+.upload-card-user {
+  border: 2px dashed #ccc; /* 虚线边框 */
+  border-radius: 10px;
+
+  height: 80px; /* 自定义高度，你可以根据需要调整 */
+  width: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.upload-card-user .ant-card-body {
+  padding: 0;
+}
+
+.image-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-container img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.vertical-radio-group .ant-radio-wrapper {
+  display: flex;
+  align-items: center;
+}
+.square-radio .ant-radio-input {
+  width: 16px;
+  height: 16px;
+  border-radius: 0;
+  visibility: hidden; /* 隐藏原始的 radio button */
+}
+
+.square-radio .ant-radio-inner {
+  position: relative; /* 使我们能够使用 ::before 和 ::after 伪元素 */
+  border-radius: 0;
+  background-color: transparent; /* 使背景透明 */
+}
+
+.square-radio .ant-radio-inner::before {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 1px solid transparent; /* 更改边框颜色为透明 */
+  border-radius: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.square-radio .ant-radio-inner::after {
+  content: '✔';
+  position: absolute;
+  font-size: 16px; /* 调整符号大小 */
+  top: 30%; /* 调整符号位置 */
+  left: 50%; /* 调整符号位置 */
+  color: black; /* 更改为黑色 */
+  opacity: 0; /* 默认情况下设置为透明 */
+}
+
+.square-radio input[type='radio']:checked + .ant-radio-inner::after {
+  opacity: 1; /* 当选中时设置为可见 */
+}
+
+.square-radio .ant-radio-checked .ant-radio-inner::after {
+  background-color: transparent; /* 隐藏选中状态下的蓝色背景圆圈 */
+}
+
+.file-list {
+  margin-top: 10px;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}

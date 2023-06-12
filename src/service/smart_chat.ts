@@ -8,3 +8,12 @@ export async function getSmartSceneList(params: any) {
     });
   } catch (error) {}
 }
+
+export async function createmartScene(params: any) {
+  try {
+    return request(`/api/v1/smart/scene/new`, {
+      method: 'POST',
+      data: params,
+    });
+  } catch (error) {}
+}

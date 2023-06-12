@@ -4,6 +4,7 @@ import SceneItemCard from './SceneItemCard';
 import { SearchOutlined } from '@ant-design/icons';
 import SearchBox from '@/components/SearchBox';
 import { getSmartSceneList } from '@/service/smart_chat';
+import { getUserList } from '@/service/user';
 
 import './SceneList.less';
 
