@@ -9,7 +9,7 @@ const testUser = [
   { id: 3, nickname: 'User 3', avatar: 'avatar3.jpg' },
 ];
 
-const UserSelect = () => {
+const UserSelect = ({ setUserList }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [selectedUsers, setSelectedUsers] = useState([]);
@@ -29,6 +29,12 @@ const UserSelect = () => {
 
   const handleUserSelect = (user) => {
     setSelectedUsers((prevSelectedUsers) => [...prevSelectedUsers, user]);
+    setUserList((prevUserList) => [...prevUserList, user.id]);
+
+    // 从searchResults中移除已选择的用户
+    setSearchResults((prevSearchResults) =>
+      prevSearchResults.filter((result) => result.id !== user.id),
+    );
   };
 
   const handleEnterPress = (e) => {
@@ -44,7 +50,16 @@ const UserSelect = () => {
             if (res.data.length === 0) {
               message.info('没有找到相关用户');
             }
-            setSearchResults(res.data);
+
+            // 从搜索结果中移除已选择的用户
+            const filteredResults = res.data.filter(
+              (result) =>
+                !selectedUsers.some(
+                  (selectedUser) => selectedUser.id === result.id,
+                ),
+            );
+
+            setSearchResults(filteredResults);
           }
         })
         .catch((err) => {

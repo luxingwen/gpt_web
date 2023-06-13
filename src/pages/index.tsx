@@ -22,8 +22,9 @@ export default function IndexPage() {
   useEffect(() => {
     getLatestUsedScenes()
       .then((res) => {
-        console.log('getLatestUsedScenes', res.data);
-        setCardData(res.data.data);
+        if (res.data && res.data.data && res.data.data.length > 0) {
+          setCardData(res.data.data);
+        }
       })
       .catch((err) => {
         console.log(err);

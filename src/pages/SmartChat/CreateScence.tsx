@@ -24,13 +24,15 @@ import './CreateScene.less';
 
 const { Item } = Form;
 
-const CreateScene = () => {
+const CreateScene = ({ setViewContent }) => {
   const [showUserSelect, setShowUserSelect] = useState(false);
   const [radioIcon, setRadioIcon] = useState(<DownOutlined />);
   const [selectedImage, setSelectedImage] = useState(null);
   const [fileType, setFileType] = useState('');
   const [fileList, setFileList] = useState([]);
   const [imageFile, setImageFile] = useState(null);
+  const [userList, setUserList] = useState([]);
+  const [loading, setLoading] = useState(false); // 添加loading状态变量
 
   const uploadRef = useRef(null);
 
@@ -94,6 +96,7 @@ const CreateScene = () => {
   };
 
   const onFinish = async (values) => {
+    setLoading(true); // 开始加载状态
     console.log('Form values:', values);
 
     // 将表单数据转为 FormData
@@ -110,6 +113,11 @@ const CreateScene = () => {
       formData.append('avatar', imageFile);
     }
 
+    if (showUserSelect) {
+      // 添加用户数据到 FormData
+      formData.append('userList', JSON.stringify(userList));
+    }
+
     // 添加文件数据到 FormData
     fileList.forEach((file) => {
       formData.append('files', file);
@@ -119,10 +127,17 @@ const CreateScene = () => {
     try {
       const response = await createmartScene(formData);
       console.log('创建场景成功：', response);
+      if (response.errno === 0) {
+        message.success('创建场景成功！');
+        setLoading(false); // 结束加载状态
+        setViewContent('scene_list');
+      }
 
       // 处理响应
     } catch (error) {
       // 处理错误
+    } finally {
+      setLoading(false); // 结束加载状态
     }
   };
 
@@ -318,11 +333,11 @@ const CreateScene = () => {
               </Radio>
             </Radio.Group>
           </Item>
-          {showUserSelect && <UserSelect />}
+          {showUserSelect && <UserSelect setUserList={setUserList} />}
           <Item style={{ marginTop: '20px' }}>
             <Space>
               <Button htmlType="button">取消</Button>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" loading={loading}>
                 创建
               </Button>
             </Space>
