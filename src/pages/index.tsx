@@ -70,7 +70,7 @@ export default function IndexPage() {
           <Col span={24}>
             <Title level={3}>最近使用</Title>
           </Col>
-          {cardData.map((card, index) => (
+          {(cardData || []).map((card, index) => (
             <Col key={index} xs={24} sm={12} md={6}>
               <NavLink to={`/tips/bag/chat/${card.id}`}>
                 <TipsCard

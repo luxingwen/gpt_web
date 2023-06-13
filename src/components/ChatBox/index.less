@@ -1,0 +1,56 @@
+.chat-box-component {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 12%;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  .scroll-box {
+    flex: 1;
+    background-color: white;
+    overflow-y: scroll;
+    padding-top: 12px;
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 4px;
+      background: #e3e3e3;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background: #c2c2c2;
+    }
+
+    .ai-asnswer-tips {
+      font-size: 12px;
+      color: rgba(166, 166, 166, 1);
+      margin: 48px 0 48px 0;
+    }
+    @media (max-width: 768px) {
+      margin-bottom: 80px;
+    }
+  }
+
+  .send-info-box {
+    margin: 12px 0 40px 0;
+    .send-msg-input {
+      height: 37px;
+      margin-right: 6px;
+    }
+
+    .send-btn {
+      width: 35px;
+      height: 37px;
+      background: url(https://img.js.design/assets/img/6458fe88a30d747a6d3eadc1.png#298fab7589af368be42495c6ced6dad5);
+      background-size: 100%;
+      cursor: pointer;
+      opacity: 0.8;
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}
