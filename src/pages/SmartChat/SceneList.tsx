@@ -15,7 +15,11 @@ type ReqSmartSceneParams = {
   pageSize: number;
 };
 
-const SceneListPage = () => {
+interface SceneListPageProps {
+  setViewContent: (content: string) => void;
+}
+
+const SceneListPage: React.FC<SceneListPageProps> = ({ setViewContent }) => {
   const [searchValue, setSearchValue] = useState('');
   const [reqSmartSceneParams, setReqSmartSceneParams] =
     useState<ReqSmartSceneParams>({
@@ -60,6 +64,13 @@ const SceneListPage = () => {
     fetchData(reqSmartSceneParamsTemp);
   };
 
+  const deleteScene = (id: number) => {
+    console.log('deleteScene id:', id);
+    // 处理确认删除逻辑
+    const updatedSceneList = sceneList.filter((item) => item.id !== id);
+    setSceneList(updatedSceneList);
+  };
+
   return (
     <Row justify="center">
       <Col xs={{ span: 24 }} lg={{ span: 14 }}>
@@ -70,8 +81,9 @@ const SceneListPage = () => {
             {/* SceneItemCard 列表 */}
             {sceneList.map((item, index) => (
               <SceneItemCard
-                title={item.scene_name}
-                createTime={item.create_time}
+                sceneInfo={item}
+                deleteScene={deleteScene}
+                setViewContent={setViewContent}
                 key={index}
               />
             ))}
