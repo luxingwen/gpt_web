@@ -56,17 +56,41 @@
     .send-msg-input {
       height: 37px;
       margin-right: 6px;
+      &.type2 {
+        height: 56px;
+        border-radius: 14px;
+        border: 1px solid rgba(216, 224, 240, 1);
+        box-shadow: 0px 1px 2px rgba(184, 200, 224, 0.22);
+      }
     }
 
     .send-btn {
       width: 35px;
+      flex: 0 0 35px;
       height: 37px;
       background: url(https://img.js.design/assets/img/6458fe88a30d747a6d3eadc1.png#298fab7589af368be42495c6ced6dad5);
       background-size: 100%;
       cursor: pointer;
       opacity: 0.8;
+      transition: all 0.3s ease-in-out;
       &:hover {
         opacity: 1;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+
+    // 第二种类型的输入框
+    .send-btn-suffix-box {
+      width: 56px;
+      cursor: pointer;
+      height: 44px;
+      border-radius: 14px;
+      background: rgba(75, 100, 243, 0.8);
+      box-shadow: 0px 6px 12px rgba(63, 140, 255, 0.26);
+      transition: all 0.3s ease-in-out;
+      &:hover {
+        background: rgba(75, 100, 243, 1);
+        transition: all 0.3s ease-in-out;
       }
     }
   }

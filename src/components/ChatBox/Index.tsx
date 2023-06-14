@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Input, Button, Avatar, message } from 'antd';
 import { FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons';
 
@@ -13,7 +13,6 @@ import {
 import ChatMessage from '@/components/ChatBox/ChatMessage';
 import { wxlogin } from '@/service/user';
 import { toogleFullScreen } from './utils';
-import Slot from './OperateBtns';
 import './index.less';
 
 const { TextArea } = Input;
@@ -27,6 +26,7 @@ const Index = ({
   showFullScreen = false,
   showVisitDiscourse = false,
   showOpenNewChat = false,
+  sendBtnType = '1', // [1 输入框右外侧] [2输入框右内侧]
 }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
@@ -41,6 +41,15 @@ const Index = ({
   const [newMessageReceived, setNewMessageReceived] = useState(true);
 
   const [isFullScreen, setIsFullScreen] = useState(false);
+
+  const getPlaceholderText = useMemo(() => {
+    if (placeholderText) return placeholderText;
+    return [
+      '',
+      '你有什么想问我的吗？',
+      '请说明你的表达内容。例如：我想试试语文竞赛',
+    ][+sendBtnType];
+  }, [placeholderText, sendBtnType]);
 
   useEffect(() => {
     const handleScroll = (event) => {
@@ -248,6 +257,92 @@ const Index = ({
   const handleOpenNewChat = () => {
     console.log('点击进入新会话按钮');
   };
+
+  /**
+   * 输入框左侧的按钮组
+   * @returns  dom
+   */
+  const renOperateBtns = () => {
+    return (
+      <div className="flex-cc">
+        {showFullScreen && (
+          <div
+            className="flex-ccc opereta-box pointer"
+            onClick={handleFullScreen}
+          >
+            <div className="round-icon flex-cc">
+              {isFullScreen ? (
+                <FullscreenExitOutlined />
+              ) : (
+                <FullscreenOutlined />
+              )}
+            </div>
+            <div className="opereta-text">
+              {isFullScreen ? '退出全屏' : '全屏'}
+            </div>
+          </div>
+        )}
+        {showVisitDiscourse && (
+          <div
+            className="flex-ccc opereta-box pointer"
+            onClick={handleVisitDiscouse}
+          >
+            <div className="round-icon flex-cc"></div>
+            <div className="opereta-text">进入社群</div>
+          </div>
+        )}
+        {showOpenNewChat && (
+          <div
+            className="flex-ccc opereta-box pointer"
+            onClick={handleOpenNewChat}
+          >
+            <div className="round-icon flex-cc"></div>
+            <div className="opereta-text">新会话</div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const sendBtnSuffix = () => {
+    return (
+      <div className="send-btn-suffix-box flex-cc" onClick={handleSend}>
+        没图
+      </div>
+    );
+  };
+  /**
+   * 不同类型的输入框
+   * @returns dom
+   */
+  const renderInputContent = () => {
+    return (
+      <>
+        {sendBtnType == '1' && (
+          <>
+            <Input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onPressEnter={handleSend}
+              className="send-msg-input"
+              placeholder={getPlaceholderText}
+            />
+            <div className="send-btn" onClick={handleSend}></div>
+          </>
+        )}
+        {sendBtnType == '2' && (
+          <Input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onPressEnter={handleSend}
+            suffix={sendBtnSuffix()}
+            className="send-msg-input type2"
+            placeholder={getPlaceholderText}
+          />
+        )}
+      </>
+    );
+  };
   return (
     <div className="chat-box-component w100" id="chartFullScreen">
       <div className="scroll-box" ref={messagesContainerRef}>
@@ -267,56 +362,11 @@ const Index = ({
           -- 问答结果由AI生成，仅供参考 --
         </div>
       </div>
-
       <div className="w100 flex-cc send-info-box">
-        <div className="flex-cc">
-          {showFullScreen && (
-            <div
-              className="flex-ccc opereta-box pointer"
-              onClick={handleFullScreen}
-            >
-              <div className="round-icon flex-cc">
-                {isFullScreen ? (
-                  <FullscreenExitOutlined />
-                ) : (
-                  <FullscreenOutlined />
-                )}
-              </div>
-              <div className="opereta-text">
-                {isFullScreen ? '退出全屏' : '全屏'}
-              </div>
-            </div>
-          )}
-          {showVisitDiscourse && (
-            <div
-              className="flex-ccc opereta-box pointer"
-              onClick={handleVisitDiscouse}
-            >
-              <div className="round-icon flex-cc"></div>
-              <div className="opereta-text">进入社群</div>
-            </div>
-          )}
-          {showOpenNewChat && (
-            <div
-              className="flex-ccc opereta-box pointer"
-              onClick={handleOpenNewChat}
-            >
-              <div className="round-icon flex-cc"></div>
-              <div className="opereta-text">新会话</div>
-            </div>
-          )}
-        </div>
-        <Input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onPressEnter={handleSend}
-          className="send-msg-input"
-          placeholder={placeholderText}
-        />
-        <div className="send-btn" onClick={handleSend}></div>
-        {/* <Button onClick={handleSend} className="send-msg-button">
-          发送
-        </Button> */}
+        {/* 输入框左侧的按钮组 */}
+        {renOperateBtns()}
+        {/* 不同类型的输入框 */}
+        {renderInputContent()}
       </div>
     </div>
   );
