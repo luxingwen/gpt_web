@@ -7,7 +7,12 @@ const ChatPage = () => {
   return (
     <div className="chat-new-page flex-ccc">
       <HeaderComponent />
-      <ChatBox placeholderText="你有什么想问我的吗？" />
+      <ChatBox
+        placeholderText="你有什么想问我的吗？"
+        showFullScreen={true}
+        showVisitDiscourse={true}
+        showOpenNewChat={true}
+      />
     </div>
   );
 };

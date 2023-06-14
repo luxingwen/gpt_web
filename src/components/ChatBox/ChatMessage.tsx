@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useStat, useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Avatar, message } from 'antd';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -6,7 +6,8 @@ import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import remarkGfm from 'remark-gfm';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import AiLogo from '@/assets/images/logo.png';
-
+import { getFormatTime } from './utils';
+import copy from 'copy-to-clipboard';
 import './ChatMessage.less';
 
 const themes = {
@@ -38,8 +39,21 @@ const renderCodeBlock = ({ language, value }) => {
   );
 };
 
-const ChatMessage = ({ messageText, self, userAvatar, msgEnd }) => {
+const ChatMessage = ({ time, messageText, self, userAvatar, msgEnd }) => {
   const paragraphs = messageText.split('\n');
+
+  // 格式化消息时间
+  const formatTime = useMemo(() => getFormatTime(time), [time]);
+
+  /**
+   * copy msg
+   * @param text
+   */
+  const handleCopy = (text) => {
+    const content = text.replace(/```/g, '\n');
+    copy(content);
+    message.success('复制成功');
+  };
 
   const renderMessageText = () => {
     if (self) {
@@ -100,10 +114,13 @@ const ChatMessage = ({ messageText, self, userAvatar, msgEnd }) => {
       {self && (
         <div className="question-box flex">
           <div className="question-main">
-            <div className="msg-time">2022-11-11</div>
+            <div className="msg-time">{formatTime}</div>
             <div className="question-message">{renderMessageText()}</div>
             <div className="operate-btns right">
-              <div className="operate-btn copy"></div>
+              <div
+                className="operate-btn copy"
+                onClick={() => handleCopy(messageText)}
+              ></div>
             </div>
           </div>
           <Avatar src={AiLogo} className="msg-avatar" />
@@ -115,10 +132,13 @@ const ChatMessage = ({ messageText, self, userAvatar, msgEnd }) => {
         <div className="answer-box flex">
           <Avatar src={AiLogo} className="msg-avatar" />
           <div className="answer-main">
-            <div className="msg-time">2022-11-11</div>
+            <div className="msg-time">{formatTime}</div>
             <div className="answer-message">{renderMessageText()}</div>
             <div className="operate-btns">
-              <div className="operate-btn copy"></div>
+              <div
+                className="operate-btn copy"
+                onClick={() => handleCopy(messageText)}
+              ></div>
               <div className="operate-btn sound"></div>
             </div>
           </div>

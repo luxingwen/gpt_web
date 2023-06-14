@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Input, Button, Avatar, message } from 'antd';
+import { FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons';
+
 import { wssocket } from '@/utils/ws_socket';
 import storage from '@/utils/storage';
 import {
@@ -10,6 +12,8 @@ import {
 
 import ChatMessage from '@/components/ChatBox/ChatMessage';
 import { wxlogin } from '@/service/user';
+import { toogleFullScreen } from './utils';
+import Slot from './OperateBtns';
 import './index.less';
 
 const { TextArea } = Input;
@@ -17,7 +21,13 @@ const { TextArea } = Input;
 const TRYING_MSG = '正在努力思考...';
 const END_MSG = '###### [END] ######';
 
-const Index = ({ placeholderText }) => {
+const Index = ({
+  placeholderText = '',
+  children,
+  showFullScreen = false,
+  showVisitDiscourse = false,
+  showOpenNewChat = false,
+}) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const messagesContainerRef = useRef(null);
@@ -29,6 +39,8 @@ const Index = ({ placeholderText }) => {
     per_page: 10,
   });
   const [newMessageReceived, setNewMessageReceived] = useState(true);
+
+  const [isFullScreen, setIsFullScreen] = useState(false);
 
   useEffect(() => {
     const handleScroll = (event) => {
@@ -74,8 +86,19 @@ const Index = ({ placeholderText }) => {
         let msgList = [];
         res.data.data.forEach((item) => {
           msgList.push(
-            { msg: item.question, self: true, is_end: true },
-            { msg: item.answer, self: false, msg_id: item.id, is_end: true },
+            {
+              msg: item.question,
+              self: true,
+              is_end: true,
+              time: item.add_time,
+            },
+            {
+              msg: item.answer,
+              self: false,
+              msg_id: item.id,
+              is_end: true,
+              time: item.create_time,
+            },
           );
         });
         setMessages((prev) => [...msgList, ...prev]); // prepend the older messages to the start of the list
@@ -97,7 +120,7 @@ const Index = ({ placeholderText }) => {
           console.log('query Question', res.data);
           setMessages([
             ...messages,
-            { msg: input, self: true, is_end: true },
+            { msg: input, self: true, is_end: true, time: +new Date() },
             {
               msg: TRYING_MSG,
               self: false,
@@ -145,8 +168,19 @@ const Index = ({ placeholderText }) => {
         let msgList = [];
         res.data.data.forEach((item) => {
           msgList.unshift(
-            { msg: item.question, self: true, is_end: true },
-            { msg: item.answer, self: false, msg_id: item.id, is_end: true },
+            {
+              msg: item.question,
+              self: true,
+              is_end: true,
+              time: item.add_time,
+            },
+            {
+              msg: item.answer,
+              self: false,
+              msg_id: item.id,
+              is_end: true,
+              time: item.create_time,
+            },
           );
         });
         setMessages([...messages, ...msgList]);
@@ -176,6 +210,7 @@ const Index = ({ placeholderText }) => {
           return {
             ...item,
             msg: item.msg + itemMsg.msg,
+            time: +new Date(),
           };
         }
         return item;
@@ -190,8 +225,31 @@ const Index = ({ placeholderText }) => {
     }
   }, [messages]);
 
+  /**
+   * 点击全屏按钮
+   */
+  const handleFullScreen = () => {
+    console.log(8889);
+    const chartDom = document.getElementById('chartFullScreen');
+    toogleFullScreen(isFullScreen, chartDom);
+    setIsFullScreen(!isFullScreen);
+  };
+
+  /**
+   * 点击进入社群按钮
+   */
+  const handleVisitDiscouse = () => {
+    console.log('进去社区');
+  };
+
+  /**
+   * 点击进入新会话按钮
+   */
+  const handleOpenNewChat = () => {
+    console.log('点击进入新会话按钮');
+  };
   return (
-    <div className="chat-box-component w100">
+    <div className="chat-box-component w100" id="chartFullScreen">
       <div className="scroll-box" ref={messagesContainerRef}>
         <div>
           {messages.map((item, index) => (
@@ -199,6 +257,7 @@ const Index = ({ placeholderText }) => {
               key={index}
               messageText={item.msg}
               self={item.self}
+              time={item.time}
               userAvatar={userInfo.avatar}
               msgEnd={index === messages.length - 1 && !isMsgEnd}
             />
@@ -210,6 +269,43 @@ const Index = ({ placeholderText }) => {
       </div>
 
       <div className="w100 flex-cc send-info-box">
+        <div className="flex-cc">
+          {showFullScreen && (
+            <div
+              className="flex-ccc opereta-box pointer"
+              onClick={handleFullScreen}
+            >
+              <div className="round-icon flex-cc">
+                {isFullScreen ? (
+                  <FullscreenExitOutlined />
+                ) : (
+                  <FullscreenOutlined />
+                )}
+              </div>
+              <div className="opereta-text">
+                {isFullScreen ? '退出全屏' : '全屏'}
+              </div>
+            </div>
+          )}
+          {showVisitDiscourse && (
+            <div
+              className="flex-ccc opereta-box pointer"
+              onClick={handleVisitDiscouse}
+            >
+              <div className="round-icon flex-cc"></div>
+              <div className="opereta-text">进入社群</div>
+            </div>
+          )}
+          {showOpenNewChat && (
+            <div
+              className="flex-ccc opereta-box pointer"
+              onClick={handleOpenNewChat}
+            >
+              <div className="round-icon flex-cc"></div>
+              <div className="opereta-text">新会话</div>
+            </div>
+          )}
+        </div>
         <Input
           value={input}
           onChange={(e) => setInput(e.target.value)}

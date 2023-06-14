@@ -181,7 +181,7 @@ const HeaderComponent = () => {
   };
 
   const headerContent = (
-    <Header className="header">
+    <Header className="header w100">
       <Row justify="space-between" align="middle">
         <Col span={4}>
           {smallScreen ? (
