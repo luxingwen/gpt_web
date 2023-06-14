@@ -62,7 +62,9 @@ export default function IndexPage() {
           </Col>
           <Col span={20}>
             {viewContent == 'scene_list' && <SceneList></SceneList>}
-            {viewContent == 'create_scene' && <CreateScene></CreateScene>}
+            {viewContent == 'create_scene' && (
+              <CreateScene setViewContent={setViewContent}></CreateScene>
+            )}
           </Col>
         </Row>
       </Content>

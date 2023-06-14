@@ -124,14 +124,14 @@ const HeaderComponent = () => {
   };
 
   const handleClickLogin = () => {
-    // console.log('login');
-    // wxlogin();
+    console.log('login');
+    wxlogin();
 
-    Cookies.set('token', defaultToken);
+    // Cookies.set('token', defaultToken);
 
-    getUserInfo().then((res) => {
-      setUserInfo(res.data);
-    });
+    // getUserInfo().then((res) => {
+    //   setUserInfo(res.data);
+    // });
   };
 
   const handleLogout = () => {
@@ -232,7 +232,7 @@ const HeaderComponent = () => {
                 </NavLink>
               </Menu.Item>
 
-              <Menu.Item
+              {/* <Menu.Item
                 key="smart-scene"
                 icon={<ShoppingCartOutlined />}
                 className="menu-item"
@@ -240,7 +240,7 @@ const HeaderComponent = () => {
                 <NavLink to="/smart-chat/scene" activeClassName="active-link">
                   个人知识库
                 </NavLink>
-              </Menu.Item>
+              </Menu.Item> */}
             </Menu>
           </Col>
         )}
