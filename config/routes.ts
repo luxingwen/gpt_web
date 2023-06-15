@@ -25,4 +25,9 @@ export default [
     path: '/smart-chat/scene',
     component: '@/pages/SmartChat/index',
   },
+  {
+    exact: true,
+    path: '/home',
+    component: '@/pages/Home/index',
+  },
 ];

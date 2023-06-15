@@ -2,7 +2,7 @@ import styles from './index.less';
 import { Layout, Row, Col, Card, Typography, message } from 'antd';
 import HeaderComponent from '@/components/Header';
 import ContentLayout from '@/layouts/index';
-import TipsCard from '../components/TipsCard';
+import TipsCard from '@/components/TipsCard';
 import HomeImg1 from '@/assets/images/home-img-1.png';
 import HomeImg2 from '@/assets/images/home-img-2.png';
 import { getLatestUsedScenes } from '@/service/api';
@@ -12,6 +12,7 @@ import { useHistory } from 'react-router-dom';
 import LeftNav from './LeftNav';
 import SceneList from './SceneList';
 import CreateScene from './CreateScence';
+import Chat from './Chat';
 
 const { Header, Content, Footer } = Layout;
 
@@ -61,10 +62,13 @@ export default function IndexPage() {
             <LeftNav setViewContent={setViewContent} />
           </Col>
           <Col span={20}>
-            {viewContent == 'scene_list' && <SceneList></SceneList>}
+            {viewContent == 'scene_list' && (
+              <SceneList setViewContent={setViewContent}></SceneList>
+            )}
             {viewContent == 'create_scene' && (
               <CreateScene setViewContent={setViewContent}></CreateScene>
             )}
+            {viewContent == 'chat' && <Chat></Chat>}
           </Col>
         </Row>
       </Content>

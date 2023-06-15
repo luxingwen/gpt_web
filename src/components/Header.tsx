@@ -86,8 +86,9 @@ const AvatarImage = styled.img`
   margin-right: 8px;
 `;
 
+// const defaultToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiIyMTE5IiwiZXhwIjoxNzA0NDYyMzk1LCJpYXQiOjE2ODU3MTM1OTUsImlzcyI6InRlc3QifQ.jfVomRADsD1IaiEjV37Ovvjuukzarflqx_BFDo0kG5o';
 const defaultToken =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiIyMTE5IiwiZXhwIjoxNzA0NDYyMzk1LCJpYXQiOjE2ODU3MTM1OTUsImlzcyI6InRlc3QifQ.jfVomRADsD1IaiEjV37Ovvjuukzarflqx_BFDo0kG5o';
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiIyNjAwMDAiLCJleHAiOjE3MDU0MDkzNDksImlhdCI6MTY4NjY2MDU0OSwiaXNzIjoidGVzdCJ9.ACRdI-Y3Mc6UKvOIo7wO2mHVdJKi-97q-hsZEUy0EXE';
 
 const HeaderComponent = () => {
   const history = useHistory();
@@ -130,13 +131,13 @@ const HeaderComponent = () => {
 
   const handleClickLogin = () => {
     console.log('login');
-    wxlogin();
+    // wxlogin();
 
-    // Cookies.set('token', defaultToken);
+    Cookies.set('token', defaultToken);
 
-    // getUserInfo().then((res) => {
-    //   setUserInfo(res.data);
-    // });
+    getUserInfo().then((res) => {
+      setUserInfo(res.data);
+    });
   };
 
   const handleLogout = () => {
@@ -185,7 +186,7 @@ const HeaderComponent = () => {
   };
 
   const headerContent = (
-    <Header className="header">
+    <Header className="header w100">
       <Row justify="space-between" align="middle">
         <Col span={4}>
           {smallScreen ? (
@@ -236,6 +237,17 @@ const HeaderComponent = () => {
                   百宝袋
                 </NavLink>
               </Menu.Item>
+
+              <Menu.Item
+                key="smart-scene"
+                icon={<ShoppingCartOutlined />}
+                className="menu-item"
+              >
+                <NavLink to="/smart-chat/scene" activeClassName="active-link">
+                  个人知识库
+                </NavLink>
+              </Menu.Item>
+
               <Menu.Item
                 key="price"
                 icon={<ShoppingOutlined />}
@@ -245,15 +257,6 @@ const HeaderComponent = () => {
                   价格
                 </NavLink>
               </Menu.Item>
-              {/* <Menu.Item
-                key="smart-scene"
-                icon={<ShoppingCartOutlined />}
-                className="menu-item"
-              >
-                <NavLink to="/smart-chat/scene" activeClassName="active-link">
-                  个人知识库
-                </NavLink>
-              </Menu.Item> */}
             </Menu>
           </Col>
         )}
