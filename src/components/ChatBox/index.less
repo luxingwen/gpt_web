@@ -4,10 +4,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  // padding: 0 12%;
   box-sizing: border-box;
   overflow: hidden;
   background: #fff;
+  @media (max-width: 767px) {
+    padding-top: 64px;
+  }
 
   .scroll-box {
     flex: 1;
@@ -30,15 +32,15 @@
       color: rgba(166, 166, 166, 1);
       margin: 48px 0 48px 0;
     }
-    @media (max-width: 768px) {
-      margin-bottom: 80px;
-    }
   }
 
   .send-info-box {
     margin: 12px 0 40px 0;
     padding: 0 12%;
     box-sizing: border-box;
+    @media (max-width: 767px) {
+      padding: 0 4%;
+    }
     .opereta-box {
       margin-right: 12px;
       .round-icon {

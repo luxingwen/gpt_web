@@ -346,18 +346,16 @@ const Index = ({
   return (
     <div className="chat-box-component w100" id="chartFullScreen">
       <div className="scroll-box" ref={messagesContainerRef}>
-        <div>
-          {messages.map((item, index) => (
-            <ChatMessage
-              key={index}
-              messageText={item.msg}
-              self={item.self}
-              time={item.time}
-              userAvatar={userInfo.avatar}
-              msgEnd={index === messages.length - 1 && !isMsgEnd}
-            />
-          ))}
-        </div>
+        {messages.map((item, index) => (
+          <ChatMessage
+            key={index}
+            messageText={item.msg}
+            self={item.self}
+            time={item.time}
+            userAvatar={userInfo.avatar}
+            msgEnd={index === messages.length - 1 && !isMsgEnd}
+          />
+        ))}
         <div className="ai-asnswer-tips tc">
           -- 问答结果由AI生成，仅供参考 --
         </div>
