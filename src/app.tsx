@@ -5,9 +5,11 @@
  * @Email: draco.coder@gmail.com
  * @Github: https://github.com/draco-china
  * @Date: 2023-06-15 17:15:45
- * @LastEditTime: 2023-06-15 17:40:09
+ * @LastEditTime: 2023-06-15 17:59:15
  */
 import type { AxiosError, RequestConfig, RequestOptions } from '@umijs/max';
+import { RunTimeLayoutConfig } from '@umijs/max';
+import { Space, Typography } from 'antd';
 import Cookies from 'js-cookie';
 
 // 运行时配置
@@ -18,7 +20,7 @@ export async function getInitialState(): Promise<{ name: string }> {
   return { name: '@umijs/max' };
 }
 
-export const layout = () => {
+export const layout: RunTimeLayoutConfig = () => {
   return {
     logo: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
     title: 'AI 云助手',
@@ -31,6 +33,21 @@ export const layout = () => {
     splitMenus: true,
     pwa: false,
     menu: { locale: false },
+    collapsedButtonRender: false,
+    menuFooterRender: () => {
+      return (
+        <Space
+          direction="vertical"
+          align="center"
+          style={{
+            width: '100%',
+          }}
+        >
+          <Typography.Text>如何使用AI画涂？</Typography.Text>
+          <Typography.Text type="secondary">copyright@AI云助手</Typography.Text>
+        </Space>
+      );
+    },
   };
 };
 
