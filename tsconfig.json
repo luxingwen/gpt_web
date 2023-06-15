@@ -10,6 +10,7 @@
     "baseUrl": "./",
     "strict": true,
     "paths": {
+      "react": ["./node_modules/@types/react"],
       "@/*": ["src/*"],
       "@@/*": ["src/.umi/*"]
     },

@@ -18,6 +18,7 @@ import {
   ShoppingCartOutlined,
   LoginOutlined,
   MenuOutlined,
+  ShoppingOutlined,
 } from '@ant-design/icons';
 import { NavLink, useLocation } from 'react-router-dom';
 
@@ -66,6 +67,9 @@ const SidebarMenu = () => (
     </NavLinkStyled>
     <NavLinkStyled to="/tips/bag" activeClassName="active-link">
       <ShoppingCartOutlined /> 百宝袋
+    </NavLinkStyled>
+    <NavLinkStyled to="/price" activeClassName="active-link">
+      <ShoppingCartOutlined /> 价格
     </NavLinkStyled>
   </SidebarMenuContainer>
 );
@@ -121,6 +125,7 @@ const HeaderComponent = () => {
     if (path.startsWith('/ai')) return ['ai'];
     if (path.startsWith('/tips/bag')) return ['bag'];
     if (path.startsWith('/user/info')) return ['user'];
+    if (path.startsWith('/price')) return ['price'];
   };
 
   const handleClickLogin = () => {
@@ -231,7 +236,15 @@ const HeaderComponent = () => {
                   百宝袋
                 </NavLink>
               </Menu.Item>
-
+              <Menu.Item
+                key="price"
+                icon={<ShoppingOutlined />}
+                className="menu-item"
+              >
+                <NavLink to="/price" activeClassName="active-link">
+                  价格
+                </NavLink>
+              </Menu.Item>
               {/* <Menu.Item
                 key="smart-scene"
                 icon={<ShoppingCartOutlined />}
