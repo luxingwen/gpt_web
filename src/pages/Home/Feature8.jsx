@@ -105,7 +105,6 @@ class Feature8 extends React.PureComponent {
           </div>
         )}
         <AntCarousel
-          key="carousel"
           {...carouselProps}
           infinite={false}
           beforeChange={this.onBeforeChange}

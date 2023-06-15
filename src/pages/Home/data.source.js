@@ -692,6 +692,7 @@ export const Feature80DataSource = {
         className: 'feature8-button',
         children: {
           href: '#',
+          className: 'flex-cc',
           children: (
             <span>
               <span>
