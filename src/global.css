@@ -1,3 +1,13 @@
 .ant-pro-top-nav-header-main-left {
-  width: 256px;
+  width: 240px;
+}
+.ant-menu-horizontal >.ant-menu-item-selected,  .ant-menu.ant-menu-horizontal >.ant-menu-item-selected, .ant-menu-horizontal >.ant-menu-submenu-selected, .ant-menu.ant-menu-horizontal >.ant-menu-submenu-selected {
+  color: rgba(75, 100, 243, 1) !important;
+  border-bottom: 2px solid rgba(75, 100, 243, 1) !important;
+  border-radius: 0 !important;
+  background-color: transparent !important;
+}
+.ant-menu-item-selected, .ant-menu .ant-menu-item-selected {
+  background-color: rgba(75, 100, 243, 1) !important;
+  color: #fff !important;
 }

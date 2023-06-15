@@ -1,11 +1,24 @@
+/*
+ * @Author: Draco draco.coder@gmail.com
+ * @Date: 2023-06-15 18:39:05
+ * @LastEditors: Draco draco.coder@gmail.com
+ * @LastEditTime: 2023-06-15 18:54:16
+ * @FilePath: /gpt_web/config/routes.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 export default [
   {
     path: '/',
     redirect: '/home',
   },
   {
+    name: '首页',
+    path: 'home',
+    component: './Home',
+  },
+  {
     name: 'AI百宝助手',
-    path: '/home',
+    path: '/home1',
     routes: [
       {
         name: '首页',
@@ -26,7 +39,7 @@ export default [
   },
   {
     name: 'AI画涂',
-    path: '/home',
+    path: '/home2',
     routes: [
       {
         name: '首页',
@@ -47,7 +60,7 @@ export default [
   },
   {
     name: '个性化数字人',
-    path: '/home',
+    path: '/home3',
     routes: [
       {
         name: '首页',
