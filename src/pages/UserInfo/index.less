@@ -1,0 +1,54 @@
+.user-info {
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+}
+
+.user-avatar {
+  margin-right: 20px;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 0;
+
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #e0f7fa;
+  }
+
+  &:active {
+    transform: scale(0.95);
+    transition: transform 0.1s;
+  }
+}
+
+.custom-vip-card .ant-card-body {
+  padding: 2px;
+}
+
+.custom-vip-text {
+  position: absolute;
+  bottom: 30px;
+  left: 42px;
+  color: #95571d;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .custom-vip-text {
+    bottom: 8px;
+    left: 24px;
+    text-align: right;
+  }
+}

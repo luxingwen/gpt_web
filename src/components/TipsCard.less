@@ -1,0 +1,27 @@
+.tips-card {
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.tips-card:hover {
+  background-color: #f0f0f0;
+}
+
+.tips-card:active {
+  transform: scale(0.98); /* 点击时缩小一点 */
+}
+
+.title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.description {
+  font-size: 14px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+}

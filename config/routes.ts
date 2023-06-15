@@ -15,15 +15,16 @@ export default [
     name: '首页',
     path: 'home',
     component: './Home',
+    layout: false,
   },
   {
     name: 'AI百宝助手',
-    path: '/home1',
+    path: '/ai',
     routes: [
       {
-        name: '首页',
-        path: 'home',
-        component: './Home',
+        name: 'AI问答',
+        path: 'qa',
+        component: './AiChat',
       },
       {
         name: '权限演示',
@@ -60,22 +61,17 @@ export default [
   },
   {
     name: '个性化数字人',
-    path: '/home3',
+    path: '/smart-ai',
     routes: [
       {
-        name: '首页',
-        path: 'home',
-        component: './Home',
+        name: '场景广场',
+        path: 'scene',
+        component: './SmartChat/SceneList',
       },
       {
-        name: '权限演示',
-        path: 'access',
-        component: './Access',
-      },
-      {
-        name: ' CRUD 示例',
-        path: 'table',
-        component: './Table',
+        name: '创建场景',
+        path: 'scence/create',
+        component: './SmartChat/CreateScence',
       },
     ],
   },
