@@ -14,6 +14,7 @@ type StateType = {
 
 const { Content } = Layout;
 
+// AI百宝助手数据
 const TerasureBoxData = [{
   title: '体验版',
   price: '免费',
@@ -42,6 +43,27 @@ const TerasureBoxData = [{
   disablePrice: '398',
   hit: '不限对话次数',
   buttonText: '购买',
+},]
+
+// AI画涂数据
+const AIHuatuData = [{
+  num: 50,
+  price: '5'
+}, {
+  num: 100,
+  price: '10'
+}, {
+  num: 200,
+  price: '20'
+}, {
+  num: 300,
+  price: '30'
+}, {
+  num: 500,
+  price: '50'
+}, {
+  num: 1000,
+  price: '100'
 },]
 
 
@@ -81,7 +103,7 @@ const PricePage = () => {
           <TerasureBox data={TerasureBoxData} />
         </div>
         <div style={{ display: headerSelect == 2 ? '' : 'none' }}>
-          <Painted />
+          <Painted data={AIHuatuData} />
         </div>
         <div style={{ display: headerSelect == 3 ? '' : 'none' }}>
           <Enterprise />
