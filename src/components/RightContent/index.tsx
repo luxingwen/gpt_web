@@ -81,10 +81,10 @@ export default function RightContent() {
             ],
           }}
         >
-          <span>
+          <Space>
             <Avatar src={currentUser.avatar}></Avatar>
             <span>{currentUser.nickname}</span>
-          </span>
+          </Space>
         </HeaderDropdown>
       ) : (
         <div onClick={handleClickLogin}>
