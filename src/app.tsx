@@ -30,6 +30,7 @@ export async function getInitialState(): Promise<{
 
 export const layout: RunTimeLayoutConfig = () => {
   return {
+    disableContentMargin: true,
     logo: Logo,
     title: 'AI 云助手',
     layout: 'mix',
