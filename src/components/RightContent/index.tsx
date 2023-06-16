@@ -87,10 +87,10 @@ export default function RightContent() {
           </Space>
         </HeaderDropdown>
       ) : (
-        <div onClick={handleClickLogin}>
+        <Space onClick={handleClickLogin}>
           <LoginOutlined />
           <span>登录</span>
-        </div>
+        </Space>
       )}
     </Space>
   );
