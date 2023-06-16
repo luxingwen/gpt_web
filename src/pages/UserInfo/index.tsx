@@ -4,10 +4,18 @@ import RenGongKeFu from '@/assets/images/rengongkefu.svg';
 import vipImg from '@/assets/images/vip.jpg';
 import Xufei from '@/assets/images/xufei.svg';
 import Yaoqing from '@/assets/images/yaoqing.svg';
-import ContentLayout from '@/layouts/index';
 import storage from '@/utils/storage';
 import { RightOutlined } from '@ant-design/icons';
-import { Avatar, Card, Image, Modal, Space, Typography, message, Layout } from 'antd';
+import {
+  Avatar,
+  Card,
+  Image,
+  Layout,
+  Modal,
+  Space,
+  Typography,
+  message,
+} from 'antd';
 import { useEffect, useState } from 'react';
 
 import Qrcode from '@/assets/images/qrcode.jpg';
@@ -88,89 +96,89 @@ const UserInfoPage = () => {
   }
 
   return (
-    <div className='user-info-page'>
-    <Content className='user-info-content'>
-      <Card className="user-info">
-        <UserInfo user={userInfo} />
-      </Card>
-
-      {userInfo.is_vip && (
-        <Card
-          className="custom-vip-card"
-          style={{ marginTop: '24px', position: 'relative' }}
-        >
-          <img
-            src={vipImg}
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          />
-          <div className="custom-vip-text">
-            {formatTimestamp(userInfo.chat_expired_at)} 到期
-          </div>
+    <div className="user-info-page">
+      <Content className="user-info-content">
+        <Card className="user-info">
+          <UserInfo user={userInfo} />
         </Card>
-      )}
 
-      <Card style={{ marginTop: '24px' }}>
-        <NavLink to="/user/goods">
+        {userInfo.is_vip && (
+          <Card
+            className="custom-vip-card"
+            style={{ marginTop: '24px', position: 'relative' }}
+          >
+            <img
+              src={vipImg}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+            <div className="custom-vip-text">
+              {formatTimestamp(userInfo.chat_expired_at)} 到期
+            </div>
+          </Card>
+        )}
+
+        <Card style={{ marginTop: '24px' }}>
+          <NavLink to="/user/goods">
+            <MenuItem
+              item={{
+                title: '获取更多次数',
+                icon: Xufei,
+              }}
+              onClick={() => console.log(`Item 获取更多次数  clicked`)}
+            />
+          </NavLink>
           <MenuItem
             item={{
-              title: '获取更多次数',
-              icon: Xufei,
+              title: '人工客服',
+              icon: RenGongKeFu,
             }}
-            onClick={() => console.log(`Item 获取更多次数  clicked`)}
+            onClick={() => console.log(`Item 人工客服 clicked`)}
           />
-        </NavLink>
-        <MenuItem
-          item={{
-            title: '人工客服',
-            icon: RenGongKeFu,
-          }}
-          onClick={() => console.log(`Item 人工客服 clicked`)}
-        />
-        <MenuItem
-          item={{
-            title: '关注公众号防走失',
-            icon: GuanZhu,
-          }}
-          onClick={handleGuanZhuClick}
-        />
-        <NavLink to="/user/invitation">
           <MenuItem
             item={{
-              title: '邀请奖励',
-              icon: Yaoqing,
+              title: '关注公众号防走失',
+              icon: GuanZhu,
             }}
-            onClick={() => console.log(`Item 邀请奖励 clicked`)}
+            onClick={handleGuanZhuClick}
           />
-        </NavLink>
+          <NavLink to="/user/invitation">
+            <MenuItem
+              item={{
+                title: '邀请奖励',
+                icon: Yaoqing,
+              }}
+              onClick={() => console.log(`Item 邀请奖励 clicked`)}
+            />
+          </NavLink>
 
-        <NavLink to="/user/redemption">
-          <MenuItem
-            item={{
-              title: '口令兑换/加入社群',
-              icon: Exchange,
-            }}
-            onClick={() => console.log(`Item 口令兑换/加入社群 clicked`)}
-          />
-        </NavLink>
-      </Card>
+          <NavLink to="/user/redemption">
+            <MenuItem
+              item={{
+                title: '口令兑换/加入社群',
+                icon: Exchange,
+              }}
+              onClick={() => console.log(`Item 口令兑换/加入社群 clicked`)}
+            />
+          </NavLink>
+        </Card>
 
-      <Modal
-        title="关注公众号防走失"
-        visible={isGuanZhuModalVisible}
-        onCancel={handleGuanZhuModalClose}
-        footer={null}
-      >
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
+        <Modal
+          title="关注公众号防走失"
+          visible={isGuanZhuModalVisible}
+          onCancel={handleGuanZhuModalClose}
+          footer={null}
         >
-          <Image width={200} src={guanzhuImage} />
-        </div>
-      </Modal>
-    </Content>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Image width={200} src={guanzhuImage} />
+          </div>
+        </Modal>
+      </Content>
     </div>
   );
 };

@@ -1,13 +1,11 @@
-import { getLatestUsedScenes } from '@/service/api';
-import { Col, Layout, Row, Typography, message, Menu, theme } from 'antd';
-import React, { useEffect, useState } from 'react';
+import HistorySession from '@/components/HistorySession/HistorySession';
+import { LaptopOutlined, UserOutlined } from '@ant-design/icons';
+import type { MenuProps } from 'antd';
+import { Layout, Menu, Typography, theme } from 'antd';
+import React, { useState } from 'react';
 import Chat from './Chat';
 import CreateScene from './CreateScence';
-import LeftNav from './LeftNav';
 import SceneList from './SceneList';
-import type { MenuProps } from 'antd';
-import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
-import HistorySession from '@/components/HistorySession/HistorySession';
 
 const { Header, Content, Sider } = Layout;
 
@@ -52,6 +50,6 @@ const SmartChatPage: React.FC = () => {
       </Layout>
     </Layout>
   );
-}
+};
 
 export default SmartChatPage;

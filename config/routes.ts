@@ -54,6 +54,12 @@ export default [
         hideInMenu: true,
       },
       {
+        path: 'text-to-image/drawing',
+        name: '画图中',
+        component: './AI-Paint/Drawing',
+        hideInMenu: true,
+      },
+      {
         icon: 'bgColors',
         name: '图片生成图',
         path: 'image-to-image',
@@ -63,6 +69,12 @@ export default [
         path: 'image-to-image/auto-generate-prompt',
         name: '自动生成提示词',
         component: './AI-Paint/AutoGeneratePrompt',
+        hideInMenu: true,
+      },
+      {
+        path: 'image-to-image/drawing',
+        name: '画图中',
+        component: './AI-Paint/Drawing',
         hideInMenu: true,
       },
       {

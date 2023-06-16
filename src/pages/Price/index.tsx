@@ -1,16 +1,15 @@
-import { useState, useEffect } from 'react';
-import { Row, Col, Layout } from 'antd';
+import { Layout } from 'antd';
+import { useState } from 'react';
 
-import './index.less';
-import PriceHeader from './components/PriceHeader';
 import Enterprise from './components/Enterprise';
-import Personalise from './components/Personalise';
 import Painted from './components/Painted';
+import Personalise from './components/Personalise';
+import PriceHeader from './components/PriceHeader';
 import TerasureBox from './components/TerasureBox';
+import './index.less';
 type StateType = {
   // 在这里定义你的状态类型
 };
-
 
 const { Content } = Layout;
 
