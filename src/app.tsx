@@ -53,10 +53,6 @@ export const layout: RunTimeLayoutConfig = () => {
       );
     },
     rightContentRender: () => <RightContent />,
-    menuContentRender: (props, defaultDom) => {
-      console.log(props);
-      return defaultDom;
-    },
     menuFooterRender: () => {
       return (
         <Space
