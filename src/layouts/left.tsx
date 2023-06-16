@@ -1,7 +1,3 @@
-import React from 'react';
-import { Menu, Button, Space } from 'antd';
-import { HomeOutlined, UserOutlined, SettingOutlined } from '@ant-design/icons';
-
 import './left.less';
 
 const VerticalNav = ({ headerContent, centerContent }) => {

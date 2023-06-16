@@ -1,7 +1,6 @@
-import React from 'react';
-import { Layout, Row, Col } from 'antd';
-import HeaderComponent from '../components/Header';
+import { Layout } from 'antd';
 import ContainerComponent from '../components/Container';
+import HeaderComponent from '../components/Header';
 
 import './chat.less';
 

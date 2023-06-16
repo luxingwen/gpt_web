@@ -79,7 +79,7 @@ const TipsBagPage = () => {
   };
 
   return (
-    <PageContainer>
+    <PageContainer title={false}>
       <Input.Search
         placeholder="输入关键词进行搜索"
         style={{ marginTop: '22px', borderRadius: '20px' }} // 根据需要调整搜索框的样式

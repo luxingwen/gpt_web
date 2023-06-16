@@ -15,4 +15,7 @@ export default defineConfig({
   proxy,
   npmClient: 'pnpm',
   tailwindcss: {},
+  theme: {
+    '@primary-color': 'rgba(75, 100, 243, 1)',
+  },
 });

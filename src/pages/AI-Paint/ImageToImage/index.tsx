@@ -7,6 +7,7 @@ import {
   ProFormItem,
   ProFormSlider,
   ProFormTextArea,
+  ProFormUploadButton,
 } from '@ant-design/pro-components';
 import { Button, Collapse } from 'antd';
 import { useRef } from 'react';
@@ -16,7 +17,7 @@ export default function TextToImage() {
   const formRef = useRef<ProFormInstance>();
   return (
     <PageContainer title={false}>
-      <ProForm<API.SDTextToImageParam>
+      <ProForm<API.SDImageToImageParam>
         submitter={{
           render: (props) => {
             console.log(props);
@@ -65,6 +66,16 @@ export default function TextToImage() {
             }}
           />
         </ProFormItem>
+        <ProFormUploadButton
+          name="upload"
+          label="参考图"
+          max={1}
+          fieldProps={{
+            name: 'file',
+            listType: 'picture-card',
+          }}
+          // action="/upload.do"
+        />
         <ProForm.Item name="model" label="模型">
           <RadioGroup
             options={[
