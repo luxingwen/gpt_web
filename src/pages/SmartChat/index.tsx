@@ -1,11 +1,13 @@
 import HistorySession from '@/components/HistorySession/HistorySession';
-import { LaptopOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Layout, Menu, Typography, theme } from 'antd';
 import React, { useState } from 'react';
 import Chat from './Chat';
 import CreateScene from './CreateScence';
 import SceneList from './SceneList';
+import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
+import HistorySession from '@/components/HistorySession/HistorySession';
+import { ProCard } from '@ant-design/pro-components';
 
 const { Header, Content, Sider } = Layout;
 
@@ -25,30 +27,45 @@ const SmartChatPage: React.FC = () => {
   } = theme.useToken();
 
   return (
-    <Layout style={{ display: 'flex' }}>
-      <Layout style={{ padding: 0, minHeight: '100vh' }}>
-        <Sider width={200} style={{ background: colorBgContainer }}>
-          <Menu
-            mode="inline"
-            defaultSelectedKeys={['scence-list']}
-            defaultOpenKeys={['scence-list']}
-            items={items2}
-          />
-          <HistorySession></HistorySession>
-        </Sider>
-        <Layout style={{ padding: 0 }}>
-          <Content>
-            {viewContent == 'scene_list' && (
-              <SceneList setViewContent={setViewContent}></SceneList>
-            )}
-            {viewContent == 'create_scene' && (
-              <CreateScene setViewContent={setViewContent}></CreateScene>
-            )}
-            {viewContent == 'chat' && <Chat></Chat>}
-          </Content>
-        </Layout>
-      </Layout>
-    </Layout>
+    // <Layout style={{ display: 'flex' }}>
+    //   <Layout style={{ padding: 0, minHeight: '100vh' }}>
+    //     <Sider width={200} style={{ background: colorBgContainer }}>
+    //       <Menu
+    //         mode="inline"
+    //         defaultSelectedKeys={['scence-list']}
+    //         defaultOpenKeys={['scence-list']}
+    //         items={items2}
+    //       />
+    //       <HistorySession></HistorySession>
+    //     </Sider>
+    //     <Layout style={{ padding: 0 }}>
+    //       <Content>
+    //         {viewContent == 'scene_list' && (
+    //           <SceneList setViewContent={setViewContent}></SceneList>
+    //         )}
+    //         {viewContent == 'create_scene' && (
+    //           <CreateScene setViewContent={setViewContent}></CreateScene>
+    //         )}
+    //         {viewContent == 'chat' && <Chat></Chat>}
+    //       </Content>
+    //     </Layout>
+    //   </Layout>
+    // </Layout>
+
+    <ProCard split="vertical">
+      <ProCard title="左侧详情" colSpan="20%">
+        <Menu
+          mode="inline"
+          defaultSelectedKeys={['scence-list']}
+          defaultOpenKeys={['scence-list']}
+          items={items2}
+        />
+        <HistorySession></HistorySession>
+      </ProCard>
+      <ProCard >
+        <div style={{ height: 360 }}>右侧内容</div>
+      </ProCard>
+    </ProCard>
   );
 };
 
