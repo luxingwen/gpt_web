@@ -1,39 +1,45 @@
-import HeaderComponent from '@/components/Header';
 import { getLatestUsedScenes } from '@/service/api';
-import { Col, Layout, Row, Typography, message } from 'antd';
-import { useEffect, useState } from 'react';
+import { Col, Layout, Row, Typography, message, Menu, theme } from 'antd';
+import React, { useEffect, useState } from 'react';
 import Chat from './Chat';
 import CreateScene from './CreateScence';
 import LeftNav from './LeftNav';
 import SceneList from './SceneList';
+import type { MenuProps } from 'antd';
+import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
+import HistorySession from '@/components/HistorySession/HistorySession';
 
-const { Header, Content, Footer } = Layout;
-
-import storage from '@/utils/storage';
+const { Header, Content, Sider } = Layout;
 
 const { Title } = Typography;
 
-export default function IndexPage() {
-  const headerHeight = 64; // 假设 Header 的高度为 64px
-  //const history = useHistory();
+const items2: MenuProps['items'] = [
+  { key: 'scence-list', icon: <UserOutlined />, label: '场景广场' },
+  { key: 'scence-create', icon: <LaptopOutlined />, label: '创建场景' },
+];
+
+const SmartChatPage: React.FC = () => {
   const [cardData, setCardData] = useState([]);
-  const [userInfo, setUserInfo] = useState(storage.getItem('userInfo'));
+  const [viewContent, setViewContent] = useState('scene_list');
 
-  const [viewContent, setViewContent] = useState('scene_list'); // 用于展示的内容
-
-
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
 
   return (
     <Layout style={{ display: 'flex' }}>
-      {/* <Header style={{ background: '#fff' }}>
-        <HeaderComponent />
-      </Header> */}
-      <Content style={{ flex: 1 }}>
-        <Row style={{ height: `calc(100vh - ${headerHeight}px)` }}>
-          <Col span={4}>
-            <LeftNav setViewContent={setViewContent} />
-          </Col>
-          <Col span={20}>
+      <Layout style={{ padding: 0, minHeight: '100vh' }}>
+        <Sider width={200} style={{ background: colorBgContainer }}>
+          <Menu
+            mode="inline"
+            defaultSelectedKeys={['scence-list']}
+            defaultOpenKeys={['scence-list']}
+            items={items2}
+          />
+          <HistorySession></HistorySession>
+        </Sider>
+        <Layout style={{ padding: 0 }}>
+          <Content>
             {viewContent == 'scene_list' && (
               <SceneList setViewContent={setViewContent}></SceneList>
             )}
@@ -41,9 +47,11 @@ export default function IndexPage() {
               <CreateScene setViewContent={setViewContent}></CreateScene>
             )}
             {viewContent == 'chat' && <Chat></Chat>}
-          </Col>
-        </Row>
-      </Content>
+          </Content>
+        </Layout>
+      </Layout>
     </Layout>
   );
 }
+
+export default SmartChatPage;
