@@ -29,7 +29,7 @@ export default [
         name: '热门问题',
         path: 'hot-qa',
         component: './TipsBag',
-        icon:'fire',
+        icon: 'fire',
       },
     ],
   },
@@ -50,8 +50,8 @@ export default [
       {
         icon: 'bgColors',
         name: '图片生成图',
-        path: 'access',
-        component: './Access',
+        path: 'image-to-image',
+        component: './AI-Paint/ImageToImage',
       },
       {
         icon: 'book',
