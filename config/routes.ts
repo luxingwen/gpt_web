@@ -69,4 +69,10 @@ export default [
     path: '/smart-ai',
     component: './SmartChat',
   },
+  {
+    name: '个人中心',
+    path: '/account/center',
+    component: './UserInfo',
+    hideInMenu: true,
+  },
 ];

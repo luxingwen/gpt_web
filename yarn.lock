@@ -8311,6 +8311,11 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
+mac-scrollbar@^0.10.7:
+  version "0.10.7"
+  resolved "https://registry.npmmirror.com/mac-scrollbar/-/mac-scrollbar-0.10.7.tgz#67beeb028c2010d7be4cc541cbe17f7969f11338"
+  integrity sha512-3AL/sxi+W2gwo83Q6Uy/0a10tuaOzqVd+edhq+M3Y7ml5TaZDoLOO56KRTMjFPIZPh/qoB7+o1P3lEXnxLRbEQ==
+
 make-dir@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npmmirror.com/make-dir/-/make-dir-2.1.0.tgz#5f0310e18b8be898cc07009295a30ae41e91e6f5"

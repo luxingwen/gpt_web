@@ -7,11 +7,11 @@ import Yaoqing from '@/assets/images/yaoqing.svg';
 import ContentLayout from '@/layouts/index';
 import storage from '@/utils/storage';
 import { RightOutlined } from '@ant-design/icons';
-import { Avatar, Card, Image, Modal, Space, Typography, message } from 'antd';
+import { Avatar, Card, Image, Modal, Space, Typography, message, Layout } from 'antd';
 import { useEffect, useState } from 'react';
 
 import Qrcode from '@/assets/images/qrcode.jpg';
-import { getUserInfo } from '@/service/api';
+import { getUserInfo } from '@/service/user';
 import { NavLink } from 'react-router-dom';
 
 import { formatTimestamp, getCurrentTimestampInSeconds } from '@/utils/utils';
@@ -20,6 +20,7 @@ import { wxlogin } from '@/service/user';
 import './index.less';
 
 const { Title, Text } = Typography;
+const { Content } = Layout;
 
 const UserInfo = ({ user }) => {
   if (!user) {
@@ -87,7 +88,8 @@ const UserInfoPage = () => {
   }
 
   return (
-    <ContentLayout>
+    <div className='user-info-page'>
+    <Content className='user-info-content'>
       <Card className="user-info">
         <UserInfo user={userInfo} />
       </Card>
@@ -168,7 +170,8 @@ const UserInfoPage = () => {
           <Image width={200} src={guanzhuImage} />
         </div>
       </Modal>
-    </ContentLayout>
+    </Content>
+    </div>
   );
 };
 
