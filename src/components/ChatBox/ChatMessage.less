@@ -7,8 +7,10 @@ p {
   width: 6px;
   height: 20px;
   background-color: #fffcc2;
+
   /* 光标颜色 */
   margin-left: 3px;
+
   /* 增加左边距来分隔光标和文本 */
   animation: cursor-blink 0.8s infinite;
 }
@@ -25,9 +27,11 @@ p {
 }
 
 .msg-wrap {
+  width: 100%;
+
   .msg-time {
     font-size: 12px;
-    color: rgba(166, 166, 166, 1);
+    color: rgba(166, 166, 166, 100%);
   }
 
   .question-box {
@@ -37,6 +41,7 @@ p {
     @media (max-width: 767px) {
       padding: 9px 4%;
     }
+
     .msg-time {
       text-align: right;
     }
@@ -47,11 +52,11 @@ p {
 
       .question-message {
         border-radius: 3px;
-        background: rgba(75, 100, 243, 1);
+        background: rgba(75, 100, 243, 100%);
         padding: 14px 20px;
         box-sizing: border-box;
         font-size: 12px;
-        color: rgba(255, 255, 255, 1);
+        color: rgba(255, 255, 255, 100%);
         text-align: right;
       }
     }
@@ -75,7 +80,7 @@ p {
         background: #fff;
         padding: 14px 20px;
         box-sizing: border-box;
-        border: 1px solid rgba(229, 229, 229, 1);
+        border: 1px solid rgba(229, 229, 229, 100%);
       }
     }
   }
@@ -86,10 +91,12 @@ p {
 
   .operate-btns {
     display: flex;
-    margin: 6px 3px 0px 3px;
+    margin: 6px 3px 0;
+
     &.right {
       justify-content: flex-end;
     }
+
     .operate-btn {
       width: 35px;
       height: 32px;
@@ -97,12 +104,15 @@ p {
       background-size: 100%;
       background-position: 1px 1px;
       cursor: pointer;
+
       &:hover {
         opacity: 1;
       }
+
       &.copy {
         background-image: url(https://img.js.design/assets/img/6459005cbda30d4deb29ed62.png#d4580d81d7edeb132a04dd8072e507fd);
       }
+
       &.sound {
         background-image: url(https://img.js.design/assets/img/6459005cbda30d4deb29ed62.png#d4580d81d7edeb132a04dd8072e507fd);
       }
@@ -111,7 +121,7 @@ p {
 }
 
 .chat-message-code-block {
-  background: #000000;
+  background: #000;
 }
 
 .chat-message-code-copy-button {

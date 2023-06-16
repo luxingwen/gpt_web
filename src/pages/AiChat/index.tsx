@@ -4,7 +4,7 @@ import './index.less';
 
 const ChatPage = () => {
   return (
-    <PageContainer title={false}>
+    <PageContainer title={false} breadcrumb={false} >
       <ChatBox
         showFullScreen={true}
         showVisitDiscourse={true}

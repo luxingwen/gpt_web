@@ -36,4 +36,15 @@ declare namespace API {
     share_users: string;
     create_time: Date;
   }
+
+  // 消息类型定义
+  export interface  MessageType {
+    msg_id: any;
+    msg: string;
+    self: boolean;
+    is_end: boolean;
+    time: string;
+    avatar: string;
+  };
+  
 }

@@ -25,21 +25,24 @@ const renderCodeBlock = ({ language, value }) => {
       >
         {value.replace(/\n$/, '')}
       </SyntaxHighlighter>
-      <CopyToClipboard text={value}>
-        <div
-          className="chat-message-code-copy-button"
-          onClick={() => {
-            message.success('复制成功');
-          }}
-        >
-          Copy
-        </div>
-      </CopyToClipboard>
+
     </div>
   );
 };
 
-const ChatMessage = ({ time, messageText, self, userAvatar, msgEnd }) => {
+
+type ChatMessageProps = {
+  msg: API.MessageType;
+}
+
+const ChatMessage: React.FC<ChatMessageProps> = ({ msg }) => {
+
+  const time = msg?.time;
+  const messageText = msg?.msg;
+  const self = msg?.self;
+  const avatar = msg?.avatar;
+  const msgEnd = msg?.is_end;
+
   const paragraphs = messageText.split('\n');
 
   // 格式化消息时间
@@ -123,14 +126,14 @@ const ChatMessage = ({ time, messageText, self, userAvatar, msgEnd }) => {
               ></div>
             </div>
           </div>
-          <Avatar src={AiLogo} className="msg-avatar" />
+          <Avatar src={avatar} className="msg-avatar" />
         </div>
       )}
 
       {/* AI的回答 */}
       {!self && (
         <div className="answer-box flex">
-          <Avatar src={AiLogo} className="msg-avatar" />
+          <Avatar src={avatar} className="msg-avatar" />
           <div className="answer-main">
             <div className="msg-time">{formatTime}</div>
             <div className="answer-message">{renderMessageText()}</div>
