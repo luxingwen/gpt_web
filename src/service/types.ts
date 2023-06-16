@@ -1,4 +1,12 @@
 namespace API {
+
+
+  export interface Response<T> {
+    errno: number;
+    errmsg: string;
+    data: T;
+  }
+
   // 获取会话信息
   export interface ReqChatSessionInfo {
     name: string;
@@ -30,4 +38,5 @@ namespace API {
     share_users: string;
     create_time: Date;
   }
+  
 }

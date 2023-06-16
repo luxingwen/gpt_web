@@ -11,7 +11,7 @@ export async function getPromptWords(props: any) {
 }
 
 // 获取热门绘画
-export async function getHotAiDraws(props: any) {
+export async function getHotAiDraws(props: API.ReqHotImages) {
   try {
     return request(`/api/chat/sd/hot/images`, {
       method: 'GET',
@@ -20,10 +20,10 @@ export async function getHotAiDraws(props: any) {
   } catch (error) {}
 }
 
-// 获取AI绘画
-export async function getAiDrawModels(props: any) {
+// 获取AI绘画模型
+export async function getAiDrawModels(props: any){
   try {
-    return request(`/api/chat/sd/model/names`, {
+    return request<API.Response<API.SdModel[]>>(`/api/chat/sd/model/names`, {
       method: 'GET',
       params: props,
     });
