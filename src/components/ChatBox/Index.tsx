@@ -1,6 +1,8 @@
 import { FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons';
 import { Input, message } from 'antd';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useModel } from '@umijs/max';
+import AiLogo from '@/assets/images/logo.png';
 
 import {
   getHistoryChatMessage,
@@ -20,16 +22,20 @@ const END_MSG = '###### [END] ######';
 
 const Index = ({
   placeholderText = '',
-  children,
   showFullScreen = false,
   showVisitDiscourse = false,
   showOpenNewChat = false,
   sendBtnType = '1', // [1 输入框右外侧] [2输入框右内侧]
 }) => {
-  const [messages, setMessages] = useState([]);
+
+  const { initialState, setInitialState } = useModel('@@initialState');
+
+  const currentUser = initialState?.currentUser;
+
+  const [messages, setMessages] = useState<API.MessageType[]>([]);
   const [input, setInput] = useState('');
   const messagesContainerRef = useRef(null);
-  const [userInfo, setUserInfo] = useState(storage.getItem('userInfo'));
+
   const [isMsgEnd, setIsMsgEnd] = useState(true);
   const [loadAllMsg, setLoadAllMsg] = useState(false);
   const [historyQuery, setHistoryQuery] = useState({
@@ -50,24 +56,31 @@ const Index = ({
   }, [placeholderText, sendBtnType]);
 
   useEffect(() => {
+    let prevScrollTop = 0;
+
+
     const handleScroll = (event) => {
-      // Check if we're at the top of the container
       const { scrollTop } = event.target;
-      if (scrollTop === 0) {
-        // Request older messages
+      const isScrollingUp = scrollTop < prevScrollTop;
+
+      if (scrollTop <= 100 && isScrollingUp) {
         requestOlderMessages();
       }
+
+      prevScrollTop = scrollTop;
     };
+
+    console.log('useEffect:', prevScrollTop);
 
     const messagesContainer = messagesContainerRef.current;
     if (messagesContainer) {
       messagesContainer.addEventListener('scroll', handleScroll);
       return () => {
-        // Clean up the event listener when the component unmounts
         messagesContainer.removeEventListener('scroll', handleScroll);
       };
     }
   }, [messagesContainerRef, requestOlderMessages]);
+
 
   const requestOlderMessages = () => {
     if (loadAllMsg) {
@@ -77,10 +90,8 @@ const Index = ({
 
     historyQuery.page = historyQuery.page + 1;
 
-    // if (historyQuery.page > 1) {
     setNewMessageReceived(false);
-    // }
-    // update the page number
+
     setHistoryQuery(historyQuery);
 
     getHistoryChatMessage(historyQuery)
@@ -97,14 +108,17 @@ const Index = ({
               msg: item.question,
               self: true,
               is_end: true,
+              msg_id: 'u-' + item.id,
               time: item.add_time,
+              avatar: currentUser.avatar,
             },
             {
               msg: item.answer,
               self: false,
-              msg_id: item.id,
+              msg_id: 'ai' + item.id,
               is_end: true,
               time: item.create_time,
+              avatar: AiLogo,
             },
           );
         });
@@ -125,14 +139,18 @@ const Index = ({
       queryQuestion(input)
         .then((res) => {
           console.log('query Question', res.data);
+          if (res.errno !== 0) {
+            return;
+          }
           setMessages([
             ...messages,
-            { msg: input, self: true, is_end: true, time: +new Date() },
+            { msg_id: 'u-' + res.data.id, msg: input, self: true, is_end: true, time: +new Date(), avatar: currentUser.avatar },
             {
               msg: TRYING_MSG,
               self: false,
-              msg_id: res.data.id,
+              msg_id: 'ai-' + res.data.id,
               is_end: false,
+              avatar: AiLogo,
             },
           ]);
           setIsMsgEnd(false);
@@ -153,22 +171,6 @@ const Index = ({
   };
 
   useEffect(() => {
-    getUserInfo().then((res) => {
-      if (res.errno === 401) {
-        message.error('请先登录');
-        wxlogin();
-        return;
-      }
-      if (res.errno == 0) {
-        storage.setItem('userInfo', res.data);
-        setUserInfo(res.data);
-      }
-    });
-
-    if (!userInfo) {
-      message.error('请先登录');
-      return;
-    }
 
     getHistoryChatMessage(historyQuery)
       .then((res) => {
@@ -179,22 +181,25 @@ const Index = ({
               msg: item.question,
               self: true,
               is_end: true,
+              msg_id: 'u-' + item.id,
               time: item.add_time,
+              avatar: currentUser.avatar
             },
             {
               msg: item.answer,
               self: false,
-              msg_id: item.id,
+              msg_id: 'ai-' + item.id,
               is_end: true,
               time: item.create_time,
+              avatar: AiLogo,
             },
           );
         });
         setMessages([...messages, ...msgList]);
       })
-      .catch((err) => {});
+      .catch((err) => { });
 
-    wssocket.create(userInfo.id);
+    wssocket.create(currentUser.id);
 
     wssocket.addHandler((msg) => {
       handleReceive(msg.response.data);
@@ -227,6 +232,7 @@ const Index = ({
   };
 
   useEffect(() => {
+
     if (newMessageReceived) {
       scrollToBottom();
     }
@@ -342,23 +348,19 @@ const Index = ({
     );
   };
   return (
-    <div className="chat-box-component w100" id="chartFullScreen">
-      <div className="scroll-box" ref={messagesContainerRef}>
+    <div className="chat-box-component" style={{ height: '100vh' }} id="chartFullScreen">
+      <div className="w100 scroll-box" ref={messagesContainerRef}>
         {messages.map((item, index) => (
           <ChatMessage
-            key={index}
-            messageText={item.msg}
-            self={item.self}
-            time={item.time}
-            userAvatar={userInfo.avatar}
-            msgEnd={index === messages.length - 1 && !isMsgEnd}
+            key={item.msg_id || `message-${index}`}
+            msg={{ ...item, is_end: (index === (messages.length - 1)) && !isMsgEnd }}
           />
         ))}
         <div className="ai-asnswer-tips tc">
           -- 问答结果由AI生成，仅供参考 --
         </div>
       </div>
-      <div className="w100 flex-cc send-info-box">
+      <div className="flex-cc send-info-box" style={{ width: '100%' }}>
         {/* 输入框左侧的按钮组 */}
         {renOperateBtns()}
         {/* 不同类型的输入框 */}
