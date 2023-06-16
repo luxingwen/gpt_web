@@ -19,14 +19,14 @@ export default [
         component: './AiChat',
       },
       {
-        name: '权限演示',
-        path: 'access',
-        component: './Access',
+        name: '百宝袋',
+        path: 'tips',
+        component: './TipsBag',
       },
       {
-        name: ' CRUD 示例',
-        path: 'table',
-        component: './Table',
+        name: '热门问题',
+        path: 'hot-qa',
+        component: './TipsBag',
       },
     ],
   },
@@ -68,6 +68,11 @@ export default [
     name: '个性化数字人',
     path: '/smart-ai',
     component: './SmartChat',
+  },
+  {
+    name: '价格',
+    path: '/price',
+    component: './Price',
   },
   {
     name: '个人中心',
