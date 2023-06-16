@@ -14,4 +14,5 @@ export default defineConfig({
   routes,
   proxy,
   npmClient: 'pnpm',
+  tailwindcss: {},
 });

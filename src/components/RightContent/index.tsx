@@ -43,11 +43,7 @@ export default function RightContent() {
   };
 
   return (
-    <Space
-      style={{
-        marginRight: 16,
-      }}
-    >
+    <Space className="mr-4 cursor-pointer">
       {currentUser ? (
         <HeaderDropdown
           menu={{
