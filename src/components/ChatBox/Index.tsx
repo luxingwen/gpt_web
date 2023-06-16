@@ -1,6 +1,6 @@
 import { FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons';
 import { Input, message } from 'antd';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, memo } from 'react';
 import { useModel } from '@umijs/max';
 import AiLogo from '@/assets/images/logo.png';
 
@@ -11,8 +11,9 @@ import {
 } from '@/service/api';
 import storage from '@/utils/storage';
 import { wssocket } from '@/utils/ws_socket';
+import Messages from './components/Messages'
 
-import ChatMessage from '@/components/ChatBox/ChatMessage';
+// import ChatMessage from '@/components/ChatBox/ChatMessage';
 import { wxlogin } from '@/service/user';
 import './index.less';
 import { toogleFullScreen } from './utils';
@@ -232,7 +233,6 @@ const Index = ({
   };
 
   useEffect(() => {
-
     if (newMessageReceived) {
       scrollToBottom();
     }
@@ -346,16 +346,26 @@ const Index = ({
         )}
       </>
     );
-  };
+  }
+  console.log('--------------------');
+
+  // const renderMessages = ()=>{
+  //   return (
+  //     <>
+  //       {messages.map((item, index) => (
+  //         <ChatMessage
+  //           key={item.msg_id || `message-${index}`}
+  //           msg={{ ...item, is_end: (index === (messages.length - 1)) && !isMsgEnd }}
+  //         />
+  //       ))}
+  //     </>
+  //   )
+  // }
+  
   return (
     <div className="chat-box-component" style={{ height: '100vh' }} id="chartFullScreen">
       <div className="w100 scroll-box" ref={messagesContainerRef}>
-        {messages.map((item, index) => (
-          <ChatMessage
-            key={item.msg_id || `message-${index}`}
-            msg={{ ...item, is_end: (index === (messages.length - 1)) && !isMsgEnd }}
-          />
-        ))}
+        <Messages messages={messages} isMsgEnd={isMsgEnd}/>
         <div className="ai-asnswer-tips tc">
           -- 问答结果由AI生成，仅供参考 --
         </div>
