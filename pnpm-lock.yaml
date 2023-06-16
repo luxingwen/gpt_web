@@ -34,6 +34,9 @@ dependencies:
   js-cookie:
     specifier: ^3.0.5
     version: 3.0.5
+  mac-scrollbar:
+    specifier: ^0.10.7
+    version: 0.10.7
   prismjs:
     specifier: ^1.29.0
     version: 1.29.0
@@ -8949,6 +8952,10 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       yallist: 4.0.0
+    dev: false
+
+  /mac-scrollbar@0.10.7:
+    resolution: {integrity: sha512-3AL/sxi+W2gwo83Q6Uy/0a10tuaOzqVd+edhq+M3Y7ml5TaZDoLOO56KRTMjFPIZPh/qoB7+o1P3lEXnxLRbEQ==}
     dev: false
 
   /make-dir@2.1.0:

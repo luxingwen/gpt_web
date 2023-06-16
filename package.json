@@ -22,6 +22,7 @@
     "dayjs": "^1.11.8",
     "enquire-js": "^0.2.1",
     "js-cookie": "^3.0.5",
+    "mac-scrollbar": "^0.10.7",
     "prismjs": "^1.29.0",
     "qrcode.react": "^3.1.0",
     "rc-banner-anim": "^2.4.5",
