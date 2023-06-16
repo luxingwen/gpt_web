@@ -2,27 +2,36 @@ import RightContent from '@/components/RightContent';
 import type { AxiosError, RequestConfig, RequestOptions } from '@umijs/max';
 import { RunTimeLayoutConfig } from '@umijs/max';
 import { Space, Typography } from 'antd';
+import Logo from '@/assets/images/logo.png';
 import Cookies from 'js-cookie';
 import { GlobalScrollbar } from 'mac-scrollbar';
 import 'mac-scrollbar/dist/mac-scrollbar.css';
+
+import {getUserInfo} from '@/service/user';
+
 // 运行时配置
 
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 // 更多信息见文档：https://umijs.org/docs/api/runtime-config#getinitialstate
 export async function getInitialState(): Promise<{
   currentUser?: {
-    name?: string;
+    nickname?: string;
   };
   fetchUserInfo: () => Promise<
     | {
-        name?: string;
+        nickname?: string;
       }
     | undefined
   >;
 }> {
   const fetchUserInfo = async () => {
     try {
-      return { name: 'draco' };
+
+      const response = await getUserInfo();
+
+      console.log("user:",response.data);
+
+      return response.data;
     } catch (error) {
       return undefined;
     }
@@ -32,7 +41,7 @@ export async function getInitialState(): Promise<{
 
 export const layout: RunTimeLayoutConfig = () => {
   return {
-    logo: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
+    logo: Logo,
     title: 'AI 云助手',
     layout: 'mix',
     contentWidth: 'Fluid',
