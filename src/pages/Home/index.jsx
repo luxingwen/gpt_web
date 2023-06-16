@@ -1,27 +1,27 @@
 /* eslint no-undef: 0 */
 /* eslint arrow-parens: 0 */
-import React from 'react';
 import { enquireScreen } from 'enquire-js';
+import React from 'react';
 
-import Nav0 from './Nav0';
 import Banner1 from './Banner1';
 import Content0 from './Content0';
 import Content11 from './Content11';
 import Feature8 from './Feature8';
-import Teams0 from './Teams0';
 import Footer1 from './Footer1';
+import Nav0 from './Nav0';
+import Teams0 from './Teams0';
 
 import {
-  Nav00DataSource,
   Banner10DataSource,
   Content00DataSource,
   Content110DataSource,
-  Content112DataSource,
   Content111DataSource,
+  Content112DataSource,
   Content113DataSource,
   Feature80DataSource,
-  Teams00DataSource,
   Footer10DataSource,
+  Nav00DataSource,
+  Teams00DataSource,
 } from './data.source';
 import './less/antMotionStyle.less';
 

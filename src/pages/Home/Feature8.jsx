@@ -1,7 +1,7 @@
-import React from 'react';
-import OverPack from 'rc-scroll-anim/lib/ScrollOverPack';
+import { Carousel as AntCarousel, Col, Row } from 'antd';
 import QueueAnim from 'rc-queue-anim';
-import { Carousel as AntCarousel, Row, Col } from 'antd';
+import OverPack from 'rc-scroll-anim/lib/ScrollOverPack';
+import React from 'react';
 import { getChildrenToRender } from './utils';
 
 class Feature8 extends React.PureComponent {

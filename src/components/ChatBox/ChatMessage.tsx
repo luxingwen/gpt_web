@@ -1,14 +1,14 @@
-import React, { useEffect, useStat, useMemo } from 'react';
-import ReactMarkdown from 'react-markdown';
+import AiLogo from '@/assets/images/logo.png';
 import { Avatar, message } from 'antd';
+import copy from 'copy-to-clipboard';
+import { useMemo } from 'react';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import remarkGfm from 'remark-gfm';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import AiLogo from '@/assets/images/logo.png';
-import { getFormatTime } from './utils';
-import copy from 'copy-to-clipboard';
 import './ChatMessage.less';
+import { getFormatTime } from './utils';
 
 const themes = {
   dark: prism,

@@ -1,24 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { Card, Avatar, Typography, Space, Modal, Image, message } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
-import ContentLayout from '@/layouts/index';
-import { RightOutlined } from '@ant-design/icons';
+import Exchange from '@/assets/images/exchange.svg';
 import GuanZhu from '@/assets/images/guanzhu.svg';
 import RenGongKeFu from '@/assets/images/rengongkefu.svg';
+import vipImg from '@/assets/images/vip.jpg';
 import Xufei from '@/assets/images/xufei.svg';
 import Yaoqing from '@/assets/images/yaoqing.svg';
-import Exchange from '@/assets/images/exchange.svg';
+import ContentLayout from '@/layouts/index';
 import storage from '@/utils/storage';
-import vipImg from '@/assets/images/vip.jpg';
+import { RightOutlined } from '@ant-design/icons';
+import { Avatar, Card, Image, Modal, Space, Typography, message } from 'antd';
+import { useEffect, useState } from 'react';
 
-import { getUserInfo } from '@/service/api';
-import { NavLink, useLocation } from 'react-router-dom';
 import Qrcode from '@/assets/images/qrcode.jpg';
+import { getUserInfo } from '@/service/api';
+import { NavLink } from 'react-router-dom';
 
 import { formatTimestamp, getCurrentTimestampInSeconds } from '@/utils/utils';
 
-import './index.less';
 import { wxlogin } from '@/service/user';
+import './index.less';
 
 const { Title, Text } = Typography;
 

@@ -1,21 +1,19 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Input, Button, Avatar, message } from 'antd';
 import { FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons';
+import { Input, message } from 'antd';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { wssocket } from '@/utils/ws_socket';
-import storage from '@/utils/storage';
 import {
-  queryQuestion,
   getHistoryChatMessage,
   getUserInfo,
+  queryQuestion,
 } from '@/service/api';
+import storage from '@/utils/storage';
+import { wssocket } from '@/utils/ws_socket';
 
 import ChatMessage from '@/components/ChatBox/ChatMessage';
 import { wxlogin } from '@/service/user';
-import { toogleFullScreen } from './utils';
 import './index.less';
-
-const { TextArea } = Input;
+import { toogleFullScreen } from './utils';
 
 const TRYING_MSG = '正在努力思考...';
 const END_MSG = '###### [END] ######';

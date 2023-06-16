@@ -21,7 +21,7 @@ export async function getHotAiDraws(props: API.ReqHotImages) {
 }
 
 // 获取AI绘画模型
-export async function getAiDrawModels(props: any){
+export async function getAiDrawModels(props: any) {
   try {
     return request<API.Response<API.SdModel[]>>(`/api/chat/sd/model/names`, {
       method: 'GET',

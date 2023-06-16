@@ -1,7 +1,7 @@
-import React from 'react';
+import { Col, Row } from 'antd';
 import QueueAnim from 'rc-queue-anim';
-import { Row, Col } from 'antd';
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack';
+import React from 'react';
 import { getChildrenToRender } from './utils';
 
 class Content extends React.PureComponent {

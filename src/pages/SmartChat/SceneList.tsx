@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Input, Space, Row, Col, Pagination } from 'antd';
-import SceneItemCard from './SceneItemCard';
-import { SearchOutlined } from '@ant-design/icons';
 import SearchBox from '@/components/SearchBox';
 import { getSmartSceneList } from '@/service/smart_chat';
+import { Col, Input, Pagination, Row } from 'antd';
+import React, { useEffect, useState } from 'react';
+import SceneItemCard from './SceneItemCard';
 
 import './SceneList.less';
 

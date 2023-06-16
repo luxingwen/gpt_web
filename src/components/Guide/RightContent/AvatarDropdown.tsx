@@ -4,7 +4,11 @@ import { gotoLoginPage, logout, useModel } from 'umi';
 
 import { IRStorage } from '@infore/utils';
 
-import { DownOutlined, ExclamationCircleOutlined, LogoutOutlined } from '@ant-design/icons';
+import {
+  DownOutlined,
+  ExclamationCircleOutlined,
+  LogoutOutlined,
+} from '@ant-design/icons';
 import { Avatar, Menu, Modal, Space, Spin } from 'antd';
 import type { MenuInfo } from 'rc-menu/lib/interface';
 

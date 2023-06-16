@@ -1,24 +1,14 @@
-import React, { useState, useRef } from 'react';
+import { createmartScene } from '@/service/smart_chat';
 import {
-  Form,
-  Input,
-  Radio,
-  Upload,
-  Button,
-  Space,
-  Card,
-  message,
-  List,
-} from 'antd';
-import {
-  UploadOutlined,
+  DownOutlined,
   PlusOutlined,
   QuestionCircleOutlined,
-  DownOutlined,
   UpOutlined,
+  UploadOutlined,
 } from '@ant-design/icons';
+import { Button, Card, Form, Input, Radio, Space, Upload, message } from 'antd';
+import { useRef, useState } from 'react';
 import UserSelect from './UserSelect.tsx';
-import { createmartScene } from '@/service/smart_chat';
 
 import './CreateScene.less';
 

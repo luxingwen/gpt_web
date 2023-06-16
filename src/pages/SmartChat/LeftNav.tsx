@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
-import { Menu, Button, Space } from 'antd';
-import { HomeOutlined, UserOutlined, SettingOutlined } from '@ant-design/icons';
-import LeftContent from '@/layouts/left';
 import HistorySession from '@/components/HistorySession/HistorySession';
+import LeftContent from '@/layouts/left';
+import { useState } from 'react';
 
 import './LeftNav.less';
 

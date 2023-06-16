@@ -1,18 +1,12 @@
-import styles from './index.less';
-import { Layout, Row, Col, Card, Typography, message } from 'antd';
 import HeaderComponent from '@/components/Header';
-import ContentLayout from '@/layouts/index';
-import TipsCard from '@/components/TipsCard';
-import HomeImg1 from '@/assets/images/home-img-1.png';
-import HomeImg2 from '@/assets/images/home-img-2.png';
 import { getLatestUsedScenes } from '@/service/api';
+import { Col, Layout, Row, Typography, message } from 'antd';
 import { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
+import Chat from './Chat';
+import CreateScene from './CreateScence';
 import LeftNav from './LeftNav';
 import SceneList from './SceneList';
-import CreateScene from './CreateScence';
-import Chat from './Chat';
 
 const { Header, Content, Footer } = Layout;
 

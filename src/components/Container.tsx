@@ -1,8 +1,6 @@
-import React from 'react';
-import { Layout, Row, Col, useBreakpoint } from 'antd';
-import HeaderComponent from '../components/Header';
-import './Container.less';
+import { Col, Layout, Row } from 'antd';
 import styled from 'styled-components';
+import './Container.less';
 
 const { Content } = Layout;
 

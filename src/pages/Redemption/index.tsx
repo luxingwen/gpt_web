@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Input, Button, Typography, Image, message } from 'antd';
+import { Button, Image, Input, Typography, message } from 'antd';
+import { useState } from 'react';
 
-import ContentLayout from '@/layouts/index';
 import QRCodeImage from '@/assets/images/group-qrcode.png';
 import LogoImage from '@/assets/images/redemption-code.png';
+import ContentLayout from '@/layouts/index';
 
 import { exchangeByCode } from '@/service/api';
 

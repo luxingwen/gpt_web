@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Input, Button, message, Modal } from 'antd';
 import HeaderComponent from '@/components/Header';
-import { wssocket } from '@/utils/ws_socket';
 import storage from '@/utils/storage';
+import { wssocket } from '@/utils/ws_socket';
+import { Button, Input, Modal, message } from 'antd';
+import { useEffect, useRef, useState } from 'react';
 
+import ChatMessage from '@/components/ChatMessage';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useParams } from 'react-router-dom';
-import ChatMessage from '@/components/ChatMessage';
 import styled from 'styled-components';
 
 import {
-  queryQuestion,
   getHistoryChatMessage,
   getPromptScenesInfo,
+  queryQuestion,
 } from '@/service/api';
 import { wxlogin } from '@/service/user';
 

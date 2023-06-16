@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Input, Button, Avatar, message } from 'antd';
-import { UserOutlined, RobotOutlined } from '@ant-design/icons';
-import HeaderComponent from '@/components/Header';
-import { wssocket } from '@/utils/ws_socket';
-import storage from '@/utils/storage';
-import { queryQuestion, getHistoryChatMessage } from '@/service/api';
-import styled from 'styled-components';
-import { wxlogin } from '@/service/user';
 import ChatMessage from '@/components/ChatMessage';
+import HeaderComponent from '@/components/Header';
+import { getHistoryChatMessage, queryQuestion } from '@/service/api';
+import { wxlogin } from '@/service/user';
+import storage from '@/utils/storage';
+import { wssocket } from '@/utils/ws_socket';
+import { Button, Input, message } from 'antd';
+import { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
 
 const { TextArea } = Input;
 

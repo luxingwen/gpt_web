@@ -1,10 +1,10 @@
-import React from 'react';
-import OverPack from 'rc-scroll-anim/lib/ScrollOverPack';
 import BannerAnim, { Element } from 'rc-banner-anim';
-import TweenOne from 'rc-tween-one';
-import QueueAnim from 'rc-queue-anim';
-import { getChildrenToRender } from './utils';
 import 'rc-banner-anim/assets/index.css';
+import QueueAnim from 'rc-queue-anim';
+import OverPack from 'rc-scroll-anim/lib/ScrollOverPack';
+import TweenOne from 'rc-tween-one';
+import React from 'react';
+import { getChildrenToRender } from './utils';
 
 class Teams extends React.PureComponent {
   getChildrenToRender = (children) => {

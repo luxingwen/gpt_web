@@ -1,4 +1,3 @@
-import React from 'react';
 import { Card } from 'antd';
 import './TipsCard.less'; // 导入自定义的CSS文件
 

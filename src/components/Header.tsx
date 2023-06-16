@@ -1,31 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Layout,
-  Menu,
-  Col,
-  Row,
-  Avatar,
-  Dropdown,
-  Button,
-  Typography,
-} from 'antd';
+import { Button, Col, Dropdown, Layout, Menu, Row, Typography } from 'antd';
+import { useEffect, useState } from 'react';
 
-import Sidebar from 'react-sidebar';
-import styled from 'styled-components';
 import {
   HomeOutlined,
-  QuestionCircleOutlined,
-  ShoppingCartOutlined,
   LoginOutlined,
   MenuOutlined,
+  QuestionCircleOutlined,
+  ShoppingCartOutlined,
 } from '@ant-design/icons';
 import { NavLink, useLocation } from 'react-router-dom';
+import Sidebar from 'react-sidebar';
+import styled from 'styled-components';
 
 import './Header.less';
 
 import logoImage from '../assets/images/logo.png';
-
-import { wxlogin } from '@/service/user';
 
 import { getUserInfo } from '@/service/api';
 

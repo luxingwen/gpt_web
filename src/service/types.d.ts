@@ -1,6 +1,4 @@
-namespace API {
-
-
+declare namespace API {
   export interface Response<T> {
     errno: number;
     errmsg: string;
@@ -38,5 +36,4 @@ namespace API {
     share_users: string;
     create_time: Date;
   }
-  
 }

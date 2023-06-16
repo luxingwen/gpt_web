@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Input, Tag, Row, Col, Card, message, Button } from 'antd';
+import { Button, Col, Input, Row, Tag, message } from 'antd';
+import { useEffect, useState } from 'react';
 
-import { PageContainer } from '@ant-design/pro-layout';
 import TipsCard from '@/components/TipsCard';
+import { PageContainer } from '@ant-design/pro-layout';
 
 import { getAllScenes } from '@/service/api';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import './index.less';
 
 const TipsBagPage = () => {

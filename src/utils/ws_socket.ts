@@ -1,6 +1,6 @@
 import WebSocketClient from './WebSocketClient';
 
-import { WS_CMD, STATUS } from './constant.ts';
+import { STATUS, WS_CMD } from './constant';
 
 const wsRootUrl = 'wss://chat.kimways.com/acc';
 

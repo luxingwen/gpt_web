@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Input, Button, Typography, Image, message } from 'antd';
+import { Button, Image, Input, Typography, message } from 'antd';
+import { useEffect, useState } from 'react';
 
-import ContentLayout from '@/layouts/index';
 import AppLogo from '@/assets/images/app_logo.svg';
-import { invitionCode, getInvitionStatic } from '@/service/api';
+import ContentLayout from '@/layouts/index';
+import { getInvitionStatic, invitionCode } from '@/service/api';
 
 import './index.less';
 

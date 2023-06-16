@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Modal, Input, List, Avatar, Button, message } from 'antd';
 import { getUserList } from '@/service/user';
+import { Avatar, Button, Input, List, Modal, message } from 'antd';
+import { useState } from 'react';
 import './UserSelect.less';
 
 const testUser = [

@@ -30,7 +30,11 @@ const GlobalHeaderRight: React.FC = () => {
 
   return (
     <Space className={className}>
-      <BellOutlined className={styles.notice} style={{ color: '#666' }} onClick={turnNotice} />
+      <BellOutlined
+        className={styles.notice}
+        style={{ color: '#666' }}
+        onClick={turnNotice}
+      />
       <Avatar />
     </Space>
   );

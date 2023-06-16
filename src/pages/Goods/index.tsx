@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Card, Button, message, Modal, Row, Col } from 'antd';
-import { DollarOutlined } from '@ant-design/icons';
 import ContentLayout from '@/layouts/index';
 import { getGoods, orderSubmit, prePay } from '@/service/api';
+import { DollarOutlined } from '@ant-design/icons';
+import { Button, Card, Modal, Row, message } from 'antd';
 import QRCode from 'qrcode.react';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 const ProductPage = () => {

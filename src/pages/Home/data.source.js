@@ -1,4 +1,3 @@
-import React from 'react';
 export const Nav00DataSource = {
   wrapper: { className: 'header0 home-page-wrapper' },
   page: { className: 'home-page' },
