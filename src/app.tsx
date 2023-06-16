@@ -31,6 +31,7 @@ export async function getInitialState(): Promise<{
 export const layout: RunTimeLayoutConfig = () => {
   return {
     token: {
+      bgLayout: '#fff',
       pageContainer: {
         paddingBlockPageContainerContent: 16,
         paddingInlinePageContainerContent: 16,

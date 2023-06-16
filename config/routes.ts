@@ -48,10 +48,22 @@ export default [
         component: './AI-Paint/TextToImage',
       },
       {
+        path: 'text-to-image/auto-generate-prompt',
+        name: '自动生成提示词',
+        component: './AI-Paint/AutoGeneratePrompt',
+        hideInMenu: true,
+      },
+      {
         icon: 'bgColors',
         name: '图片生成图',
         path: 'image-to-image',
         component: './AI-Paint/ImageToImage',
+      },
+      {
+        path: 'image-to-image/auto-generate-prompt',
+        name: '自动生成提示词',
+        component: './AI-Paint/AutoGeneratePrompt',
+        hideInMenu: true,
       },
       {
         icon: 'book',
