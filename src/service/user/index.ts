@@ -12,15 +12,13 @@ export async function wxlogin() {
   }
 }
 
-
 export async function getUserInfo() {
-  try {
-    return request(`/api/chat/user`, {
-      method: 'GET',
-    });
-  } catch (error) {
-    throw error;
-  }
+  return await request<API.User>(`/api/chat/user`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 }
 
 export async function getUserList(params: any) {
