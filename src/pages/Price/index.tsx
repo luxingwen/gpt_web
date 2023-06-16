@@ -13,8 +13,60 @@ type StateType = {
 
 const { Content } = Layout;
 
-// const PricePage = (): { state: StateType; updateState: (newValue: StateType) => void } => {
-//   const [state, setState] = useState<StateType>(initialState);
+// AI百宝助手数据
+const TerasureBoxData = [{
+  title: '体验版',
+  price: '免费',
+  priceUnit: '',
+  disablePrice: '',
+  hit: '10次对话次数',
+  buttonText: '去使用',
+}, {
+  title: 'VIP1',
+  price: '5',
+  priceUnit: '日',
+  disablePrice: '6',
+  hit: '不限对话次数',
+  buttonText: '购买',
+}, {
+  title: 'VIP2',
+  price: '62',
+  priceUnit: '月',
+  disablePrice: '99',
+  hit: '不限对话次数',
+  buttonText: '购买',
+}, {
+  title: 'VIP3',
+  price: '298',
+  priceUnit: '年',
+  disablePrice: '398',
+  hit: '不限对话次数',
+  buttonText: '购买',
+},]
+
+// AI画涂数据
+const AIHuatuData = [{
+  num: 50,
+  price: '5'
+}, {
+  num: 100,
+  price: '10'
+}, {
+  num: 200,
+  price: '20'
+}, {
+  num: 300,
+  price: '30'
+}, {
+  num: 500,
+  price: '50'
+}, {
+  num: 1000,
+  price: '100'
+},]
+
+
+
 const PricePage = () => {
   // 初始位置是0
   const [headerSelect, setHeaderSelect] = useState<number>(0);
@@ -47,10 +99,10 @@ const PricePage = () => {
           <Personalise />
         </div>
         <div style={{ display: headerSelect == 1 ? '' : 'none' }}>
-          <TerasureBox />
+          <TerasureBox data={TerasureBoxData} />
         </div>
         <div style={{ display: headerSelect == 2 ? '' : 'none' }}>
-          <Painted />
+          <Painted data={AIHuatuData} />
         </div>
         <div style={{ display: headerSelect == 3 ? '' : 'none' }}>
           <Enterprise />

@@ -2,17 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 import '../index.less';
 
-// type StateType = {
-//     // 在这里定义你的状态类型
-// };
-// const PricePage = (): { state: StateType; updateState: (newValue: StateType) => void } => {
-//   const [state, setState] = useState<StateType>(initialState);
-
-// 按钮
-// interface IHeaderShowText {
-//     text: string
-//     index: number
-// }
 
 // props
 type ClickCallback = (status: number) => void;
@@ -49,7 +38,7 @@ const PriceHeader: React.FC<PriceHeaderProps> = ({ onClickCallBack }) => {
 
   //   return { state, updateState };
   return (
-    <>
+    <div className='price'>
       <div className="price-header">
         {showText.map((item, index, _) => {
           // console.log(index)
@@ -72,7 +61,7 @@ const PriceHeader: React.FC<PriceHeaderProps> = ({ onClickCallBack }) => {
           );
         })}
       </div>
-    </>
+    </div>
   );
 };
 

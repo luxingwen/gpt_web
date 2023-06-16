@@ -1,34 +1,237 @@
-.price-header {
+.price {
+  width: 100%;
   display: flex;
-  height: 48px;
-  width: 637px;
-  background-color: rgba(219, 224, 253, 1);
-  margin: 71px 340px 0px 303px;
-  border-radius: 24px;
-  .price-header-button {
+  justify-content: center;
+
+  .price-header {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 40px;
-    width: 150px;
-    margin: 4px 5px;
-    border-radius: 20px;
-    font-size: 16px;
-    font-weight: 400;
-    .show-font {
-      cursor: pointer;
+    height: 48px;
+    width: 637px;
+    background-color: rgba(219, 224, 253, 1);
+    margin-top: 85px;
+    border-radius: 24px;
+
+    .price-header-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 40px;
+      width: 150px;
+      margin: 4px 5px;
+      border-radius: 20px;
+      font-size: 16px;
+      font-weight: 400;
+
+      .show-font {
+        cursor: pointer;
+      }
     }
-  }
-  .on-select {
-    background-color: rgba(75, 100, 243, 1);
-    color: rgba(255, 255, 255, 1);
-  }
-  .other {
-    color: rgba(75, 100, 243, 1);
+
+    .on-select {
+      background-color: rgba(75, 100, 243, 1);
+      color: rgba(255, 255, 255, 1);
+    }
+
+    .other {
+      color: rgba(75, 100, 243, 1);
+    }
   }
 }
 
 .painted {
-  margin: 66px 233px 0px 234px;
-  background-color: papayawhip;
+  margin-top: 66px;
+  display: flex;
+  justify-content: center;
+
+  .body {
+    display: flex;
+    flex-direction: column;
+
+    .huabei-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .huabei {
+        width: 226px;
+        height: 95px;
+        opacity: 1;
+        border-radius: 3px;
+        font-family: '思源黑体';
+        font-weight: 700;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+
+        .hit1 {
+          font-size: 22px;
+          color: #808080;
+        }
+
+        .hit2 {
+          font-size: 22px;
+          color: #ffffff;
+        }
+
+        .price1 {
+          display: inline-block;
+          font-size: 30px;
+        }
+
+        .price2 {
+          display: inline-block;
+          font-size: 22px;
+          margin-left: 4px;
+        }
+      }
+
+      .un-select {
+        border: 1px solid #A6A6A6;
+        color: #000000;
+        cursor: pointer;
+      }
+
+      .is-select {
+        background: #4B64F3;
+        color: #ffffff;
+      }
+
+      .buy-btn {
+        margin-top: 81px;
+        width: 152px;
+        height: 42px;
+        opacity: 1;
+        border-radius: 3px;
+        background: #4B64F3;
+        font-family: '思源黑体';
+        font-size: 22px;
+        font-weight: 400;
+        color: #ffffff;
+      }
+
+
+    }
+
+    .point {
+      margin-top: 63px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    table.mytable {
+      width: 361px;
+      border: 1px solid #444;
+      border-spacing: 0;
+      margin-top: 26px;
+    }
+
+    table.mytable tr,
+    table.mytable th {
+      border-bottom: 1px solid #444
+    }
+
+    table.mytable td,
+    table.mytable th {
+      border-right: 1px solid #444;
+      border-bottom: 1px solid #444;
+      padding: 5px;
+    }
+
+    table.mytable tr td:last-child {
+      border-right: 0
+    }
+
+    table.mytable tr:last-child td {
+      border-bottom: 0
+    }
+  }
+
+}
+
+// AI百宝助手
+.terasure-page {
+  display: flex;
+  justify-content: center;
+  margin-top: 75px;
+  margin-bottom: 63px;
+
+  .vip-box {
+    width: 213px;
+    height: 277px;
+    opacity: 1;
+    border-radius: 3px;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: '思源黑体';
+
+    .title {
+      margin-top: 16px;
+      font-size: 16px;
+      font-weight: 400;
+      color: #808080;
+    }
+
+    .price-line {
+      margin-top: 18px;
+    }
+
+    .price1 {
+      display: inline-block;
+      font-size: 30px;
+      font-weight: 700;
+      color: #000000;
+    }
+
+    .price2 {
+      display: inline-block;
+      font-size: 16px;
+      font-weight: 700;
+      color: #000000;
+    }
+
+    .disable {
+      margin-left: 4px;
+      font-size: 16px;
+      font-weight: 400;
+      color: #808080;
+      text-decoration: line-through
+    }
+
+    .hit {
+      margin-top: 32px;
+      font-size: 16px;
+      font-weight: 400;
+      color: #808080;
+    }
+
+    .buy-btn {
+      margin-top: 46px;
+      width: 125px;
+      height: 37px;
+      opacity: 1;
+      border-radius: 3px;
+    }
+
+    .select {
+      background: #4B64F2;
+      color: #FFFFFF;
+    }
+
+    .un-select {
+      background: #DBE0FD;
+      color: #4B64F2;
+    }
+  }
+
+  .is-select {
+    border: 1px solid #4B64F3;
+  }
+
+  .un-select {
+    border: 1px solid #A6A6A6;
+  }
+
 }
