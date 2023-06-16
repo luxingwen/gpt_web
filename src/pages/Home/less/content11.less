@@ -1,10 +1,143 @@
+// 背景色
+#Content11_2 {
+  .area-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    display: grid;
+    grid-template-columns: 50fr 45fr 40fr 50fr;
+    grid-template-rows: 34fr 30fr 27fr;
+    grid-gap: 0px;
+    width: 100vw;
+    height: 100%;
+    .item1 {
+      background: #4960e622;
+    }
+    .item2 {
+      background: #4960e618;
+    }
+    .item3 {
+      background: #4960e612;
+    }
+    .item4 {
+      background: #4960e618;
+    }
+    .item5 {
+      background: #4960e612;
+    }
+    .item6 {
+      background: #4960e610;
+    }
+    .item7 {
+      background: #4960e608;
+    }
+    .item8 {
+      background: #4960e610;
+    }
+    .item9 {
+      background: #4960e608;
+    }
+    .item10,
+    .item11,
+    .item12 {
+      background: transparent;
+    }
+  }
+}
+// 背景色
+#Content11_1 .area-box {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: grid;
+  z-index: -1;
+  grid-template-columns: 50fr 40fr 45fr 50fr;
+  grid-template-rows: 34fr 30fr 27fr;
+  grid-gap: 0px;
+  width: 100vw;
+  height: 100%;
+  .item1 {
+    background: #ea767602;
+  }
+  .item2 {
+    background: #ea767606;
+  }
+  .item3 {
+    background: #ea767608;
+  }
+  .item10 {
+    background: #ea767612;
+  }
+
+  .item4 {
+    background: #ea767602;
+  }
+  .item5 {
+    background: #ea767608;
+  }
+  .item6 {
+    background: #ea767611;
+  }
+  .item11 {
+    background: #ea767618;
+  }
+
+  .item7 {
+    background: #ea767602;
+  }
+  .item8 {
+    background: #ea767612;
+  }
+  .item9 {
+    background: #ea767618;
+  }
+  .item12 {
+    background: #ea767622;
+  }
+}
+// 手机截屏 pc
+.content11-comp-imgs-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  margin: 48px auto 100px auto;
+  max-width: 1200px;
+  img {
+    height: auto;
+    width: 20%;
+    cursor: pointer;
+    &.w100 {
+      width: 80%;
+    }
+  }
+}
+// 手机截屏 mobile
+@media (max-width: 767px) {
+  .content11-comp-imgs-box {
+    flex-direction: column;
+    width: 50%;
+    margin: 48px auto 100px auto;
+    &.one-img {
+      width: 100%;
+    }
+    img {
+      margin: 12px 0;
+      width: 100%;
+    }
+  }
+}
+
 @content11: content11;
 .@{content11}-wrapper {
-  height: 480px;
-  background: url('https://gw.alipayobjects.com/zos/rmsportal/ZsWYzLOItgeaWDSsXdZd.svg')
-    no-repeat bottom;
-  background-size: cover;
-  background-size: 100%;
+  &#Content11_0 {
+    height: 480px;
+    background: url('https://gw.alipayobjects.com/zos/rmsportal/ZsWYzLOItgeaWDSsXdZd.svg')
+      no-repeat bottom;
+    background-size: cover;
+    background-size: 100%;
+  }
   margin: 0 auto;
   overflow: hidden;
   padding-top: 96px;

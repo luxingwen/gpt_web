@@ -472,6 +472,7 @@ export const Content00DataSource = {
   },
 };
 export const Content110DataSource = {
+  show: 'Content110DataSource',
   OverPack: {
     className: 'home-page-wrapper content11-wrapper litzi2q9rbp-editor_css',
     playScale: 0.3,
@@ -525,6 +526,7 @@ export const Content110DataSource = {
   },
 };
 export const Content112DataSource = {
+  show: 'Content112DataSource',
   OverPack: {
     className: 'home-page-wrapper content11-wrapper liu0tjyzzl-editor_css',
     playScale: 0.3,
@@ -570,6 +572,7 @@ export const Content112DataSource = {
   },
 };
 export const Content111DataSource = {
+  show: 'Content111DataSource',
   OverPack: {
     className: 'home-page-wrapper content11-wrapper liu1dpidvk-editor_css',
     playScale: 0.3,
@@ -615,6 +618,7 @@ export const Content111DataSource = {
   },
 };
 export const Content113DataSource = {
+  show: 'Content113DataSource',
   OverPack: {
     className: 'home-page-wrapper content11-wrapper liu0w9jvn3u-editor_css',
     playScale: 0.3,
