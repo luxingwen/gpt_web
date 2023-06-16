@@ -13,7 +13,11 @@ export async function wxlogin() {
 }
 
 export async function getUserInfo() {
-  return await request<API.User>(`/api/chat/user`, {
+  return await request<{
+    data: API.User;
+    errmsg: string;
+    errno: number;
+  }>(`/api/chat/user`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

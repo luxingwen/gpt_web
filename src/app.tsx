@@ -20,7 +20,7 @@ export async function getInitialState(): Promise<{
   const fetchUserInfo = async () => {
     try {
       const response = await getUserInfo();
-      return response;
+      return response.data;
     } catch (error) {
       return undefined;
     }

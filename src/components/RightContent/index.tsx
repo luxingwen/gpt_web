@@ -18,7 +18,7 @@ export default function RightContent() {
 
   const currentUser = initialState?.currentUser;
   const fetchUserInfo = initialState?.fetchUserInfo;
-
+  console.log('RightContent', currentUser);
   const handleClickLogin = async () => {
     Cookies.set('token', defaultToken);
     const res = await fetchUserInfo?.();
