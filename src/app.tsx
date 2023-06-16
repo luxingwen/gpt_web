@@ -5,8 +5,9 @@
  * @Email: draco.coder@gmail.com
  * @Github: https://github.com/draco-china
  * @Date: 2023-06-15 17:15:45
- * @LastEditTime: 2023-06-15 17:59:15
+ * @LastEditTime: 2023-06-16 10:23:47
  */
+import RightContent from '@/components/RightContent';
 import type { AxiosError, RequestConfig, RequestOptions } from '@umijs/max';
 import { RunTimeLayoutConfig } from '@umijs/max';
 import { Space, Typography } from 'antd';
@@ -16,8 +17,25 @@ import Cookies from 'js-cookie';
 
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 // 更多信息见文档：https://umijs.org/docs/api/runtime-config#getinitialstate
-export async function getInitialState(): Promise<{ name: string }> {
-  return { name: '@umijs/max' };
+export async function getInitialState(): Promise<{
+  currentUser?: {
+    name?: string;
+  };
+  fetchUserInfo: () => Promise<
+    | {
+        name?: string;
+      }
+    | undefined
+  >;
+}> {
+  const fetchUserInfo = async () => {
+    try {
+      return { name: 'draco' };
+    } catch (error) {
+      return undefined;
+    }
+  };
+  return { currentUser: await fetchUserInfo(), fetchUserInfo };
 }
 
 export const layout: RunTimeLayoutConfig = () => {
@@ -34,6 +52,11 @@ export const layout: RunTimeLayoutConfig = () => {
     pwa: false,
     menu: { locale: false },
     collapsedButtonRender: false,
+    rightContentRender: () => <RightContent />,
+    menuContentRender: (props, defaultDom) => {
+      console.log(props);
+      return defaultDom;
+    },
     menuFooterRender: () => {
       return (
         <Space
