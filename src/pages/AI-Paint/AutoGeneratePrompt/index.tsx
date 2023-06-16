@@ -44,7 +44,7 @@ function AutoGeneratePrompt() {
         <Space size={[0, 8]} wrap>
           {items.map((item) => (
             <Tag
-              className="px-4 py-2 bg-[rgba(246,_246,_246,_1); text-[rgba(56,56,56,_1] text-xs border-none cursor-pointer"
+              className="px-4 py-2 bg-[rgba(246,_246,_246,_1); text-[rgba(56,56,56,_1] text-base border-none cursor-pointer"
               key={item.key}
               onClick={(e) => {
                 e.preventDefault();
@@ -64,7 +64,7 @@ function AutoGeneratePrompt() {
         <Space size={[0, 8]} wrap>
           {items.map((item) => (
             <Tag
-              className="px-2 py-1 bg-[rgba(234,_237,_240,_1); text-[rgba(56,56,56,_1] text-base border-none cursor-pointer"
+              className="px-3 py-2 bg-[rgba(234,_237,_240,_1); text-[rgba(56,56,56,_1]  border-none cursor-pointer"
               key={item.key}
               closable
               onClose={(e) => {
