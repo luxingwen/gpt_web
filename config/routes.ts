@@ -62,17 +62,6 @@ export default [
   {
     name: '个性化数字人',
     path: '/smart-ai',
-    routes: [
-      {
-        name: '场景广场',
-        path: 'scene',
-        component: './SmartChat/SceneList',
-      },
-      {
-        name: '创建场景',
-        path: 'scence/create',
-        component: './SmartChat/CreateScence',
-      },
-    ],
+    component: './SmartChat',
   },
 ];
