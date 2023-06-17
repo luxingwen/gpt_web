@@ -397,29 +397,7 @@ const Index = ({
         )}
       </>
     );
-<<<<<<< HEAD
-  }
-  console.log('--------------------');
-
-  // const renderMessages = ()=>{
-  //   return (
-  //     <>
-  //       {messages.map((item, index) => (
-  //         <ChatMessage
-  //           key={item.msg_id || `message-${index}`}
-  //           msg={{ ...item, is_end: (index === (messages.length - 1)) && !isMsgEnd }}
-  //         />
-  //       ))}
-  //     </>
-  //   )
-  // }
-  
-=======
-  };
-
-
-
->>>>>>> 16c516fd0b7fdfb16afadb7dbee7105bec779850
+  }  
   return (
     <div
       className="chat-box-component"
@@ -427,19 +405,7 @@ const Index = ({
       id="chartFullScreen"
     >
       <div className="w100 scroll-box" ref={messagesContainerRef}>
-<<<<<<< HEAD
         <Messages messages={messages} isMsgEnd={isMsgEnd}/>
-=======
-        {messages.map((item, index) => (
-          <ChatMessage
-            key={item.msg_id || `message-${index}`}
-            msg={{
-              ...item,
-              is_end: index === messages.length - 1 && !isMsgEnd,
-            }}
-          />
-        ))}
->>>>>>> 16c516fd0b7fdfb16afadb7dbee7105bec779850
         <div className="ai-asnswer-tips tc">
           -- 问答结果由AI生成，仅供参考 --
         </div>
