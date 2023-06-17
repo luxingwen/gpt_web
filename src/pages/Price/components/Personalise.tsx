@@ -4,6 +4,7 @@ import { CheckCircleTwoTone } from '@ant-design/icons';
 
 
 import '../index.less';
+import BuyCard from './BuyCard';
 
 interface PersonHeaderProps {
   select: number
@@ -41,14 +42,7 @@ const PersonHeader: React.FC<PersonHeaderProps> = ({ select, callBack }) => {
 }
 
 
-interface IPersonCard {
-  title: string
-  price: string
-  priceUnit: string
-  hit: Array<string>
-  buttonText: string
-  isHot: boolean
-}
+
 interface PersonCardProps {
   select: number
   index: number
@@ -57,7 +51,6 @@ interface PersonCardProps {
 }
 const PersonCard: React.FC<PersonCardProps> = ({ select, index, info, callBack }) => {
 
-  console.log(info.hit)
   return <>
     {
       index == select ?
@@ -111,11 +104,13 @@ const PersonCard: React.FC<PersonCardProps> = ({ select, index, info, callBack }
 
 interface PersonaliseProps {
   digitalHumanData: Array<IPersonCard>
+  buyData: Array<IBuyInfo>
 }
-const Personalise: React.FC<PersonaliseProps> = ({ digitalHumanData, }) => {
+const Personalise: React.FC<PersonaliseProps> = ({ digitalHumanData, buyData }) => {
 
   const [headerSelectState, setHeaderSelectState] = useState<number>(0);
   const [cardSelectState, setCardSelectState] = useState<number>(0);
+  const [buyCardSelectState, setBuyCardSelectState] = useState<number>(0);
 
   const headerCallBack = (index: number) => {
     setHeaderSelectState(index)
@@ -125,16 +120,35 @@ const Personalise: React.FC<PersonaliseProps> = ({ digitalHumanData, }) => {
     setCardSelectState(index)
   }
 
+  const buyCallBack = (index: number) => {
+    setBuyCardSelectState(index)
+  }
+
+
   return <>
     <div className='person'>
       <PersonHeader select={headerSelectState} callBack={headerCallBack} />
-      <div className='card-list'>
-        <Row gutter={73}>
-          {digitalHumanData.map((item, index, _) => (
-            <Col><PersonCard select={cardSelectState} index={index} callBack={cardCallBack} info={item} key={index} /></Col>
-          ))}
-        </Row>
-      </div>
+      {headerSelectState == 0 ?
+        <div className='card-list'>
+          <Row gutter={73}>
+            {digitalHumanData.map((item, index, _) => (
+              <Col><PersonCard select={cardSelectState} index={index} callBack={cardCallBack} info={item} key={index} /></Col>
+            ))}
+          </Row>
+        </div> :
+        <div className='buy-list'>
+          <Row gutter={41}>
+            {
+              buyData.map((item, index, _) => (
+                <Col>
+                  <BuyCard info={item} isSelect={buyCardSelectState == index} index={index} key={item.title + index} changeCallBack={buyCallBack} />
+                </Col>
+              ))
+            }
+          </Row>
+        </div>
+      }
+
     </div>
   </>;
 };

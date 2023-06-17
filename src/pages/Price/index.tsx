@@ -34,6 +34,7 @@ const TerasureBoxData = [{
   priceUnit: '月',
   disablePrice: '99',
   hit: '不限对话次数',
+  isHot: true,
   buttonText: '购买',
 }, {
   title: 'VIP3',
@@ -91,6 +92,32 @@ const PersonaliseData = {
   },]
 }
 
+// AI百宝助手数据
+const BuyPersonaliseData = [
+  {
+    title: 'VIP1',
+    price: '5',
+    priceUnit: '日',
+    disablePrice: '6',
+    hit: '不限对话次数',
+    buttonText: '购买',
+  }, {
+    title: 'VIP2',
+    price: '62',
+    priceUnit: '月',
+    disablePrice: '99',
+    hit: '不限对话次数',
+    isHot: true,
+    buttonText: '购买',
+  }, {
+    title: 'VIP3',
+    price: '298',
+    priceUnit: '年',
+    disablePrice: '398',
+    hit: '不限对话次数',
+    buttonText: '购买',
+  },]
+
 const PricePage = () => {
   const [headerSelect, setHeaderSelect] = useState<number>(0);
 
@@ -104,7 +131,7 @@ const PricePage = () => {
       <Content>
         <PriceHeader onClickCallBack={handleHeaderClick} />
         <div style={{ display: headerSelect == 0 ? '' : 'none' }}>
-          <Personalise digitalHumanData={PersonaliseData.digitalHuman} />
+          <Personalise digitalHumanData={PersonaliseData.digitalHuman} buyData={BuyPersonaliseData}/>
         </div>
         <div style={{ display: headerSelect == 1 ? '' : 'none' }}>
           <TerasureBox data={TerasureBoxData} />

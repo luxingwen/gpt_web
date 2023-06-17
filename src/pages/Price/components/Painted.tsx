@@ -4,10 +4,6 @@ import { Space, Row, Col, Button } from 'antd';
 import '../index.less';
 
 
-interface IHuaBei {
-  num: number
-  price: string
-}
 interface HuabeiBoxProps {
   info: IHuaBei
   isSelect: boolean

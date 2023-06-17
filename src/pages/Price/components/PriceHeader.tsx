@@ -29,7 +29,6 @@ const PriceHeader: React.FC<PriceHeaderProps> = ({ onClickCallBack }) => {
     <div className='price'>
       <div className={`${"price-header"} ${"header"}`}>
         {showText.map((item, index, _) => {
-          // console.log(index)
           return index == headerState ? (
             <div
               className={`${'price-header-button'} ${'on-select'}`}
