@@ -1,5 +1,5 @@
 import { FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons';
-import { Input, message } from 'antd';
+import { Input, message, Modal } from 'antd';
 import { useCallback, useEffect, useMemo, useRef, useState, memo } from 'react';
 import { useModel } from '@umijs/max';
 import AiLogo from '@/assets/images/logo.png';
@@ -139,9 +139,38 @@ const Index = ({
     if (input) {
       queryQuestion(input)
         .then((res) => {
-          console.log('query Question', res.data);
+          console.log('query Question', res);
+          // 剩余次数不足，提示购买次数
+          if(res.errno == 4002){
+            Modal.info({
+              title: '提示',
+              content: (
+                <div>
+                  <p>剩余次数不足，请购买次数</p>
+                </div>
+              ),
+              maskClosable: true,
+              closable: true,
+              cancelText: '取消',
+              okText: '去购买',
+              okButtonProps: {
+                style: {
+                  backgroundColor: '#4b64f3'
+                }
+              },
+
+              onCancel(){
+                console.log('取消');
+              },
+              onOk() {
+                console.log('去购买');
+              },
+            });
+            return
+          }
           if (res.errno !== 0) {
-            return;
+            message.error(res.errmsg)
+            return
           }
           setMessages([
             ...messages,
