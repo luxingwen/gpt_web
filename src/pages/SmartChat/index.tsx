@@ -30,7 +30,7 @@ const SmartChatPage: React.FC = () => {
   ];
 
   return (
-    <Layout  className='flex -mt-6 -mx-10'>
+    <Layout className="flex -mt-6 -mx-10">
       <Layout style={{ padding: 0 }}>
         <LeftNav
           items={items}

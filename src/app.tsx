@@ -8,6 +8,7 @@ import { GlobalScrollbar } from 'mac-scrollbar';
 import 'mac-scrollbar/dist/mac-scrollbar.css';
 
 import { getUserInfo } from '@/service/user';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
 // 运行时配置
 
@@ -67,7 +68,9 @@ export const layout: RunTimeLayoutConfig = () => {
             width: '100%',
           }}
         >
-          <Typography.Text>如何使用AI画涂？</Typography.Text>
+          <a href="" target="_blank" className="text-black">
+            <QuestionCircleOutlined /> 如何使用AI画涂？
+          </a>
           <Typography.Text type="secondary">copyright@AI云助手</Typography.Text>
         </Space>
       );
