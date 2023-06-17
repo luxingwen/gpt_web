@@ -17,6 +17,7 @@ interface SmartChatPageProps {
 const SmartChatPage: React.FC<SmartChatPageProps> = ({ sceneId, sessionId }) => {
 
   const [sessionInfo, setSessionInfo] = useState<API.ChatSessionInfo>();
+  const [scenceInfo, setScenceInfo] = useState<API.SmartSceneInfo>();
   console.log("sceneId:", sceneId);
   console.log("sessionId:", sessionId);
 
@@ -29,6 +30,8 @@ const SmartChatPage: React.FC<SmartChatPageProps> = ({ sceneId, sessionId }) => 
         if (resSceneInfo.errno !== 0) {
           return;
         }
+
+        setScenceInfo(resSceneInfo.data);
 
         const response = await getSessionInfo({
           scene_id: resSceneInfo.data.scene_id,
@@ -54,12 +57,16 @@ const SmartChatPage: React.FC<SmartChatPageProps> = ({ sceneId, sessionId }) => 
 
   return (
     <PageContainer title={false} breadcrumb={false} >
-      <ChatBox
+      {sessionInfo && <ChatBox
         showFullScreen={true}
         showVisitDiscourse={true}
         showOpenNewChat={true}
         sendBtnType="2"
-      />
+        chat_type="smart-chat"
+        session_id={sessionInfo?.id}
+        scene_id={sessionInfo?.scene_id}
+        aiAvatar={scenceInfo?.ai_avatar}
+      /> }
     </PageContainer>
   );
 };

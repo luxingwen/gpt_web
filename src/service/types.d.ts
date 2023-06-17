@@ -9,6 +9,7 @@ declare namespace API {
 
   // 消息类型定义
   export interface MessageType {
+    id: any;
     msg_id: any;
     msg: string;
     self: boolean;

@@ -1,5 +1,6 @@
 import { List } from 'antd';
 import React, { useState, useEffect } from 'react';
+import { history } from '@umijs/max';
 
 import { getSessionList } from '@/service/ai-chat';
 
@@ -19,17 +20,23 @@ const HistorySession: React.FC<HistorySessionProps> = ({
 
   const [queryArgs, setQueryArgs] = useState<API.ReqChatSessionList>({ chat_type, scene_id, page: 1, per_page: 10 })
 
+  const [historySessions, setHistorySessions] = useState<API.ChatSession[]>([])
+
   useEffect(() => {
     getSessionList(queryArgs).then(res => {
-      console.log(res);
+      console.log('res session:', res);
+      if (res.errno === 0) {
+        setHistorySessions(res.data.data);
+      }
     })
   }, [queryArgs])
 
-  const historySessions = [
-    { name: 'Session 1' },
-    { name: 'Session 2' },
-    { name: 'Session 3' },
-  ];
+
+  const handleSessionClick = (session_id: number) => {
+    if (chat_type === 'smart-chat') {
+      history.push(`/smart-ai/chat/c/${session_id}`);
+    }
+  }
 
   return (
     <div style={{ marginLeft: '20px' }}>
@@ -37,7 +44,7 @@ const HistorySession: React.FC<HistorySessionProps> = ({
       <List
         dataSource={historySessions}
         renderItem={(session) => (
-          <List.Item onClick={() => onClick(0)} style={{ cursor: 'pointer' }}>
+          <List.Item onClick={() => handleSessionClick(session.id)} style={{ cursor: 'pointer' }}>
             {session.name}
           </List.Item>
         )}
