@@ -1,7 +1,6 @@
 import AiLogo from '@/assets/images/logo.png';
 import { FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons';
-import { useModel } from '@umijs/max';
-import { Input, message } from 'antd';
+import { Input, message, Button, Modal } from 'antd';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { getHistoryChatMessage, queryQuestion } from '@/service/api';
@@ -10,9 +9,13 @@ import { wssocket } from '@/utils/ws_socket';
 import ChatMessage from '@/components/ChatBox/ChatMessage';
 import './index.less';
 import { toogleFullScreen } from './utils';
+import { smartChatCompletions } from '@/service/smart-chat';
+
 
 const TRYING_MSG = '正在努力思考...';
 const END_MSG = '###### [END] ######';
+
+
 
 const Index = ({
   placeholderText = '',
@@ -20,17 +23,23 @@ const Index = ({
   showVisitDiscourse = false,
   showOpenNewChat = false,
   sendBtnType = '1', // [1 输入框右外侧] [2输入框右内侧]
+  chat_type = 'ai-chat', // ai-chat | smart-chat
+  scene_id = '', // 智能场景id
+  session_id = 0, // 会话id
 }) => {
   const { initialState, setInitialState } = useModel('@@initialState');
-
   const currentUser = initialState?.currentUser;
-
   const [messages, setMessages] = useState<API.MessageType[]>([]);
   const [input, setInput] = useState('');
   const messagesContainerRef = useRef(null);
 
   const [isMsgEnd, setIsMsgEnd] = useState(true);
   const [loadAllMsg, setLoadAllMsg] = useState(false);
+
+
+
+
+
   const [historyQuery, setHistoryQuery] = useState({
     page: 0,
     per_page: 10,
@@ -120,6 +129,42 @@ const Index = ({
       });
   };
 
+
+
+  // 处理发送消息
+  const hanedleRequestQuestion = (question) => {
+    const handleMsg = (msg) => {
+      setMessages([
+        ...messages,
+        { msg_id: 'u-' + msg.id, msg: input, self: true, is_end: true, time: +new Date(), avatar: currentUser.avatar },
+        {
+          msg: TRYING_MSG,
+          self: false,
+          msg_id: 'ai-' + msg.id,
+          is_end: false,
+          avatar: AiLogo,
+        },
+      ]);
+      setIsMsgEnd(false);
+    };
+
+    if (chat_type === 'ai-chat') {
+      const quessionRes = queryQuestion(question);
+      if (quessionRes.errno !== 0) {
+        return;
+      }
+      handleMsg(quessionRes.data);
+
+    } else {
+      const quessionRes = smartChatCompletions({ content: question, scene_id: scene_id, session_id: session_id });
+      if (quessionRes.errno !== 0) {
+        return;
+      }
+      handleMsg(quessionRes.data);
+    }
+  };
+
+
   const handleSend = () => {
     if (!isMsgEnd) {
       message.error('请等待机器人回复后再发送消息');
@@ -127,36 +172,7 @@ const Index = ({
     }
 
     if (input) {
-      queryQuestion(input)
-        .then((res) => {
-          console.log('query Question', res.data);
-          if (res.errno !== 0) {
-            return;
-          }
-          setMessages([
-            ...messages,
-            {
-              msg_id: 'u-' + res.data.id,
-              msg: input,
-              self: true,
-              is_end: true,
-              time: +new Date(),
-              avatar: currentUser.avatar,
-            },
-            {
-              msg: TRYING_MSG,
-              self: false,
-              msg_id: 'ai-' + res.data.id,
-              is_end: false,
-              avatar: AiLogo,
-            },
-          ]);
-          setIsMsgEnd(false);
-        })
-        .catch((err) => {
-          console.log('query Question', err);
-        });
-
+      hanedleRequestQuestion(input)
       setInput('');
     }
   };
@@ -169,6 +185,11 @@ const Index = ({
   };
 
   useEffect(() => {
+
+    if (!currentUser) {
+      return;
+    }
+
     getHistoryChatMessage(historyQuery)
       .then((res) => {
         let msgList = [];
@@ -343,6 +364,9 @@ const Index = ({
       </>
     );
   };
+
+
+
   return (
     <div
       className="chat-box-component"
@@ -369,6 +393,8 @@ const Index = ({
         {/* 不同类型的输入框 */}
         {renderInputContent()}
       </div>
+
+
     </div>
   );
 };

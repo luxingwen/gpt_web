@@ -3,6 +3,9 @@ import { PageContainer } from '@ant-design/pro-layout';
 import './index.less';
 
 const ChatPage = () => {
+
+  
+
   return (
     <PageContainer title={false} breadcrumb={false}>
       <ChatBox
@@ -14,5 +17,4 @@ const ChatPage = () => {
     </PageContainer>
   );
 };
-
 export default ChatPage;

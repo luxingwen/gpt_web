@@ -56,7 +56,7 @@ const VerticalNav: React.FC<VerticalNavProps> = ({
           }}
         >
           <p style={{ margin: 0 }}>
-            版权信息 © 2023 Company Name. All Rights Reserved.
+           copyright@AI云助手
           </p>
         </div>
       </div>
