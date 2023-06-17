@@ -11,6 +11,8 @@ import './index.less';
 import { toogleFullScreen } from './utils';
 import { smartChatCompletions } from '@/service/smart-chat';
 
+import { useModel } from 'umi';
+
 
 const TRYING_MSG = '正在努力思考...';
 const END_MSG = '###### [END] ######';
