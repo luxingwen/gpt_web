@@ -1,8 +1,8 @@
 /*
  * @Author: Draco draco.coder@gmail.com
  * @Date: 2023-06-16 18:51:08
- * @LastEditors: Draco draco.coder@gmail.com
- * @LastEditTime: 2023-06-16 20:01:25
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-06-17 15:00:58
  * @FilePath: /gpt_web/src/pages/AI-Paint/Drawing/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -109,10 +109,10 @@ function Drawing() {
       <Space>
         <Button>再画一次</Button>
         <Button>保存图片</Button>
-        <Button>分享</Button>
-        <Button type="primary" className=" bg-[rgba(75,_100,_243,_1)]">
-          展出作品
+        <Button type="primary" className="text-primary bg-secondary">
+          分享
         </Button>
+        <Button type="primary">展出作品</Button>
       </Space>
     </PageContainer>
   );

@@ -6,24 +6,16 @@
 .ant-menu.ant-menu-horizontal > .ant-menu-item-selected,
 .ant-menu-horizontal > .ant-menu-submenu-selected,
 .ant-menu.ant-menu-horizontal > .ant-menu-submenu-selected {
-  color: rgba(75, 100, 243, 100%) !important;
-  border-bottom: 2px solid rgba(75, 100, 243, 100%) !important;
+  color: var(--color-primary) !important;
+  border-bottom: 2px solid var(--color-primary) !important;
   border-radius: 0 !important;
   background-color: transparent !important;
 }
 
 .ant-menu-item-selected,
 .ant-menu .ant-menu-item-selected {
-  background-color: rgba(75, 100, 243, 100%) !important;
+  background-color: var(--color-primary) !important;
   color: #fff !important;
-}
-
-.ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-  color: rgba(75, 100, 243, 100%) !important;
-}
-
-.ant-tabs .ant-tabs-ink-bar {
-  background-color: rgba(75, 100, 243, 100%) !important;
 }
 
 .pr {

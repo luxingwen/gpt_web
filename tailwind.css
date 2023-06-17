@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --color-primary-rgb: 75 100 243;
+  --color-primary: rgb(var(--color-primary-rgb));
+  --color-secondary-rgb: 220 224 251;
+  --color-secondary: rgb(var(--color-secondary-rgb));
+}

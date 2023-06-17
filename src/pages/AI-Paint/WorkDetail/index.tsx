@@ -1,8 +1,8 @@
 /*
  * @Author: Draco draco.coder@gmail.com
  * @Date: 2023-06-16 18:51:08
- * @LastEditors: Draco draco.coder@gmail.com
- * @LastEditTime: 2023-06-17 12:44:27
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-06-17 15:01:06
  * @FilePath: /gpt_web/src/pages/AI-Paint/Drawing/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -65,16 +65,11 @@ function Drawing() {
         <ProDescriptions.Item label="模型">上课的军事基地</ProDescriptions.Item>
         <ProDescriptions.Item label="像素尺寸">1280*1280</ProDescriptions.Item>
       </ProDescriptions>
-      <Space className=" mt-16">
-        <Button
-          type="primary"
-          className=" bg-[rgba(220,_224,_251,_1)] text-[rgba(80,_99,_234,_1)]"
-        >
+      <Space className="mt-16">
+        <Button type="primary" className="text-primary bg-secondary">
           分享
         </Button>
-        <Button type="primary" className=" bg-[rgba(75,_100,_243,_1)]">
-          画同款
-        </Button>
+        <Button type="primary">画同款</Button>
       </Space>
     </PageContainer>
   );

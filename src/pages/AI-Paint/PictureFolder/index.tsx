@@ -57,12 +57,7 @@ function PictureFolder() {
           </Space>
         }
         toolBarRender={() => [
-          <Button
-            key="1"
-            className=" bg-[rgba(75,_100,_243,_1)]"
-            type="primary"
-            onClick={() => setChecked(!checked)}
-          >
+          <Button key="1" type="primary" onClick={() => setChecked(!checked)}>
             {checked ? '取消' : '管理'}
           </Button>,
         ]}
@@ -74,12 +69,12 @@ function PictureFolder() {
                 <div className="w-full">
                   {checked && (
                     <CheckCircleFilled
-                      className={` text-lg absolute top-2 left-2 ${
+                      className={`absolute top-2 left-2 border rounded-full ${
                         selectedRows.findIndex(
                           (item) => item.title === record.title,
                         ) > -1
-                          ? 'text-[#4b64f3]'
-                          : 'text-[#e5e5e5]'
+                          ? ' text-primary'
+                          : 'text-transparent'
                       }`}
                     />
                   )}
@@ -127,17 +122,13 @@ function PictureFolder() {
           >
             <CheckCircleFilled
               className={`border rounded-full ${
-                isAll ? 'text-[#4b64f3]' : 'text-white '
+                isAll ? 'text-primary' : 'text-white '
               }`}
             />
             <span>全选</span>
           </Space>
           <span>已选择 2 张</span>
-          <Button
-            key="1"
-            className=" bg-[rgba(75,_100,_243,_1)]"
-            type="primary"
-          >
+          <Button key="1" type="primary">
             删除
           </Button>
         </div>

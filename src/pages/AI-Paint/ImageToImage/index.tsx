@@ -9,6 +9,7 @@ import {
   ProFormTextArea,
   ProFormUploadButton,
 } from '@ant-design/pro-components';
+import { Link } from '@umijs/max';
 import { Button, Collapse } from 'antd';
 import { useRef } from 'react';
 import RadioGroup from '../components/RadioGroup';
@@ -24,7 +25,6 @@ export default function TextToImage() {
             return [
               <Button
                 type="primary"
-                className="bg-[rgba(75,_100,_243,_1)]"
                 key="submit"
                 onClick={() => props.form?.submit?.()}
               >
@@ -49,9 +49,9 @@ export default function TextToImage() {
         <ProFormItem>
           <div className="flex justify-between place-items-end pb-2">
             <label>提示词</label>
-            <a className="w-24 py-2 text-xs flex justify-center bg-[rgba(220,_224,_251,_1)] text-[rgba(80,_99,_234,_1)]">
-              自动生成提示词
-            </a>
+            <Link to="auto-generate-prompt">
+              <span className="p-2 text-xs bg-secondary">自动生成提示词</span>
+            </Link>
           </div>
           <ProFormTextArea
             noStyle
@@ -161,10 +161,8 @@ export default function TextToImage() {
             ]}
             renderItem={(item) => {
               return (
-                <div className=" flex justify-center items-center w-16 h-16 bg-[rgba(220,_224,_251,_1)]">
-                  <span className=" text-[20px] text-[rgba(80,_99,_234,_1)]">
-                    {item.label}
-                  </span>
+                <div className=" flex justify-center items-center w-16 h-16 bg-secondary">
+                  <span className=" text-lg text-primary">{item.label}</span>
                 </div>
               );
             }}
