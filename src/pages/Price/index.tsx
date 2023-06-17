@@ -65,27 +65,35 @@ const AIHuatuData = [{
   price: '100'
 },]
 
-
+// 个性化数字人
+const PersonaliseData = {
+  digitalHuman: [{
+    title: '体验版',
+    price: '免费',
+    priceUnit: '',
+    hit: ['1个场景', '文件上传大小限制 1MB/文件', '文件上传个数限制 1个文件', '权限设置', '分享出去后，使用数字人的人数限制：20人/数字人', '分享出去后，使用者和数字人对话限制：10次/人'],
+    buttonText: '去使用',
+    isHot: false,
+  }, {
+    title: 'VIP1',
+    price: '798',
+    priceUnit: '月',
+    hit: ['20个场景', '文件上传大小限制 10MB/文件', '文件上传个数限制 50个文件', '权限设置', '分享出去后，使用数字人的人数限制：100人/数字人', '分享出去后，使用者和数字人对话限制：100次/人'],
+    buttonText: '购买',
+    isHot: false,
+  }, {
+    title: 'VIP2',
+    price: '7899',
+    priceUnit: '年',
+    hit: ['无限场景', '文件上传大小限制 10G/文件', '文件上传个数限制 1000个文件', '权限设置', '分享出去后，使用数字人的人数限制：无限/数字人', '分享出去后，使用者和数字人对话限制：100次/人'],
+    buttonText: '购买',
+    isHot: true,
+  },]
+}
 
 const PricePage = () => {
-  // 初始位置是0
   const [headerSelect, setHeaderSelect] = useState<number>(0);
 
-  //   useEffect(() => {
-  // 在组件挂载后执行的副作用逻辑
-  // 可以是数据获取、订阅事件、或其他需要在组件生命周期中处理的操作
-  // 如果需要清理副作用，可以返回一个清理函数
-  // return () => {
-  // 在组件卸载前执行的清理逻辑
-  // 可以取消订阅、清除定时器、释放资源等
-  // };
-  //   }, []); // [] 中可以添加依赖项，当依赖项变化时，重新执行副作用逻辑
-
-  //   const updateState = (newValue: StateType): void => {
-  //     setState(newValue);
-  //   };
-
-  //   return { state, updateState };
   const handleHeaderClick = (select: number) => {
     console.log('new index => ', select);
     setHeaderSelect(select);
@@ -96,7 +104,7 @@ const PricePage = () => {
       <Content>
         <PriceHeader onClickCallBack={handleHeaderClick} />
         <div style={{ display: headerSelect == 0 ? '' : 'none' }}>
-          <Personalise />
+          <Personalise digitalHumanData={PersonaliseData.digitalHuman} />
         </div>
         <div style={{ display: headerSelect == 1 ? '' : 'none' }}>
           <TerasureBox data={TerasureBoxData} />
