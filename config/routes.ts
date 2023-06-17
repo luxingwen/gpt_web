@@ -80,14 +80,26 @@ export default [
       {
         icon: 'book',
         name: ' 精选作品',
-        path: 'table',
-        component: './Table',
+        path: 'featured-works',
+        component: './AI-Paint/FeaturedWorks',
       },
       {
         icon: 'folder',
         name: '画夹',
         path: 'picture-folder',
         component: './AI-Paint/PictureFolder',
+      },
+      {
+        icon: 'heart',
+        name: '个人展出&收藏',
+        path: 'my-works',
+        component: './AI-Paint/MyWorks',
+      },
+      {
+        name: '作品详情',
+        path: 'work-detail',
+        component: './AI-Paint/WorkDetail',
+        hideInMenu: true,
       },
     ],
   },

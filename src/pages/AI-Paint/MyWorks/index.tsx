@@ -1,6 +1,6 @@
-import { ProList } from "@ant-design/pro-components";
-import { PageContainer } from "@ant-design/pro-layout";
-import { Progress, Space, Image, Tabs } from "antd";
+import { ProList } from '@ant-design/pro-components';
+import { PageContainer } from '@ant-design/pro-layout';
+import { Image, Progress, Space, Tabs } from 'antd';
 
 const data = [
   '语雀的天空',
@@ -38,7 +38,7 @@ const data = [
 function MyWorks() {
   return (
     <PageContainer title={false}>
-       <Tabs
+      <Tabs
         defaultActiveKey="1"
         items={[
           {

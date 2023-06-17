@@ -1,6 +1,6 @@
-import { ProList } from "@ant-design/pro-components";
-import { PageContainer } from "@ant-design/pro-layout";
-import { Progress, Space, Image } from "antd";
+import { ProList } from '@ant-design/pro-components';
+import { PageContainer } from '@ant-design/pro-layout';
+import { Image, Progress, Space } from 'antd';
 
 const data = [
   '语雀的天空',
