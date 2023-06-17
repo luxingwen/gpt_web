@@ -397,7 +397,8 @@ const Index = ({
         )}
       </>
     );
-  }  
+  }
+  
   return (
     <div
       className="chat-box-component"

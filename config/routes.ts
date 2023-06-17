@@ -10,6 +10,18 @@ export default [
     layout: false,
   },
   {
+    name: '个人中心',
+    path: '/user',
+    routes: [
+      {
+        name: '个人主页',
+        path: 'account',
+        component: './User/Account',
+        icon: 'robot',
+      },
+    ]
+  },
+  {
     name: 'AI百宝助手',
     path: '/ai',
     routes: [
@@ -137,10 +149,10 @@ export default [
     path: '/price',
     component: './Price',
   },
-  {
-    name: '个人中心',
-    path: '/account/center',
-    component: './UserInfo',
-    hideInMenu: true,
-  },
+  // {
+  //   name: '个人中心',
+  //   path: '/account/center',
+  //   component: './UserInfo',
+  //   hideInMenu: true,
+  // },
 ];
