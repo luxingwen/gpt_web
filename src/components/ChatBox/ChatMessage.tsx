@@ -1,8 +1,6 @@
-import AiLogo from '@/assets/images/logo.png';
 import { Avatar, message } from 'antd';
 import copy from 'copy-to-clipboard';
 import { useMemo } from 'react';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -25,18 +23,15 @@ const renderCodeBlock = ({ language, value }) => {
       >
         {value.replace(/\n$/, '')}
       </SyntaxHighlighter>
-
     </div>
   );
 };
 
-
 type ChatMessageProps = {
   msg: API.MessageType;
-}
+};
 
 const ChatMessage: React.FC<ChatMessageProps> = ({ msg }) => {
-
   const time = msg?.time;
   const messageText = msg?.msg;
   const self = msg?.self;

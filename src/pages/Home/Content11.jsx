@@ -1,16 +1,16 @@
+import section1_1 from '@/assets/images/home/8a8e634cd8153a7c9c683c24d03d256f.jpg';
+import section1_2 from '@/assets/images/home/a6374200aa342b2baadefc02405aa30c.jpg';
+import section1_3 from '@/assets/images/home/bd7cc4875ef334b4b74e3dbf3f4dbfee.jpg';
 import { Button } from 'antd';
 import QueueAnim from 'rc-queue-anim';
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack';
 import TweenOne from 'rc-tween-one';
 import React from 'react';
 import { getChildrenToRender } from './utils';
-import section1_1 from '@/assets/images/home/8a8e634cd8153a7c9c683c24d03d256f.jpg';
-import section1_2 from '@/assets/images/home/a6374200aa342b2baadefc02405aa30c.jpg';
-import section1_3 from '@/assets/images/home/bd7cc4875ef334b4b74e3dbf3f4dbfee.jpg';
 
-import section2_1 from '@/assets/images/home/ed070d234b7e7e9fad9d45c0e08a25b5.jpg';
-import section2_2 from '@/assets/images/home/702d63d2af90461a99d45d994d30f8a4.jpg';
 import section2_3 from '@/assets/images/home/3aa4388b12235ccbaf2fa6a942b4eea4.jpg';
+import section2_2 from '@/assets/images/home/702d63d2af90461a99d45d994d30f8a4.jpg';
+import section2_1 from '@/assets/images/home/ed070d234b7e7e9fad9d45c0e08a25b5.jpg';
 
 import section3_1 from '@/assets/images/home/34565.jpg';
 

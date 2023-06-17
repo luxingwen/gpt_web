@@ -1,19 +1,13 @@
+import AiLogo from '@/assets/images/logo.png';
 import { FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons';
+import { useModel } from '@umijs/max';
 import { Input, message } from 'antd';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useModel } from '@umijs/max';
-import AiLogo from '@/assets/images/logo.png';
 
-import {
-  getHistoryChatMessage,
-  getUserInfo,
-  queryQuestion,
-} from '@/service/api';
-import storage from '@/utils/storage';
+import { getHistoryChatMessage, queryQuestion } from '@/service/api';
 import { wssocket } from '@/utils/ws_socket';
 
 import ChatMessage from '@/components/ChatBox/ChatMessage';
-import { wxlogin } from '@/service/user';
 import './index.less';
 import { toogleFullScreen } from './utils';
 
@@ -27,7 +21,6 @@ const Index = ({
   showOpenNewChat = false,
   sendBtnType = '1', // [1 输入框右外侧] [2输入框右内侧]
 }) => {
-
   const { initialState, setInitialState } = useModel('@@initialState');
 
   const currentUser = initialState?.currentUser;
@@ -58,7 +51,6 @@ const Index = ({
   useEffect(() => {
     let prevScrollTop = 0;
 
-
     const handleScroll = (event) => {
       const { scrollTop } = event.target;
       const isScrollingUp = scrollTop < prevScrollTop;
@@ -80,7 +72,6 @@ const Index = ({
       };
     }
   }, [messagesContainerRef, requestOlderMessages]);
-
 
   const requestOlderMessages = () => {
     if (loadAllMsg) {
@@ -144,7 +135,14 @@ const Index = ({
           }
           setMessages([
             ...messages,
-            { msg_id: 'u-' + res.data.id, msg: input, self: true, is_end: true, time: +new Date(), avatar: currentUser.avatar },
+            {
+              msg_id: 'u-' + res.data.id,
+              msg: input,
+              self: true,
+              is_end: true,
+              time: +new Date(),
+              avatar: currentUser.avatar,
+            },
             {
               msg: TRYING_MSG,
               self: false,
@@ -171,7 +169,6 @@ const Index = ({
   };
 
   useEffect(() => {
-
     getHistoryChatMessage(historyQuery)
       .then((res) => {
         let msgList = [];
@@ -183,7 +180,7 @@ const Index = ({
               is_end: true,
               msg_id: 'u-' + item.id,
               time: item.add_time,
-              avatar: currentUser.avatar
+              avatar: currentUser.avatar,
             },
             {
               msg: item.answer,
@@ -197,7 +194,7 @@ const Index = ({
         });
         setMessages([...messages, ...msgList]);
       })
-      .catch((err) => { });
+      .catch((err) => {});
 
     wssocket.create(currentUser.id);
 
@@ -232,7 +229,6 @@ const Index = ({
   };
 
   useEffect(() => {
-
     if (newMessageReceived) {
       scrollToBottom();
     }
@@ -348,12 +344,19 @@ const Index = ({
     );
   };
   return (
-    <div className="chat-box-component" style={{ height: '100vh' }} id="chartFullScreen">
+    <div
+      className="chat-box-component"
+      style={{ height: '100vh' }}
+      id="chartFullScreen"
+    >
       <div className="w100 scroll-box" ref={messagesContainerRef}>
         {messages.map((item, index) => (
           <ChatMessage
             key={item.msg_id || `message-${index}`}
-            msg={{ ...item, is_end: (index === (messages.length - 1)) && !isMsgEnd }}
+            msg={{
+              ...item,
+              is_end: index === messages.length - 1 && !isMsgEnd,
+            }}
           />
         ))}
         <div className="ai-asnswer-tips tc">

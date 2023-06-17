@@ -38,13 +38,12 @@ declare namespace API {
   }
 
   // 消息类型定义
-  export interface  MessageType {
+  export interface MessageType {
     msg_id: any;
     msg: string;
     self: boolean;
     is_end: boolean;
     time: string;
     avatar: string;
-  };
-  
+  }
 }

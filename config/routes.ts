@@ -86,8 +86,8 @@ export default [
       {
         icon: 'folder',
         name: '画夹',
-        path: 'folder',
-        component: './Access',
+        path: 'picture-folder',
+        component: './AI-Paint/PictureFolder',
       },
     ],
   },

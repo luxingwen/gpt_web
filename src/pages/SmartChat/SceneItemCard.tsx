@@ -87,7 +87,6 @@ const SceneItemCard: React.FC<SceneItemCardProps> = ({
         <Col span={8}>
           <div>
             <Button
-
               icon={<EnterOutlined />}
               style={{ marginRight: '8px' }}
               onClick={() => {

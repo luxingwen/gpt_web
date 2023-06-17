@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 import '../index.less';
 
-
 // props
 type ClickCallback = (status: number) => void;
 
@@ -38,7 +37,7 @@ const PriceHeader: React.FC<PriceHeaderProps> = ({ onClickCallBack }) => {
 
   //   return { state, updateState };
   return (
-    <div className='price'>
+    <div className="price">
       <div className="price-header">
         {showText.map((item, index, _) => {
           // console.log(index)

@@ -133,7 +133,7 @@ const CreateScene = ({ setViewContent }) => {
 
   return (
     <div style={{ marginTop: '22px' }}>
-      <div style={{ maxWidth: '500px', padding:'12px' }}>
+      <div style={{ maxWidth: '500px', padding: '12px' }}>
         <Form layout="vertical" onFinish={onFinish}>
           <Item
             label="场景名称"
