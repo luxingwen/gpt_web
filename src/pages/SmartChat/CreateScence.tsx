@@ -1,4 +1,4 @@
-import { createmartScene } from '@/service/smart_chat';
+import { createSmartScene } from '@/service/smart-chat/index';
 import {
   DownOutlined,
   PlusOutlined,
@@ -115,7 +115,7 @@ const CreateScene = ({ setViewContent }) => {
 
     // 执行创建场景逻辑...
     try {
-      const response = await createmartScene(formData);
+      const response = await createSmartScene(formData);
       console.log('创建场景成功：', response);
       if (response.errno === 0) {
         message.success('创建场景成功！');
@@ -133,7 +133,7 @@ const CreateScene = ({ setViewContent }) => {
 
   return (
     <div style={{ marginTop: '22px' }}>
-      <div style={{ maxWidth: '500px', padding:'12px' }}>
+      <div style={{ maxWidth: '500px', padding: '12px' }}>
         <Form layout="vertical" onFinish={onFinish}>
           <Item
             label="场景名称"

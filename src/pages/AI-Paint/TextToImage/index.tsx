@@ -8,6 +8,7 @@ import {
   ProFormSlider,
   ProFormTextArea,
 } from '@ant-design/pro-components';
+import { Link } from '@umijs/max';
 import { Button, Collapse } from 'antd';
 import { useRef } from 'react';
 import RadioGroup from '../components/RadioGroup';
@@ -48,9 +49,12 @@ export default function TextToImage() {
         <ProFormItem>
           <div className="flex justify-between place-items-end pb-2">
             <label>提示词</label>
-            <a className="w-24 py-2 text-xs flex justify-center bg-[rgba(220,_224,_251,_1)] text-[rgba(80,_99,_234,_1)]">
+            <Link
+              to="auto-generate-prompt"
+              className="w-24 py-2 text-xs flex justify-center bg-[rgba(220,_224,_251,_1)] text-[rgba(80,_99,_234,_1)]"
+            >
               自动生成提示词
-            </a>
+            </Link>
           </div>
           <ProFormTextArea
             noStyle

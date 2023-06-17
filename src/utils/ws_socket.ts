@@ -44,7 +44,7 @@ class Socket {
       await this.connectSocket();
 
       this.socketClient.addMessageHandler((msg) => {
-      //  console.log('socketTask.onMessage >>>', msg);
+        //  console.log('socketTask.onMessage >>>', msg);
         const data = JSON.parse(msg);
         switch (data.cmd) {
           case WS_CMD.LOGIN:

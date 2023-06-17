@@ -23,6 +23,7 @@ specifiers:
   prettier-plugin-organize-imports: ^3.2.2
   prettier-plugin-packagejson: ^2.4.3
   prismjs: ^1.29.0
+  prop-types: ^15.8.1
   qrcode.react: ^3.1.0
   rc-banner-anim: ^2.4.5
   rc-queue-anim: ^2.0.0
@@ -77,6 +78,7 @@ devDependencies:
   prettier: 2.8.8
   prettier-plugin-organize-imports: 3.2.2_hmmpts3cr3o22qxlzdrq3wrwqe
   prettier-plugin-packagejson: 2.4.3_prettier@2.8.8
+  prop-types: 15.8.1
   tailwindcss: 3.3.2
   typescript: 5.1.3
 
@@ -12735,7 +12737,6 @@ packages:
       {
         integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==,
       }
-    dev: false
 
   /js-yaml/3.14.1:
     resolution:
@@ -13305,7 +13306,6 @@ packages:
     hasBin: true
     dependencies:
       js-tokens: 4.0.0
-    dev: false
 
   /lower-case/2.0.2:
     resolution:
@@ -16277,7 +16277,6 @@ packages:
       loose-envify: 1.4.0
       object-assign: 4.1.1
       react-is: 16.13.1
-    dev: false
 
   /property-information/5.6.0:
     resolution:
@@ -17778,7 +17777,6 @@ packages:
       {
         integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==,
       }
-    dev: false
 
   /react-is/17.0.2:
     resolution:

@@ -3,8 +3,11 @@ import { PageContainer } from '@ant-design/pro-layout';
 import './index.less';
 
 const ChatPage = () => {
+
+  
+
   return (
-    <PageContainer title={false} breadcrumb={false} >
+    <PageContainer title={false} breadcrumb={false}>
       <ChatBox
         showFullScreen={true}
         showVisitDiscourse={true}
@@ -14,5 +17,4 @@ const ChatPage = () => {
     </PageContainer>
   );
 };
-
 export default ChatPage;

@@ -1,4 +1,3 @@
-import AiLogo from '@/assets/images/logo.png';
 import { Avatar, message } from 'antd';
 import copy from 'copy-to-clipboard';
 import { useMemo, memo } from 'react';
@@ -25,18 +24,15 @@ const renderCodeBlock = ({ language, value }) => {
       >
         {value.replace(/\n$/, '')}
       </SyntaxHighlighter>
-
     </div>
   );
 };
 
-
 type ChatMessageProps = {
   msg: API.MessageType;
-}
+};
 
 const ChatMessage: React.FC<ChatMessageProps> = ({ msg }) => {
-
   const time = msg?.time;
   const messageText = msg?.msg;
   const self = msg?.self;

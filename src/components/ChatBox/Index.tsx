@@ -1,25 +1,25 @@
-import { FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons';
-import { Input, message, Modal } from 'antd';
-import { useCallback, useEffect, useMemo, useRef, useState, memo } from 'react';
-import { useModel } from '@umijs/max';
-import AiLogo from '@/assets/images/logo.png';
 
-import {
-  getHistoryChatMessage,
-  getUserInfo,
-  queryQuestion,
-} from '@/service/api';
-import storage from '@/utils/storage';
+
+import AiLogo from '@/assets/images/logo.png';
+import { FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons';
+import { Input, message, Button, Modal } from 'antd';
+import { useCallback, useEffect, useMemo, useRef, useState, memo } from 'react';
+
+import { getHistoryChatMessage, queryQuestion } from '@/service/api';
 import { wssocket } from '@/utils/ws_socket';
 import Messages from './components/Messages'
 
-// import ChatMessage from '@/components/ChatBox/ChatMessage';
-import { wxlogin } from '@/service/user';
 import './index.less';
 import { toogleFullScreen } from './utils';
+import { smartChatCompletions } from '@/service/smart-chat';
+
+import { useModel } from 'umi';
+
 
 const TRYING_MSG = '正在努力思考...';
 const END_MSG = '###### [END] ######';
+
+
 
 const Index = ({
   placeholderText = '',
@@ -27,18 +27,23 @@ const Index = ({
   showVisitDiscourse = false,
   showOpenNewChat = false,
   sendBtnType = '1', // [1 输入框右外侧] [2输入框右内侧]
+  chat_type = 'ai-chat', // ai-chat | smart-chat
+  scene_id = '', // 智能场景id
+  session_id = 0, // 会话id
 }) => {
-
   const { initialState, setInitialState } = useModel('@@initialState');
-
   const currentUser = initialState?.currentUser;
-
   const [messages, setMessages] = useState<API.MessageType[]>([]);
   const [input, setInput] = useState('');
   const messagesContainerRef = useRef(null);
 
   const [isMsgEnd, setIsMsgEnd] = useState(true);
   const [loadAllMsg, setLoadAllMsg] = useState(false);
+
+
+
+
+
   const [historyQuery, setHistoryQuery] = useState({
     page: 0,
     per_page: 10,
@@ -58,7 +63,6 @@ const Index = ({
 
   useEffect(() => {
     let prevScrollTop = 0;
-
 
     const handleScroll = (event) => {
       const { scrollTop } = event.target;
@@ -81,7 +85,6 @@ const Index = ({
       };
     }
   }, [messagesContainerRef, requestOlderMessages]);
-
 
   const requestOlderMessages = () => {
     if (loadAllMsg) {
@@ -130,6 +133,72 @@ const Index = ({
       });
   };
 
+
+
+  // 处理发送消息
+  const hanedleRequestQuestion = async (question) => {
+    const handleMsg = (msg) => {
+      setMessages([
+        ...messages,
+        { msg_id: 'u-' + msg.id, msg: input, self: true, is_end: true, time: +new Date(), avatar: currentUser.avatar },
+        {
+          msg: TRYING_MSG,
+          self: false,
+          msg_id: 'ai-' + msg.id,
+          is_end: false,
+          avatar: AiLogo,
+        },
+      ]);
+      setIsMsgEnd(false);
+    };
+
+    if (chat_type === 'ai-chat') {
+      // const quessionRes = queryQuestion(question);
+      const quessionRes = await queryQuestion(question)
+      // 剩余次数不足，提示购买次数
+      if(quessionRes.errno == 4002){
+        Modal.info({
+          title: '提示',
+          content: (
+            <div>
+              <p>剩余次数不足，请购买次数</p>
+            </div>
+          ),
+          maskClosable: true,
+          closable: true,
+          cancelText: '取消',
+          okText: '去购买',
+          okButtonProps: {
+            style: {
+              backgroundColor: '#4b64f3'
+            }
+          },
+
+          onCancel(){
+            console.log('取消');
+          },
+          onOk() {
+            console.log('去购买');
+          },
+        });
+        return
+      }
+      if (quessionRes.errno !== 0) {
+        message.error(quessionRes.errmsg)
+        return
+      }
+      handleMsg(quessionRes.data);
+
+    } else {
+      const quessionRes = smartChatCompletions({ content: question, scene_id: scene_id, session_id: session_id });
+      if (quessionRes.errno !== 0) {
+        return;
+      }
+      handleMsg(quessionRes.data);
+    }
+  };
+
+
   const handleSend = () => {
     if (!isMsgEnd) {
       message.error('请等待机器人回复后再发送消息');
@@ -137,58 +206,7 @@ const Index = ({
     }
 
     if (input) {
-      queryQuestion(input)
-        .then((res) => {
-          console.log('query Question', res);
-          // 剩余次数不足，提示购买次数
-          if(res.errno == 4002){
-            Modal.info({
-              title: '提示',
-              content: (
-                <div>
-                  <p>剩余次数不足，请购买次数</p>
-                </div>
-              ),
-              maskClosable: true,
-              closable: true,
-              cancelText: '取消',
-              okText: '去购买',
-              okButtonProps: {
-                style: {
-                  backgroundColor: '#4b64f3'
-                }
-              },
-
-              onCancel(){
-                console.log('取消');
-              },
-              onOk() {
-                console.log('去购买');
-              },
-            });
-            return
-          }
-          if (res.errno !== 0) {
-            message.error(res.errmsg)
-            return
-          }
-          setMessages([
-            ...messages,
-            { msg_id: 'u-' + res.data.id, msg: input, self: true, is_end: true, time: +new Date(), avatar: currentUser.avatar },
-            {
-              msg: TRYING_MSG,
-              self: false,
-              msg_id: 'ai-' + res.data.id,
-              is_end: false,
-              avatar: AiLogo,
-            },
-          ]);
-          setIsMsgEnd(false);
-        })
-        .catch((err) => {
-          console.log('query Question', err);
-        });
-
+      hanedleRequestQuestion(input)
       setInput('');
     }
   };
@@ -202,6 +220,10 @@ const Index = ({
 
   useEffect(() => {
 
+    if (!currentUser) {
+      return;
+    }
+
     getHistoryChatMessage(historyQuery)
       .then((res) => {
         let msgList = [];
@@ -213,7 +235,7 @@ const Index = ({
               is_end: true,
               msg_id: 'u-' + item.id,
               time: item.add_time,
-              avatar: currentUser.avatar
+              avatar: currentUser.avatar,
             },
             {
               msg: item.answer,
@@ -227,7 +249,7 @@ const Index = ({
         });
         setMessages([...messages, ...msgList]);
       })
-      .catch((err) => { });
+      .catch((err) => {});
 
     wssocket.create(currentUser.id);
 
@@ -375,6 +397,7 @@ const Index = ({
         )}
       </>
     );
+<<<<<<< HEAD
   }
   console.log('--------------------');
 
@@ -391,10 +414,32 @@ const Index = ({
   //   )
   // }
   
+=======
+  };
+
+
+
+>>>>>>> 16c516fd0b7fdfb16afadb7dbee7105bec779850
   return (
-    <div className="chat-box-component" style={{ height: '100vh' }} id="chartFullScreen">
+    <div
+      className="chat-box-component"
+      style={{ height: '100vh' }}
+      id="chartFullScreen"
+    >
       <div className="w100 scroll-box" ref={messagesContainerRef}>
+<<<<<<< HEAD
         <Messages messages={messages} isMsgEnd={isMsgEnd}/>
+=======
+        {messages.map((item, index) => (
+          <ChatMessage
+            key={item.msg_id || `message-${index}`}
+            msg={{
+              ...item,
+              is_end: index === messages.length - 1 && !isMsgEnd,
+            }}
+          />
+        ))}
+>>>>>>> 16c516fd0b7fdfb16afadb7dbee7105bec779850
         <div className="ai-asnswer-tips tc">
           -- 问答结果由AI生成，仅供参考 --
         </div>
@@ -405,6 +450,8 @@ const Index = ({
         {/* 不同类型的输入框 */}
         {renderInputContent()}
       </div>
+
+
     </div>
   );
 };
