@@ -7,7 +7,7 @@ const renderMessages = ({messages, isMsgEnd})=>{
     <>
       {messages.map((item, index) => (
         <Message
-          key={item.msg_id || `message-${index}`}
+          key={item.id || `message-${index}`}
           msg={{ ...item, is_end: (index === (messages.length - 1)) && !isMsgEnd }}
         />
       ))}

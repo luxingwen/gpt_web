@@ -2,7 +2,9 @@ import WebSocketClient from './WebSocketClient';
 
 import { STATUS, WS_CMD } from './constant';
 
-const wsRootUrl = 'wss://chat.kimways.com/acc';
+//const wsRootUrl = 'wss://testchat.kimways.com/acc';
+// const wsRootUrl = 'wss://chat.kimways.com/acc';
+const wsRootUrl = 'ws://192.168.1.5:8018/acc';
 
 const NOT_LOGIN = 1000;
 

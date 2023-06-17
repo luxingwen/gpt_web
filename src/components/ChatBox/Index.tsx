@@ -30,6 +30,7 @@ const Index = ({
   chat_type = 'ai-chat', // ai-chat | smart-chat
   scene_id = '', // 智能场景id
   session_id = 0, // 会话id
+  aiAvatar = AiLogo, // ai头像
 }) => {
   const { initialState, setInitialState } = useModel('@@initialState');
   const currentUser = initialState?.currentUser;
@@ -40,13 +41,10 @@ const Index = ({
   const [isMsgEnd, setIsMsgEnd] = useState(true);
   const [loadAllMsg, setLoadAllMsg] = useState(false);
 
-
-
-
-
   const [historyQuery, setHistoryQuery] = useState({
     page: 0,
     per_page: 10,
+    session_id: session_id,
   });
   const [newMessageReceived, setNewMessageReceived] = useState(true);
 
@@ -112,17 +110,19 @@ const Index = ({
               msg: item.question,
               self: true,
               is_end: true,
-              msg_id: 'u-' + item.id,
+              id: 'u-' + item.id,
+              msg_id:item.id,
               time: item.add_time,
               avatar: currentUser.avatar,
             },
             {
               msg: item.answer,
               self: false,
-              msg_id: 'ai' + item.id,
+              id: 'ai-' + item.id,
+              msg_id: item.id,
               is_end: true,
               time: item.create_time,
-              avatar: AiLogo,
+              avatar: aiAvatar,
             },
           );
         });
@@ -140,13 +140,14 @@ const Index = ({
     const handleMsg = (msg) => {
       setMessages([
         ...messages,
-        { msg_id: 'u-' + msg.id, msg: input, self: true, is_end: true, time: +new Date(), avatar: currentUser.avatar },
+        {  msg_id:msg.id,  id: 'u-' + msg.id, msg: input, self: true, is_end: true, time: +new Date(), avatar: currentUser.avatar },
         {
           msg: TRYING_MSG,
           self: false,
-          msg_id: 'ai-' + msg.id,
+          id: 'ai-' + msg.id,
+          msg_id: msg.id,
           is_end: false,
-          avatar: AiLogo,
+          avatar: aiAvatar,
         },
       ]);
       setIsMsgEnd(false);
@@ -190,7 +191,7 @@ const Index = ({
       handleMsg(quessionRes.data);
 
     } else {
-      const quessionRes = smartChatCompletions({ content: question, scene_id: scene_id, session_id: session_id });
+      const quessionRes = await smartChatCompletions({ content: question, scene_id: scene_id, session_id: session_id });
       if (quessionRes.errno !== 0) {
         return;
       }
@@ -233,17 +234,19 @@ const Index = ({
               msg: item.question,
               self: true,
               is_end: true,
-              msg_id: 'u-' + item.id,
+              id: 'u-' + item.id,
+              msg_id: item.id,
               time: item.add_time,
               avatar: currentUser.avatar,
             },
             {
               msg: item.answer,
               self: false,
-              msg_id: 'ai-' + item.id,
+              id: 'ai-' + item.id,
+              msg_id:  item.id,
               is_end: true,
               time: item.create_time,
-              avatar: AiLogo,
+              avatar: aiAvatar,
             },
           );
         });
@@ -264,10 +267,14 @@ const Index = ({
       setIsMsgEnd(true);
       return;
     }
+    console.log("itemMsg:",itemMsg)
 
+    const msgId = 'ai-' + itemMsg.msg_id;
+   // console.log("msgId:",msgId)
     setMessages((prevMessages) => {
       const updatedMessages = prevMessages.map((item) => {
-        if (item.msg_id === itemMsg.msg_id) {
+        // console.log("item---->:",item);
+        if (item.msg_id === itemMsg.msg_id && item.id === msgId) {
           if (item.msg === TRYING_MSG) {
             item.msg = '';
           }
