@@ -15,3 +15,53 @@ export async function aiDrawImageToImage(body: API.SDImageToImageParam) {
     data: body,
   });
 }
+
+
+
+// 获取提示词
+export async function getPromptWords(props: any) {
+  return await request(`/api/chat/sd/prompt/word/list`, {
+    method: 'GET',
+    params: props,
+  });
+}
+
+// 获取热门绘画
+export async function getHotAiDraws(props: API.ReqHotImages) {
+  return await request(`/api/chat/sd/hot/images`, {
+    method: 'GET',
+    params: props,
+  });
+}
+
+// 获取AI绘画模型
+export async function getAiDrawModels(props: any) {
+  return await request<API.Response<API.SdModel[]>>(`/api/chat/sd/model/names`, {
+    method: 'GET',
+    params: props,
+  });
+}
+
+// ai绘画 获取进度
+export async function aiDrawProcess(props: any) {
+  return await request(`/api/chat/sd/process`, {
+    method: 'POST',
+    data: props,
+  });
+}
+
+// 获取ai绘画的图片列表
+export async function aiDrawImages(props: any) {
+  return await request(`/api/chat/sd/images`, {
+    method: 'GET',
+    params: props,
+  });
+}
+
+// 删除ai绘画的图片
+export async function delAiDrawImages(props: any) {
+  return await request(`/api/chat/sd/image/del`, {
+    method: 'POST',
+    data: props,
+  });
+}

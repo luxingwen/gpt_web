@@ -109,6 +109,30 @@ export default [
     component: './SmartChat',
   },
   {
+    name: '场景广场',
+    path: '/smart-ai/:viewType',
+    component: './SmartChat',
+    hideInMenu: true,
+  },
+  {
+    name: '创建场景',
+    path: '/smart-ai/:viewType',
+    component: './SmartChat',
+    hideInMenu: true,
+  },
+  {
+    name: '智能会话',
+    path: '/smart-ai/:viewType/:sceneId',
+    component: './SmartChat',
+    hideInMenu: true,
+  },
+  {
+    name: '智能会话',
+    path: '/smart-ai/:viewType/:sceneId/:sessionId',
+    component: './SmartChat',
+    hideInMenu: true,
+  },
+  {
     name: '价格',
     path: '/price',
     component: './Price',

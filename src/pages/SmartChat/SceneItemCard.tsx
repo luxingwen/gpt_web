@@ -1,9 +1,10 @@
-import { deleteSmartScene } from '@/service/smart_chat';
+import { deleteSmartScene } from '@/service/smart-chat';
 import { DeleteOutlined, EditOutlined, EnterOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Modal, Row, Spin, message } from 'antd';
 import React, { useState } from 'react';
 
 import './SceneItemCard.less';
+import { history } from '@umijs/max';
 
 interface SceneItemCardProps {
   sceneInfo: API.ChatSmartScene;
@@ -18,6 +19,11 @@ const SceneItemCard: React.FC<SceneItemCardProps> = ({
 }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+
+  const handlerClickEnterChat = () => {
+    history.push(`/smart-ai/chat/${sceneInfo.id}`);
+  }
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -89,9 +95,7 @@ const SceneItemCard: React.FC<SceneItemCardProps> = ({
             <Button
               icon={<EnterOutlined />}
               style={{ marginRight: '8px' }}
-              onClick={() => {
-                setViewContent('chat');
-              }}
+              onClick={handlerClickEnterChat}
             >
               进入对话
             </Button>
