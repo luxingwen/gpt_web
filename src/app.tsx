@@ -32,10 +32,10 @@ export const layout: RunTimeLayoutConfig = () => {
   return {
     token: {
       bgLayout: '#fff',
-      pageContainer: {
-        paddingBlockPageContainerContent: 16,
-        paddingInlinePageContainerContent: 16,
-      },
+      // pageContainer: {
+      //   paddingBlockPageContainerContent: 16,
+      //   paddingInlinePageContainerContent: 16,
+      // },
     },
     logo: Logo,
     title: 'AI 云助手',

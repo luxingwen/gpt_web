@@ -1,3 +1,11 @@
+/*
+ * @Author: Draco draco.coder@gmail.com
+ * @Date: 2023-06-17 10:32:47
+ * @LastEditors: Draco draco.coder@gmail.com
+ * @LastEditTime: 2023-06-17 12:49:03
+ * @FilePath: /gpt_web/src/pages/SmartChat/index.tsx
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import HistorySession from '@/components/HistorySession/HistorySession';
 import LeftNav from '@/layouts/left';
 import { LaptopOutlined, UserOutlined } from '@ant-design/icons';
@@ -22,7 +30,7 @@ const SmartChatPage: React.FC = () => {
   ];
 
   return (
-    <Layout style={{ display: 'flex' }}>
+    <Layout  className='flex -mt-6 -mx-10'>
       <Layout style={{ padding: 0 }}>
         <LeftNav
           items={items}
