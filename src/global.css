@@ -6,22 +6,75 @@
 .ant-menu.ant-menu-horizontal > .ant-menu-item-selected,
 .ant-menu-horizontal > .ant-menu-submenu-selected,
 .ant-menu.ant-menu-horizontal > .ant-menu-submenu-selected {
-  color: rgba(75, 100, 243, 100%) !important;
-  border-bottom: 2px solid rgba(75, 100, 243, 100%) !important;
+  color: var(--color-primary) !important;
+  border-bottom: 2px solid var(--color-primary) !important;
   border-radius: 0 !important;
   background-color: transparent !important;
 }
 
 .ant-menu-item-selected,
 .ant-menu .ant-menu-item-selected {
-  background-color: rgba(75, 100, 243, 100%) !important;
+  background-color: var(--color-primary) !important;
   color: #fff !important;
 }
 
-.ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-  color: rgba(75, 100, 243, 100%) !important;
+.pr {
+  position: relative;
 }
 
-.ant-tabs .ant-tabs-ink-bar {
-  background-color: rgba(75, 100, 243, 100%) !important;
+.flex {
+  display: flex;
+}
+
+.flex1 {
+  flex: 1;
+}
+
+.flex-c {
+  display: flex;
+  align-items: center;
+}
+
+.flex-cc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-cb {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-ccc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.block {
+  display: block;
+}
+
+.w100 {
+  width: 100%;
+}
+
+.h100 {
+  height: 100%;
+}
+
+.wh100 {
+  width: 100%;
+  height: 100%;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.tc {
+  text-align: center;
 }

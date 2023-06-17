@@ -1,3 +1,4 @@
+import { Button, Col, Row } from 'antd';
 import React, { useState } from 'react';
 import { Row, Col } from 'antd'
 
@@ -10,8 +11,8 @@ const TerasureBox: React.FC<TerasureBoxProps> = ({ data }) => {
   const [selectState, setSelectState] = useState<number>(0);
 
   const changeSelect = (index: number) => {
-    setSelectState(index)
-  }
+    setSelectState(index);
+  };
 
   return <>
     <div className='terasure-page'>

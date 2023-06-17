@@ -3,7 +3,24 @@ import proxy from './proxy';
 import routes from './routes';
 
 export default defineConfig({
-  antd: {},
+  deadCode: {},
+  antd: {
+    configProvider: {
+      theme: {
+        token: {
+          colorPrimary: '#4b64f3',
+          colorLink: '#4b64f3',
+          colorLinkHover: '#7891ff',
+          colorLinkActive: '#4b64f3',
+        },
+      },
+    },
+    styleProvider: {
+      autoClear: true,
+      hashPriority: 'high',
+      legacyTransformer: true,
+    },
+  },
   access: {},
   model: {},
   initialState: {},
@@ -15,7 +32,4 @@ export default defineConfig({
   proxy,
   npmClient: 'pnpm',
   tailwindcss: {},
-  theme: {
-    '@primary-color': 'rgba(75, 100, 243, 1)',
-  },
 });

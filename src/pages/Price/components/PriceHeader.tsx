@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 
 import '../index.less';
 
-
 type ClickCallback = (status: number) => void;
 
 interface PriceHeaderProps {
