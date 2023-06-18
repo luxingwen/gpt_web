@@ -12,8 +12,9 @@ import { Link, useLocation } from '@umijs/max';
 import { Button, Collapse } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import RadioGroup from '../components/RadioGroup';
+import {history} from '@umijs/max';
 
-import { getAiDrawModels,aiDrawTextToImage } from '@/service/ai-paint';
+import { getAiDrawModels, aiDrawTextToImage } from '@/service/ai-paint';
 
 import './index.less';
 
@@ -83,16 +84,20 @@ export default function TextToImage() {
   }, []);
 
 
-  const handleSubmit = (values:any) => {
+  const handleSubmit = (values: any) => {
     console.log('handleSubmit:', values);
     values.prompt = values.prompt?.split(',');
     values.negative_prompt = values.negative_prompt?.split(',');
 
     aiDrawTextToImage(values).then((res) => {
       console.log('aiDrawTextToImage:', res);
-    }
-    );
-
+      if (res.errno === 0) {
+        // setModels(modellist);
+        history.push({
+          pathname: '/ai-paint/text-to-image/drawing/' + res.data.id,
+        });
+      }
+    });
   };
 
   return (
@@ -113,7 +118,7 @@ export default function TextToImage() {
           },
         }}
         onFinish={async (values) => {
-          console.log("finish:",values);
+          console.log("finish:", values);
           handleSubmit(values);
           // 这里做提交之后的事情
         }}
