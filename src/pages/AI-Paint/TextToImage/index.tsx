@@ -8,12 +8,12 @@ import {
   ProFormSlider,
   ProFormTextArea,
 } from '@ant-design/pro-components';
-import { Link } from '@umijs/max';
+import { Link, useLocation } from '@umijs/max';
 import { Button, Collapse } from 'antd';
-import { useRef, useEffect,useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import RadioGroup from '../components/RadioGroup';
 
-import {getAiDrawModels} from '@/service/ai-paint';
+import { getAiDrawModels } from '@/service/ai-paint';
 
 import './index.less';
 
@@ -21,27 +21,27 @@ const sizeList = [
   {
     label: '1:1',
     value: '1:1',
-    classSuffix: '11'
+    classSuffix: '11',
   },
   {
     label: '3:4',
     value: '3:4',
-    classSuffix: '34'
+    classSuffix: '34',
   },
   {
     label: '4:3',
     value: '4:3',
-    classSuffix: '43'
+    classSuffix: '43',
   },
   {
     label: '9:16',
     value: '9:16',
-    classSuffix: '916'
+    classSuffix: '916',
   },
   {
     label: '16:9',
     value: '16:9',
-    classSuffix: '169'
+    classSuffix: '169',
   },
 ];
 
@@ -50,10 +50,13 @@ export default function TextToImage() {
 
   const [models, setModels] = useState([]);
 
+  const { state } = useLocation();
+  console.log('state:', state);
+
   useEffect(() => {
     getAiDrawModels({}).then((res) => {
-      console.log("getAiDrawModels:",res);
-      if(res.errno ===0) {
+      console.log('getAiDrawModels:', res);
+      if (res.errno === 0) {
         let modellist = [];
         res.data.forEach((item) => {
           modellist.push({
@@ -61,10 +64,10 @@ export default function TextToImage() {
             image: item.img,
             value: item.model,
           });
-        })
+        });
         setModels(modellist);
-        }
-      });
+      }
+    });
   }, []);
 
   return (

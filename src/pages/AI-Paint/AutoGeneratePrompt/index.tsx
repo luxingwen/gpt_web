@@ -5,43 +5,42 @@
  * @Email: draco.coder@gmail.com
  * @Github: https://github.com/draco-china
  * @Date: 2023-06-17 13:54:13
- * @LastEditTime: 2023-06-17 15:04:14
+ * @LastEditTime: 2023-06-18 09:36:54
  */
+import { getPromptWords } from '@/service/ai-paint';
 import { PageContainer } from '@ant-design/pro-layout';
+import { history } from '@umijs/max';
 import { Button, Space, Tabs, Tag } from 'antd';
-import { useState,useEffect } from 'react';
-import {getPromptWords} from '@/service/ai-paint';
-
+import { useEffect, useState } from 'react';
 
 function AutoGeneratePrompt() {
   const [categoryList, setCategoryList] = useState([]);
-  const [defaultActiveKey, setDefaultActiveKey] = useState("1");
+  const [defaultActiveKey, setDefaultActiveKey] = useState('1');
   const [subCategoryList, setSubCategoryList] = useState([]);
   const [selectedTagList, setSelectedTagList] = useState(new Set());
 
-// 将项添加到 selectedTagList
+  // 将项添加到 selectedTagList
   const addItem = (item) => {
-    setSelectedTagList(prev => new Set(prev).add(item));
+    setSelectedTagList((prev) => new Set(prev).add(item));
   };
-  
+
   // 将项从 selectedTagList 中移除
   const removeItem = (item) => {
-    setSelectedTagList(prev => {
+    setSelectedTagList((prev) => {
       const updatedSet = new Set(prev);
       updatedSet.delete(item);
       return updatedSet;
     });
   };
 
-
   useEffect(() => {
     getPromptWords({}).then((res) => {
-      console.log("getPromptWords:",res);
-      if(res.errno ===0) {
+      console.log('getPromptWords:', res);
+      if (res.errno === 0) {
         let categorylist = [];
         res.data.forEach((item, index) => {
-          console.log("index:",index);
-          if(index === 0) {
+          console.log('index:', index);
+          if (index === 0) {
             setDefaultActiveKey(item.id);
             setSubCategoryList(item.words);
           }
@@ -50,9 +49,8 @@ function AutoGeneratePrompt() {
             label: item.name,
             words: item.words,
           });
-         
         });
-        console.log("categorylist:",categorylist);
+        console.log('categorylist:', categorylist);
         setCategoryList(categorylist);
       }
     });
@@ -67,12 +65,12 @@ function AutoGeneratePrompt() {
           console.log(activeKey);
           // 根据 activeKey 去请求数据 并更新下面的列表
           categoryList.forEach((item) => {
-            console.log("item id:",item.id, "activeKey:",activeKey);
-            if(item.key === activeKey) {
+            console.log('item id:', item.id, 'activeKey:', activeKey);
+            if (item.key === activeKey) {
               setSubCategoryList(item.words);
               return;
             }
-          })
+          });
         }}
         className="text-lg"
       />
@@ -104,7 +102,7 @@ function AutoGeneratePrompt() {
               closable
               onClose={(e) => {
                 // 点击关闭按钮之后，将标签从下面的列表中移除
-            
+
                 removeItem(item);
                 e.preventDefault();
               }}
@@ -114,7 +112,23 @@ function AutoGeneratePrompt() {
           ))}
         </Space>
       </div>
-      <Button type="primary" className="mt-8">
+      <Button
+        type="primary"
+        className="mt-8"
+        onClick={() => {
+          history.push(
+            {
+              pathname: history.location.pathname.replace(
+                '/auto-generate-prompt',
+                '',
+              ),
+            },
+            {
+              selectedTagList,
+            },
+          );
+        }}
+      >
         用提示词画图
       </Button>
     </PageContainer>
