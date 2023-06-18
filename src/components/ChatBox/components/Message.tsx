@@ -8,6 +8,8 @@ import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import remarkGfm from 'remark-gfm';
 import './Message.less';
 import { getFormatTime } from './../utils';
+import { DownloadOutlined, SoundOutlined } from '@ant-design/icons';
+
 
 const themes = {
   dark: prism,
@@ -53,6 +55,14 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ msg }) => {
     copy(content);
     message.success('复制成功');
   };
+
+  const handleDownLoad = () => {
+    console.log(1,msg);
+  }
+
+  const handleTextToSound = () => {
+    console.log(2,msg);
+  }
 
   const renderMessageText = () => {
     if (self) {
@@ -138,7 +148,12 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ msg }) => {
                 className="operate-btn copy"
                 onClick={() => handleCopy(messageText)}
               ></div>
-              <div className="operate-btn sound"></div>
+              <div className="operate-btn flex-ccc" onClick={handleDownLoad}>
+                <div className='icon-box flex-cc'><DownloadOutlined /></div>
+              </div>
+              <div className="operate-btn flex-ccc" onClick={handleTextToSound}>
+                <div className='icon-box flex-cc'><SoundOutlined /></div>
+              </div>
             </div>
           </div>
         </div>
