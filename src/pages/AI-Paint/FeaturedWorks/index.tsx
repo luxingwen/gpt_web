@@ -1,6 +1,10 @@
 import { ProList } from '@ant-design/pro-components';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Image, Progress, Space } from 'antd';
+import {getHotAiDraws} from '@/service/ai-paint';
+import { useEffect,useState } from 'react';
+import {formatTimestamp} from '@/utils/utils';
+import { Link } from '@umijs/max';
 
 const data = [
   '语雀的天空',
@@ -36,6 +40,18 @@ const data = [
 }));
 
 function FeaturedWorks() {
+
+  const [picList, setPicList] = useState<any[]>([]);
+
+  useEffect(() => {
+    getHotAiDraws().then((res) => {
+      console.log("getHotAiDraws:",res);
+      if(res.errno === 0){
+        setPicList(res.data || []);
+      }
+    });
+  }, []);
+
   return (
     <PageContainer title={false}>
       <ProList<any>
@@ -46,19 +62,21 @@ function FeaturedWorks() {
         showActions="hover"
         rowSelection={{}}
         grid={{ gutter: 16, column: 6 }}
-        dataSource={data}
+        dataSource={picList}
         metas={{
           content: {
             render: (_, record) => {
               return (
                 <div className="w-full">
+                  <Link to={`/ai-paint/work-detail/${record.id}`}>
                   <Space direction="vertical" className="w-full">
-                    <Image src={record.avatar} width="100%" preview={false} />
+                    <Image src={record.image_info[0]} width="100%" preview={false} />
                     <span className="text-center">{record.title}</span>
                     <span className="text-center text-xs text-gray-500">
-                      {record.subTitle}
+                      {formatTimestamp(record.create_time)}
                     </span>
                   </Space>
+                  </Link>
                 </div>
               );
             },

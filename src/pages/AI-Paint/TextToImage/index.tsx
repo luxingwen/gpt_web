@@ -13,7 +13,7 @@ import { Button, Collapse } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import RadioGroup from '../components/RadioGroup';
 
-import { getAiDrawModels } from '@/service/ai-paint';
+import { getAiDrawModels,aiDrawTextToImage } from '@/service/ai-paint';
 
 import './index.less';
 
@@ -47,11 +47,22 @@ const sizeList = [
 
 export default function TextToImage() {
   const formRef = useRef<ProFormInstance>();
-
   const [models, setModels] = useState([]);
 
   const { state } = useLocation();
-  console.log('state:', state);
+
+
+  useEffect(() => {
+    if (state?.selectedTagList) {
+      console.log('selectedTagList:', state?.selectedTagList);
+      const promptList = state?.selectedTagList.map((item) => item.words);
+      console.log("promptList:", promptList);
+      formRef.current?.setFieldsValue({
+        prompt: promptList.join(','),
+      });
+    }
+  }, [state?.selectedTagList]);
+
 
   useEffect(() => {
     getAiDrawModels({}).then((res) => {
@@ -68,7 +79,21 @@ export default function TextToImage() {
         setModels(modellist);
       }
     });
+
   }, []);
+
+
+  const handleSubmit = (values:any) => {
+    console.log('handleSubmit:', values);
+    values.prompt = values.prompt?.split(',');
+    values.negative_prompt = values.negative_prompt?.split(',');
+
+    aiDrawTextToImage(values).then((res) => {
+      console.log('aiDrawTextToImage:', res);
+    }
+    );
+
+  };
 
   return (
     <PageContainer title={false}>
@@ -88,7 +113,8 @@ export default function TextToImage() {
           },
         }}
         onFinish={async (values) => {
-          console.log(values);
+          console.log("finish:",values);
+          handleSubmit(values);
           // 这里做提交之后的事情
         }}
         layout="vertical"
@@ -140,7 +166,7 @@ export default function TextToImage() {
         </ProForm.Item>
 
         <ProFormTextArea
-          name="negativePrompt"
+          name="negative_prompt"
           label="反向描述（选填）"
           placeholder="请输入不希望出现的词，多个词用逗号分隔"
           fieldProps={{
@@ -152,7 +178,7 @@ export default function TextToImage() {
           }}
         />
 
-        <ProForm.Item name="filed-1" label="尺寸和像素">
+        <ProForm.Item name="rate" label="尺寸和像素">
           <RadioGroup
             options={sizeList}
             renderItem={(item) => {
@@ -174,11 +200,11 @@ export default function TextToImage() {
             options={[
               {
                 label: '普通',
-                value: 'a',
+                value: '普通',
               },
               {
                 label: '高清',
-                value: 'b',
+                value: '高清',
               },
             ]}
             renderItem={(item) => {
@@ -194,9 +220,9 @@ export default function TextToImage() {
         <ProForm.Item>
           <label>数量</label>
           <ProForm.Group>
-            <ProFormSlider noStyle name="batchSize" min={1} max={3} />
+            <ProFormSlider noStyle name="batch_size" min={1} max={3} />
             <ProFormItem noStyle>
-              {formRef.current?.getFieldFormatValue?.('batchSize') || 1}
+              {formRef.current?.getFieldFormatValue?.('batch_size') || 1}
             </ProFormItem>
           </ProForm.Group>
         </ProForm.Item>
@@ -215,31 +241,31 @@ export default function TextToImage() {
                   </ProForm.Group>
                 </ProForm.Item>
                 <ProFormDigit
-                  label="迭代次数"
-                  name="steps"
+                  label="种子"
+                  name="seed"
                   width="sm"
-                  min={1}
-                  max={10}
+                  min={-999}
+                  max={999}
                 />
                 <ProForm.Item>
                   <label>提示词相关性</label>
                   <ProForm.Group>
-                    <ProFormSlider noStyle name="filed-2" min={1} />
+                    <ProFormSlider noStyle name="cfg_scale" min={1} max={3} />
                     <ProFormItem noStyle>
-                      {formRef.current?.getFieldFormatValue?.('filed-2') || 1}
+                      {formRef.current?.getFieldFormatValue?.('cfg_scale') || 1}
                     </ProFormItem>
                   </ProForm.Group>
                 </ProForm.Item>
-                <ProFormCheckbox name="restoreFaces">
+                <ProFormCheckbox name="restore_faces">
                   真人五官优化
                 </ProFormCheckbox>
                 <ProFormCheckbox name="tiling">可平铺</ProFormCheckbox>
                 <ProForm.Item>
                   <label>重绘幅度</label>
                   <ProForm.Group>
-                    <ProFormSlider noStyle name="filed-3" min={1} />
+                    <ProFormSlider noStyle name="denoising_strength" min={1} />
                     <ProFormItem noStyle>
-                      {formRef.current?.getFieldFormatValue?.('filed-3') || 1}
+                      {formRef.current?.getFieldFormatValue?.('denoising_strength') || 1}
                     </ProFormItem>
                   </ProForm.Group>
                 </ProForm.Item>

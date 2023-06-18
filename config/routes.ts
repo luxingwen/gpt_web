@@ -26,6 +26,10 @@ export default [
     path: '/ai',
     routes: [
       {
+        path: '/ai',
+        redirect: '/ai/qa',
+      },
+      {
         name: 'AI问答',
         path: 'qa',
         component: './AiChat',
@@ -66,7 +70,7 @@ export default [
         hideInMenu: true,
       },
       {
-        path: 'text-to-image/drawing',
+        path: 'text-to-image/drawing/:id',
         name: '画图中',
         component: './AI-Paint/Drawing',
         hideInMenu: true,
@@ -109,7 +113,7 @@ export default [
       },
       {
         name: '作品详情',
-        path: 'work-detail',
+        path: 'work-detail/:id',
         component: './AI-Paint/WorkDetail',
         hideInMenu: true,
       },

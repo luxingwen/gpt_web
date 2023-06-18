@@ -20,13 +20,13 @@ declare namespace API {
     batchCount: number; // 总批次数
     steps: number; // 迭代次数
     seed?: number; // 种子（输入源图片seed）
-    negativePrompt: string[]; // 反向提示词
-    cfgScale: number; // 分类器自由引导量表
-    restoreFaces?: boolean; // 面部修复
+    negative_prompt: string[]; // 反向提示词
+    cfg_scale: number; // 分类器自由引导量表
+    restore_faces?: boolean; // 面部修复
     tiling?: boolean; // 平铺图
-    denoisingStrength: number;
-    samplerName: string;
-    hrUpscaler: string;
+    denoising_strength: number;
+    sampler_name: string;
+    hr_upscaler: string;
   }
 
   interface SDImageToImageParam {
