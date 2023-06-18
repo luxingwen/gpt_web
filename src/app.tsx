@@ -85,7 +85,12 @@ const handleResponseInterceptors = (
   response: Response,
   options: RequestConfig,
 ) => {
-  if (response.data.errno === 401 && location.pathname !== '/home') {
+
+  let isHome = location.pathname.includes('/home');
+
+  console.log('isHome:', isHome);
+  console.log('location.pathname:', location.pathname);
+  if (response.data.errno === 401 && !isHome) {
     Modal.error({
       title: '登录',
       content: '请登录后在使用',
@@ -94,6 +99,7 @@ const handleResponseInterceptors = (
           登录
         </Button>,
         <Button
+          style={{ marginLeft: 10 }}
           key="cancel"
           onClick={() => {
             Modal.destroyAll();

@@ -112,7 +112,7 @@ const Header = (props) => {
   dataSource.Menu.children.forEach((item) => {
     console.log("item name:", item.name);
     if (item.name === 'item~login') {
-      item.children = loginMenu();
+      //item.children = loginMenu();
     }
   });
 

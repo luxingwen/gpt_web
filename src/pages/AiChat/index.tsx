@@ -13,6 +13,8 @@ const ChatPage = () => {
         showVisitDiscourse={true}
         showOpenNewChat={true}
         sendBtnType="2"
+        showVisitDiscourse={false}
+        showOpenNewChat={false}
       />
     </PageContainer>
   );
