@@ -9,7 +9,7 @@ import remarkGfm from 'remark-gfm';
 import './Message.less';
 import { getFormatTime } from './../utils';
 import { DownloadOutlined, SoundOutlined } from '@ant-design/icons';
-
+import Cookies from 'js-cookie';
 
 const themes = {
   dark: prism,
@@ -56,12 +56,32 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ msg }) => {
     message.success('复制成功');
   };
 
-  const handleDownLoad = () => {
-    console.log(1,msg);
-  }
+  const handleDownload = async () => {
+    try {
+      const url = 'https://h5.kimways.com/#/mark-down';
+      const token = Cookies.get('token');
+      const finalUrl = `${url}?userId=${msg.user_id}&id=${msg.msg_id}&token=${token}`;
+  
+      const response = await fetch(finalUrl);
+      const blob = await response.blob();
+  
+      const downloadLink = document.createElement('a');
+      downloadLink.href = URL.createObjectURL(blob);
+      downloadLink.download =  `${msg.user_id}-${msg.msg_id}.md` ; // 指定文件名及扩展名
+      downloadLink.click();
+  
+      // 清理 URL 对象
+      URL.revokeObjectURL(downloadLink.href);
+  
+      message.success('下载成功');
+    } catch (error) {
+      console.error('下载失败:', error);
+      message.error('下载失败');
+    }
+  };
 
   const handleTextToSound = () => {
-    console.log(2,msg);
+    console.log(2, msg);
   }
 
   const renderMessageText = () => {
@@ -84,7 +104,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ msg }) => {
               {children}
               {msgEnd &&
                 node.children[0].value ===
-                  paragraphs[paragraphs.length - 1] && (
+                paragraphs[paragraphs.length - 1] && (
                   <span
                     className="typing-cursor"
                     style={{ display: 'inline-block' }}
@@ -148,7 +168,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ msg }) => {
                 className="operate-btn copy"
                 onClick={() => handleCopy(messageText)}
               ></div>
-              <div className="operate-btn flex-ccc" onClick={handleDownLoad}>
+              <div className="operate-btn flex-ccc" onClick={handleDownload}>
                 <div className='icon-box flex-cc'><DownloadOutlined /></div>
               </div>
               <div className="operate-btn flex-ccc" onClick={handleTextToSound}>
