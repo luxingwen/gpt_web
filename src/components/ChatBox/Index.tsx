@@ -116,6 +116,7 @@ const Index = ({
               msg_id:item.id,
               time: item.add_time,
               avatar: currentUser.avatar,
+              user_id: item.user_id,
             },
             {
               msg: item.answer,
@@ -125,6 +126,7 @@ const Index = ({
               is_end: true,
               time: item.create_time,
               avatar: aiAvatar,
+              user_id: item.user_id,
             },
           );
         });
@@ -170,7 +172,7 @@ const Index = ({
     const handleMsg = (msg) => {
       setMessages([
         ...messages,
-        {  msg_id:msg.id,  id: 'u-' + msg.id, msg: input, self: true, is_end: true, time: +new Date(), avatar: currentUser.avatar },
+        {  user_id: currentUser?.id, msg_id:msg.id,  id: 'u-' + msg.id, msg: input, self: true, is_end: true, time: +new Date(), avatar: currentUser.avatar },
         {
           msg: TRYING_MSG,
           self: false,
@@ -178,6 +180,7 @@ const Index = ({
           msg_id: msg.id,
           is_end: false,
           avatar: aiAvatar,
+          user_id: currentUser?.id,
         },
       ]);
       setIsMsgEnd(false);
@@ -257,6 +260,7 @@ const Index = ({
               msg_id: item.id,
               time: item.add_time,
               avatar: currentUser.avatar,
+              user_id: item.user_id,
             },
             {
               msg: item.answer,
@@ -266,6 +270,7 @@ const Index = ({
               is_end: true,
               time: item.create_time,
               avatar: aiAvatar,
+              user_id: item.user_id,
             },
           );
         });

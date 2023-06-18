@@ -16,6 +16,7 @@ declare namespace API {
     is_end: boolean;
     time: string;
     avatar: string;
+    user_id: number;
   };
 
 
