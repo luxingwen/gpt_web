@@ -31,15 +31,14 @@ const PriceHeader: React.FC<PriceHeaderProps> = ({ onClickCallBack }) => {
           return index == headerState ? (
             <div
               className={`${'price-header-button'} ${'on-select'}`}
-              key={index}
+              key={item + index}
             >
               <div className="show-font" onClick={() => onClick(index)}>
                 {item}
               </div>
             </div>
           ) : (
-            <div className={`${'price-header-button'} ${'other'}`} key={index}>
-              {' '}
+            <div className={`${'price-header-button'} ${'other'}`} key={item + index}>
               <div className="show-font" onClick={() => onClick(index)}>
                 {item}
               </div>

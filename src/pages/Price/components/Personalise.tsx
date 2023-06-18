@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Space, Row, Col, Button } from 'antd'
 import { CheckCircleTwoTone } from '@ant-design/icons';
 
@@ -22,14 +22,14 @@ const PersonHeader: React.FC<PersonHeaderProps> = ({ select, callBack }) => {
           return select == index ? (
             <div
               className={`${'price-header-button'} ${'on-select'}`}
-              key={index}
+              key={item + index}
             >
               <div className="show-font" onClick={() => callBack(index)}>
                 {item}
               </div>
             </div>
           ) : (
-            <div className={`${'price-header-button'} ${'other'}`} key={index}>
+            <div className={`${'price-header-button'} ${'other'}`} key={item + index}>
               <div className="show-font" onClick={() => callBack(index)}>
                 {item}
               </div>
@@ -66,10 +66,10 @@ const PersonCard: React.FC<PersonCardProps> = ({ select, index, info, callBack }
               </div>
           }
           <div className='hit'>
-            {info.hit.map((item, index, _) => (
-              <div>
+            {info.hit?.map((item, index, _) => (
+              <div key={item + index}>
                 <CheckCircleTwoTone className='c-icon' />
-                <span key={item + index}>{item}</span>
+                <span>{item}</span>
               </div>
             ))}
           </div>
@@ -89,10 +89,10 @@ const PersonCard: React.FC<PersonCardProps> = ({ select, index, info, callBack }
               </div>
           }
           <div className='hit'>
-            {info.hit.map((item, index, _) => (
-              <div>
+            {info.hit?.map((item, index, _) => (
+              <div key={item + index}>
                 <CheckCircleTwoTone className='c-icon' />
-                <span key={item + index}>{item}</span>
+                <span>{item}</span>
               </div>
             ))}
           </div>
@@ -103,10 +103,12 @@ const PersonCard: React.FC<PersonCardProps> = ({ select, index, info, callBack }
 }
 
 interface PersonaliseProps {
-  digitalHumanData: Array<IPersonCard>
-  buyData: Array<IBuyInfo>
+  digitalHumanData?: Array<IPersonCard>
+  buyData?: Array<IBuyInfo>
 }
 const Personalise: React.FC<PersonaliseProps> = ({ digitalHumanData, buyData }) => {
+
+  console.log("recv data => ", digitalHumanData)
 
   const [headerSelectState, setHeaderSelectState] = useState<number>(0);
   const [cardSelectState, setCardSelectState] = useState<number>(0);
@@ -125,32 +127,34 @@ const Personalise: React.FC<PersonaliseProps> = ({ digitalHumanData, buyData }) 
   }
 
 
+
   return <>
     <div className='person'>
       <PersonHeader select={headerSelectState} callBack={headerCallBack} />
-      {headerSelectState == 0 ?
-        <div className='card-list'>
-          <Row gutter={73}>
-            {digitalHumanData.map((item, index, _) => (
-              <Col><PersonCard select={cardSelectState} index={index} callBack={cardCallBack} info={item} key={index} /></Col>
-            ))}
-          </Row>
-        </div> :
-        <div className='buy-list'>
-          <Row gutter={41}>
-            {
-              buyData.map((item, index, _) => (
-                <Col>
-                  <BuyCard info={item} isSelect={buyCardSelectState == index} index={index} key={item.title + index} changeCallBack={buyCallBack} />
-                </Col>
-              ))
-            }
-          </Row>
-        </div>
-      }
-
+      <div>
+        {headerSelectState == 0 ?
+          <div className='card-list'>
+            <Row gutter={73}>
+              {digitalHumanData?.map((item, index, _) => (
+                <Col key={"col-" + item.id}><PersonCard key={item.id} select={cardSelectState} index={index} callBack={cardCallBack} info={item} /></Col>
+              ))}
+            </Row>
+          </div> :
+          <div className='buy-list'>
+            <Row gutter={41}>
+              {
+                buyData?.map((item, index, _) => (
+                  <Col key={"col-" + item.id}>
+                    <BuyCard key={item.id} info={item} isSelect={buyCardSelectState == index} index={index} changeCallBack={buyCallBack} />
+                  </Col>
+                ))
+              }
+            </Row>
+          </div>
+        }
+      </div>
     </div>
-  </>;
-};
+  </>
+}
 
 export default Personalise;

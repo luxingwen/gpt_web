@@ -1,24 +1,41 @@
 interface IBuyInfo {
+    id: string
     title: string
     price: string
-    priceUnit: string
-    disablePrice: string
-    hit: string
-    buttonText: string
+    priceUnit?: string
+    disablePrice?: string
+    hit?: string
+    buttonText?: string
     isHot?: boolean
 }
 
 interface IHuaBei {
+    id: string
     num: number
-    price: string
+    price: number
 }
 
 
 interface IPersonCard {
+    id: string
     title: string
     price: string
     priceUnit: string
-    hit: Array<string>
+    hit?: Array<string>
     buttonText: string
-    isHot: boolean
+    isHot?: boolean
+}
+
+interface IBackData {
+    id: number
+    actual_price: number
+    chat_times: 6000
+    draw_score: number
+    id: number
+    is_del: number
+    name: string
+    price: number
+    time_period: number
+    title: string
+    type: int
 }
