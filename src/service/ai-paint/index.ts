@@ -45,8 +45,8 @@ export async function getAiDrawModels(props: any) {
 // ai绘画 获取进度
 export async function aiDrawProcess(props: any) {
   return await request(`/api/chat/sd/process`, {
-    method: 'POST',
-    data: props,
+    method: 'GET',
+    params: props,
   });
 }
 
