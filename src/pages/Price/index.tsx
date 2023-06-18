@@ -1,12 +1,15 @@
 import { Layout } from 'antd';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import Enterprise from './components/Enterprise';
 import Painted from './components/Painted';
 import Personalise from './components/Personalise';
 import PriceHeader from './components/PriceHeader';
 import TerasureBox from './components/TerasureBox';
+
+import {queryChatGoods} from '@/service/api';
 import './index.less';
+
 type StateType = {
   // 在这里定义你的状态类型
 };
@@ -125,6 +128,12 @@ const PricePage = () => {
     console.log('new index => ', select);
     setHeaderSelect(select);
   };
+
+  useEffect(() => {
+    queryChatGoods({type:0}).then((res) => {
+      console.log('res => ', res);
+    })
+  }, [])
 
   return (
     <>
