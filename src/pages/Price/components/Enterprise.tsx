@@ -1,5 +1,5 @@
 import React from 'react';
-
+import qrcode from '@/assets/images/price_qrcode.jpg';
 import '../index.less';
 import { Row, Col, Space, Image, Form, Button, Input } from 'antd';
 
@@ -20,7 +20,7 @@ const Enterprise: React.FC<EainteedProps> = ({ }) => {
                 <div className='style1'>13544285662@163.com</div>
                 <div className='style2'>商务合作</div>
               </div>
-              <Image src='https://www.kimways.com/_next/image?url=%2F168312753179241b2363a3e7042ad.jpg&w=256&q=75' width={200} />
+              <Image src={qrcode} width={200} />
               <div className='style2'>扫码添加好友，备注'商务合作'</div>
             </Space>
           </div>
