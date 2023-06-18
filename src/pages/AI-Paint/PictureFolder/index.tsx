@@ -1,8 +1,11 @@
 import { CheckCircleFilled } from '@ant-design/icons';
 import { PageContainer, ProList } from '@ant-design/pro-components';
 import { Button, Image, Progress, Space, message } from 'antd';
+import { Link } from '@umijs/max';
 import { useState, useEffect } from 'react';
-import {aiDrawImages} from '@/service/ai-paint';
+import { aiDrawImages } from '@/service/ai-paint';
+
+import {formatTimestamp} from '@/utils/utils';
 
 const data = [
   '语雀的天空',
@@ -42,17 +45,41 @@ function PictureFolder() {
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [isAll, setIsAll] = useState<boolean>(false);
   const [picTotal, setPicTotal] = useState<number>(10);
+  const [picUsed, setPicUsed] = useState<number>(0);
   const [picList, setPicList] = useState<any[]>([]);
 
 
   useEffect(() => {
     aiDrawImages({}).then((res) => {
-      console.log("aiDrawImages:",res);
-      if(res.errno ===0) {
+      console.log("aiDrawImages:", res);
+      if (res.errno === 0) {
         setPicTotal(res.total);
-        
-        setPicList(res.data || []);
-      }else {
+        setPicUsed(res.used);
+        const newList = res.data?.map((item) => {
+          let status_txt = '';
+          switch (item.status) {
+            case 1:
+              status_txt = '队列中...';
+              break;
+            case 2:
+              status_txt = '生成中...';
+              break;
+            case 3:
+              status_txt = '已完成';
+              break;
+            case 4:
+              status_txt = '图片违规，无法查看';
+              break;
+          }
+          item.status_txt = status_txt;
+          if (item?.image_info && item.image_info.length > 0) {
+            item.image_url = item.image_info[0];
+          }
+          return item;
+        });
+
+        setPicList(newList || []);
+      } else {
         message.error(res.errmsg);
       }
     });
@@ -70,8 +97,8 @@ function PictureFolder() {
         grid={{ gutter: 16, column: 6 }}
         headerTitle={
           <Space direction="vertical" className="w-52" size={0}>
-            <Progress percent={8} showInfo={false} className="m-0" />
-            <span className="text-xs font-normal text-gray-500">8/{picTotal}</span>
+            <Progress percent={picUsed/picTotal*100} showInfo={false} className="m-0" />
+            <span className="text-xs font-normal text-gray-500">{picUsed}/{picTotal}</span>
           </Space>
         }
         toolBarRender={() => [
@@ -79,7 +106,7 @@ function PictureFolder() {
             {checked ? '取消' : '管理'}
           </Button>,
         ]}
-        dataSource={data}
+        dataSource={picList}
         metas={{
           content: {
             render: (_, record) => {
@@ -87,20 +114,20 @@ function PictureFolder() {
                 <div className="w-full">
                   {checked && (
                     <CheckCircleFilled
-                      className={`absolute top-2 left-2 border rounded-full ${
-                        selectedRows.findIndex(
-                          (item) => item.title === record.title,
-                        ) > -1
-                          ? ' text-primary'
-                          : 'text-transparent'
-                      }`}
+                      className={`absolute top-2 left-2 border rounded-full ${selectedRows.findIndex(
+                        (item) => item.title === record.title,
+                      ) > -1
+                        ? ' text-primary'
+                        : 'text-transparent'
+                        }`}
                     />
                   )}
                   <Space direction="vertical" className="w-full">
-                    <Image src={record.avatar} width="100%" preview={false} />
+                    {record.status == 3 && <Image src={record.image_url} width="100%" preview={false} /> }
+                    {record.status != 3 &&   <Link to={`/ai-paint/text-to-image/drawing/${record.id}`}><div className="w-full h-32 bg-gray-200">{record.status_txt}</div></Link> }
                     <span className="text-center">{record.title}</span>
                     <span className="text-center text-xs text-gray-500">
-                      {record.subTitle}
+                      {formatTimestamp(record.create_time)}
                     </span>
                   </Space>
                 </div>
@@ -139,9 +166,8 @@ function PictureFolder() {
             size="small"
           >
             <CheckCircleFilled
-              className={`border rounded-full ${
-                isAll ? 'text-primary' : 'text-white '
-              }`}
+              className={`border rounded-full ${isAll ? 'text-primary' : 'text-white '
+                }`}
             />
             <span>全选</span>
           </Space>

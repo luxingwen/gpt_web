@@ -65,3 +65,11 @@ export async function delAiDrawImages(props: any) {
     data: props,
   });
 }
+
+//ai绘画生成热门的画
+export async function hotAiDrawImage(props: any) {
+  return await request(`/api/chat/sd/hot/images`, {
+    method: 'GET',
+    params: props,
+  });
+}

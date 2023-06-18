@@ -9,7 +9,36 @@
 import { HeartOutlined, UserOutlined } from '@ant-design/icons';
 import { PageContainer, ProDescriptions } from '@ant-design/pro-components';
 import { Avatar, Button, Image, Space } from 'antd';
+import { useEffect, useState} from 'react';
+import { useParams } from 'react-router-dom';
+import {hotAiDrawImage} from '@/service/ai-paint';
+import { Link } from '@umijs/max';
+
 function Drawing() {
+
+  const {id} = useParams<{id:string}>();
+
+  const [aiImageInfo, setAiImageInfo] = useState({});
+
+  useEffect(() => {
+    hotAiDrawImage({id}).then((res) => {
+      console.log('hotAiDrawImage:', res);
+      if(res.errno === 0 && res.data && res.data.length > 0){
+        setAiImageInfo(res.data[0]);
+      }
+    });
+  }, []);
+
+  const imageSrc = () => {
+    console.log('aiImageInfo:', aiImageInfo);
+    console.log('aiImageInfo.image_info:', aiImageInfo?.image_info);
+    if (Array.isArray(aiImageInfo?.image_info) && aiImageInfo.image_info.length > 0) {
+      return aiImageInfo.image_info[0];
+    }
+    return 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png';
+  }
+  
+
   return (
     <PageContainer title={false}>
       <ProDescriptions column={1}>
@@ -19,21 +48,22 @@ function Drawing() {
               <Image
                 width="100%"
                 height="100%"
-                src={`https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png`}
+                src={imageSrc()}
               />
             </div>
             <div className="w-72 flex justify-between items-center">
               <Space>
-                <Avatar icon={<UserOutlined />}></Avatar>
-                User
+                <Avatar src={aiImageInfo.avatar}></Avatar>
+                {aiImageInfo?.nickname}
               </Space>
               <Space>
                 <HeartOutlined className="text-2xl" />
-                12
+                {aiImageInfo?.like_count}
               </Space>
             </div>
           </Space>
         </ProDescriptions.Item>
+        { aiImageInfo.image_info && aiImageInfo.image_info.length > 1 &&
         <ProDescriptions.Item>
           <Space direction="vertical">
             <span className="ant-descriptions-item-label after:hidden">
@@ -56,20 +86,20 @@ function Drawing() {
               </div>
             </Space>
           </Space>
-        </ProDescriptions.Item>
-        <ProDescriptions.Item label="作品名称">科技之城</ProDescriptions.Item>
+        </ProDescriptions.Item>}
+        <ProDescriptions.Item label="作品名称">{aiImageInfo?.title}</ProDescriptions.Item>
         <ProDescriptions.Item label="描述">
-          计的快手快脚打开啊啊是大手大脚深刻的就是将大手大脚的打击啊记得啊的
+          {aiImageInfo?.prompt?.join(',')}
         </ProDescriptions.Item>
-        <ProDescriptions.Item label="风格">二次元，动漫</ProDescriptions.Item>
-        <ProDescriptions.Item label="模型">上课的军事基地</ProDescriptions.Item>
-        <ProDescriptions.Item label="像素尺寸">1280*1280</ProDescriptions.Item>
+        <ProDescriptions.Item label="风格">{aiImageInfo?.model_name}</ProDescriptions.Item>
+        <ProDescriptions.Item label="模型">{aiImageInfo?.model}</ProDescriptions.Item>
+        <ProDescriptions.Item label="像素尺寸">{aiImageInfo.width}*{aiImageInfo.height}</ProDescriptions.Item>
       </ProDescriptions>
       <Space className="mt-16">
         <Button type="primary" className="text-primary bg-secondary">
           分享
         </Button>
-        <Button type="primary">画同款</Button>
+        <Link to={'/ai-paint/text-to-image'} ><Button type="primary">画同款</Button></Link>
       </Space>
     </PageContainer>
   );

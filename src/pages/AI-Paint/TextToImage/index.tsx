@@ -13,7 +13,7 @@ import { Button, Collapse } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import RadioGroup from '../components/RadioGroup';
 
-import { getAiDrawModels } from '@/service/ai-paint';
+import { getAiDrawModels,aiDrawTextToImage } from '@/service/ai-paint';
 
 import './index.less';
 
@@ -50,7 +50,19 @@ export default function TextToImage() {
   const [models, setModels] = useState([]);
 
   const { state } = useLocation();
-  console.log('state:', state);
+
+
+  useEffect(() => {
+    if (state?.selectedTagList) {
+      console.log('selectedTagList:', state?.selectedTagList);
+      const promptList = state?.selectedTagList.map((item) => item.words);
+      console.log("promptList:", promptList);
+      formRef.current?.setFieldsValue({
+        prompt: promptList.join(','),
+      });
+    }
+  }, [state?.selectedTagList]);
+
 
   useEffect(() => {
     getAiDrawModels({}).then((res) => {
@@ -67,7 +79,21 @@ export default function TextToImage() {
         setModels(modellist);
       }
     });
+
   }, []);
+
+
+  const handleSubmit = (values:any) => {
+    console.log('handleSubmit:', values);
+    values.prompt = values.prompt?.split(',');
+    values.negative_prompt = values.negative_prompt?.split(',');
+
+    aiDrawTextToImage(values).then((res) => {
+      console.log('aiDrawTextToImage:', res);
+    }
+    );
+
+  };
 
   return (
     <PageContainer title={false}>
@@ -88,6 +114,7 @@ export default function TextToImage() {
         }}
         onFinish={async (values) => {
           console.log("finish:",values);
+          handleSubmit(values);
           // 这里做提交之后的事情
         }}
         layout="vertical"
