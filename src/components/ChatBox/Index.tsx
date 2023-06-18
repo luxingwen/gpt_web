@@ -219,7 +219,6 @@ const Index = ({
     }
   };
 
-
   const handleSend = () => {
     if (!isMsgEnd) {
       message.error('请等待机器人回复后再发送消息');
