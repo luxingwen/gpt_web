@@ -32,4 +32,5 @@ export default defineConfig({
   proxy,
   npmClient: 'pnpm',
   tailwindcss: {},
+  esbuildMinifyIIFE: true,
 });
