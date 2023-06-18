@@ -7,9 +7,20 @@ const defaultToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiIyMTE5I
 
 
 export async function wxlogin() {
-  Cookies.set('token', defaultToken);
-  window.location.reload();
-  return;
+
+  let domain = window.location.hostname;
+
+  if (window.location.hostname === 'localhost' || window.location.hostname.startsWith('192.168.') || window.location.hostname.startsWith('testchat.kimways.com')) {  
+    // 在本地开发环境中 或者测试环境中
+    console.log('在本地开发环境中 或者测试环境中 wxlogin omain >>>>', domain);
+    Cookies.set('token', defaultToken);
+    window.location.reload();
+    return;
+  }
+
+
+  console.log('wxlogin omain >>>>', domain);
+
 
   if (window.WeixinJSBridge) {
     window.location.href = `https://chat.kimways.com/api/chat/wechat/oauth/code?redirect_url=${encodeURIComponent(
@@ -37,9 +48,9 @@ export async function getUserInfo() {
 
 export async function getUserList(params: any) {
   try {
-    return request<API.Response<API.User[]>(`/api/chat/user/list`, {
+    return request < API.Response<API.User[]>(`/api/chat/user/list`, {
       method: 'POST',
       data: params,
     });
-  } catch (error) {}
+  } catch (error) { }
 }

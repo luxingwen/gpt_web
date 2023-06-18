@@ -8,13 +8,50 @@ import {
 } from 'antd';
 import { useEffect, useState, useMemo } from 'react';
 import './index.less';
+import { orderList } from '@/service/api';
+import {formatTimestamp} from  '@/utils/utils';
+import { useModel, Link } from '@umijs/max';
 
 
 const Index = () => {
+
+
+  const { initialState, setInitialState } = useModel('@@initialState');
+
+  const [payOrderList, setPayOrderList] = useState([]); // 已支付订单列表
+  const fetchUserInfo = initialState?.fetchUserInfo;
+
+  const [userInfo, setUserInfo] = useState({});
+
+  useEffect(() => {
+    orderList().then((res) => {
+      console.log("orderList:", res);
+      if (res.errno === 0) {
+        let reslist = res.data?.data.filter((item) => item.pay_time !== 0);
+        console.log("reslist:", reslist);
+        setPayOrderList(reslist);
+      }
+    });
+
+    const fetUserData = async () => {
+      const res = await fetchUserInfo?.();
+      console.log("fetUserData res:", res);
+      setUserInfo(res);
+    };
+
+    fetUserData();
+
+
+  }, []);
+  
+
+
+
+
   const columns = [
     {
       title: '会员种类',
-      dataIndex: '会员种类',
+      dataIndex: 'remark',
     },
     {
       title: '会员等级',
@@ -23,8 +60,9 @@ const Index = () => {
     },
     {
       title: '购买时间',
-      dataIndex: '购买时间',
+      dataIndex: 'pay_time',
       align:'center',
+      render: (value) => <a>{formatTimestamp(value)}</a>,
     },
     {
       title: '到期时间',
@@ -33,31 +71,15 @@ const Index = () => {
     },
     {
       title: '购买价格',
-      dataIndex: '购买价格',
-      render: (text) => <a>{text}</a>,
+      dataIndex: 'price',
+      render: (text) => <a>¥{text / 100 }</a>,
     },
   ]
-  const data = [
-    {
-      id: 0,
-      会员种类: '1',
-      a2: 'John Brown',
-      购买时间: '2011-11-11 11:11:11',
-      到期时间: '2011-11-12 11:11:11',
-      购买价格: 23,
-    },
-    {
-      id: 1,
-      会员种类: '2',
-      a2: 'John Brown',
-      购买时间: '2011-11-11 11:11:11',
-      到期时间: '2011-11-12 11:11:11',
-      购买价格: 23,
-    },
-  ]
+
   const getList = useMemo(()=>{
-    const formatList = data.map(item=>{
+    const formatList = payOrderList.map(item=>{
       return Object.keys(item).map(key=>{
+
         const targetColumn = columns.find(column=>column.dataIndex==key);
         if(targetColumn){
           return  {
@@ -71,7 +93,7 @@ const Index = () => {
     return formatList.map(item=>{
       return item.filter(i=>i)
     })
-  },[data])
+  },[payOrderList])
   console.log(123, getList);
   
   return <div className='member-server-page'>
@@ -81,15 +103,15 @@ const Index = () => {
         <div className='item-main flex w100'>
           <div className='item-left'>
             <div>当前会员：体验版</div>
-            <div>剩余对话次数：10 次</div>
+            <div>剩余对话次数：{userInfo?.chat_times} 次</div>
           </div>
           <div className='item-center'>
-            <Button className='primary-btn' size='small' type='primary'>购买会员</Button>
+          <Link to='/price'><Button className='primary-btn' size='small' type='primary'>购买会员</Button></Link>
           </div>
           <div className='item-right'>
             <div>当前会员：VIP1</div>
             <div>剩余对话次数：无限</div>
-            <div>套餐到期时间：2023-04-15 00:00:00</div>
+            <div>套餐到期时间：{formatTimestamp(userInfo?.chat_expired_at)}</div>
           </div>
         </div>
       </div>
@@ -97,10 +119,10 @@ const Index = () => {
         <div className="item-label">AI画涂</div>
         <div className='item-main flex w100'>
           <div className='item-left'>
-            <div>剩余画贝：12.3 画贝</div>
+            <div>剩余画贝：{userInfo?.draw_score} 画贝</div>
           </div>
           <div className='item-center'>
-            <Button className='primary-btn' size='small' type='primary'>购买画贝</Button>
+            <Link to='/price'><Button className='primary-btn' size='small' type='primary'>购买画贝</Button></Link>
           </div>
         </div>
       </div>
@@ -111,11 +133,11 @@ const Index = () => {
             <div>当前会员：体验版</div>
           </div>
           <div className='item-center'>
-            <Button className='primary-btn' size='small' type='primary'>购买会员</Button>
+          <Link to='/price'><Button className='primary-btn' size='small' type='primary'>购买会员</Button></Link>
           </div>
           <div className='item-right'>
             <div>当前会员：VIP1</div>
-            <div>套餐到期时间：2023-04-15 00:00:00</div>
+            <div>套餐到期时间：{userInfo?.d_man_expired_at}</div>
           </div>
         </div>
       </div>
@@ -123,7 +145,7 @@ const Index = () => {
     <Divider/>
     <div className="table-box">
       <div className="table-label">历史购买记录</div>
-      <Table className='table-dom' columns={columns} dataSource={data} rowKey='id' pagination={false}/>
+      <Table className='table-dom' columns={columns} dataSource={payOrderList} rowKey='id' pagination={false}/>
       <div className="buy-list">
         {getList.map((item,index)=>{
           return <div className="buy-item" key={index}>

@@ -102,7 +102,7 @@ const TipsBagPage = () => {
             <Row gutter={[16, 16]}>
               {searchResult.map((card, index) => (
                 <Col key={index} xs={24} sm={12} md={6}>
-                  <NavLink to={`/tips/bag/chat/${card.id}`}>
+                  <NavLink to={`/ai/prompt/${card.id}`}>
                     <TipsCard
                       title={card.name}
                       description={card.scene_desc}
@@ -152,7 +152,7 @@ const TipsBagPage = () => {
             <Row gutter={[16, 16]}>
               {cardData.map((card, index) => (
                 <Col key={index} xs={24} sm={12} md={6}>
-                  <NavLink to={`/tips/bag/chat/${card.id}`}>
+                  <NavLink to={`/ai/prompt/${card.id}`}>
                     <TipsCard
                       title={card.name}
                       description={card.scene_desc}

@@ -76,11 +76,19 @@ export default [
         icon: 'InboxOutlined',
       },
       {
+        name: '百宝袋聊天',
+        path: 'prompt/:scene',
+        component: './PromptChat',
+        icon: 'fire',
+        hideInMenu: true,
+      },
+      {
         name: '热门问题',
         path: 'hot-qa',
         component: './TipsBag',
         icon: 'fire',
       },
+      
     ],
   },
   {

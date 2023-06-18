@@ -27,10 +27,11 @@ const Index = ({
   showVisitDiscourse = false,
   showOpenNewChat = false,
   sendBtnType = '1', // [1 输入框右外侧] [2输入框右内侧]
-  chat_type = 'ai-chat', // ai-chat | smart-chat
+  chat_type = 'ai-chat', // ai-chat | smart-chat | prompt-chat
   scene_id = '', // 智能场景id
   session_id = 0, // 会话id
   aiAvatar = AiLogo, // ai头像
+  scene = 0, // 场景id  prompt-chat 时使用
 }) => {
   const { initialState, setInitialState } = useModel('@@initialState');
   const currentUser = initialState?.currentUser;
@@ -45,6 +46,7 @@ const Index = ({
     page: 0,
     per_page: 10,
     session_id: session_id,
+    scene: scene,
   });
   const [newMessageReceived, setNewMessageReceived] = useState(true);
 
@@ -135,6 +137,34 @@ const Index = ({
 
 
 
+  const showBuyModal = () => {
+    Modal.info({
+      title: '提示',
+      content: (
+        <div>
+          <p>剩余次数不足，请购买次数</p>
+        </div>
+      ),
+      maskClosable: true,
+      closable: true,
+      cancelText: '取消',
+      okText: '去购买',
+      okButtonProps: {
+        style: {
+          backgroundColor: '#4b64f3'
+        }
+      },
+
+      onCancel(){
+        console.log('取消');
+      },
+      onOk() {
+        console.log('去购买');
+      },
+    });
+    return;
+  };
+
   // 处理发送消息
   const hanedleRequestQuestion = async (question) => {
     const handleMsg = (msg) => {
@@ -158,39 +188,29 @@ const Index = ({
       const quessionRes = await queryQuestion(question)
       // 剩余次数不足，提示购买次数
       if(quessionRes.errno == 4002){
-        Modal.info({
-          title: '提示',
-          content: (
-            <div>
-              <p>剩余次数不足，请购买次数</p>
-            </div>
-          ),
-          maskClosable: true,
-          closable: true,
-          cancelText: '取消',
-          okText: '去购买',
-          okButtonProps: {
-            style: {
-              backgroundColor: '#4b64f3'
-            }
-          },
-
-          onCancel(){
-            console.log('取消');
-          },
-          onOk() {
-            console.log('去购买');
-          },
-        });
-        return
+        showBuyModal();
+        return;
       }
       if (quessionRes.errno !== 0) {
         message.error(quessionRes.errmsg)
         return
       }
       handleMsg(quessionRes.data);
-
-    } else {
+    } 
+    if(chat_type === 'prompt-chat'){
+      const quessionRes = await queryQuestion(question,  parseInt(scene))
+      if(quessionRes.errno == 4002){
+        showBuyModal();
+        return;
+      }
+      if (quessionRes.errno !== 0) {
+        message.error(quessionRes.errmsg)
+        return
+      }
+      handleMsg(quessionRes.data);
+    }
+    
+    if (chat_type === 'smart-chat') {
       const quessionRes = await smartChatCompletions({ content: question, scene_id: scene_id, session_id: session_id });
       if (quessionRes.errno !== 0) {
         return;
@@ -369,7 +389,7 @@ const Index = ({
   const sendBtnSuffix = () => {
     return (
       <div className="send-btn-suffix-box flex-cc" onClick={handleSend}>
-        没图
+        发送
       </div>
     );
   };

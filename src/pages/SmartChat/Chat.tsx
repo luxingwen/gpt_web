@@ -56,7 +56,7 @@ const SmartChatPage: React.FC<SmartChatPageProps> = ({ sceneId, sessionId }) => 
 
 
   return (
-    <PageContainer title={false} breadcrumb={false} >
+    <>
       {sessionInfo && <ChatBox
         showFullScreen={true}
         showVisitDiscourse={true}
@@ -66,8 +66,9 @@ const SmartChatPage: React.FC<SmartChatPageProps> = ({ sceneId, sessionId }) => 
         session_id={sessionInfo?.id}
         scene_id={sessionInfo?.scene_id}
         aiAvatar={scenceInfo?.ai_avatar}
-      /> }
-    </PageContainer>
+      />}
+    </>
+
   );
 };
 
