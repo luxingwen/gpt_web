@@ -98,4 +98,10 @@ export async function prePay(params: any) {
 }
 
 
-
+// 获取订单列表
+export async function orderList(params: API.ReqOrdersType) {
+  return await request(`/api/chat/orders`, {
+    method: 'GET',
+    params: params,
+  });
+}

@@ -10,6 +10,7 @@ import { Button, Card, Form, Input, Radio, Space, Upload, message } from 'antd';
 import { useRef, useState } from 'react';
 import UserSelect from './UserSelect.tsx';
 
+
 import './CreateScene.less';
 
 const { Item } = Form;
@@ -23,6 +24,8 @@ const CreateScene = ({ setViewContent }) => {
   const [imageFile, setImageFile] = useState(null);
   const [userList, setUserList] = useState([]);
   const [loading, setLoading] = useState(false); // 添加loading状态变量
+  const formRef = useRef();
+
 
   const uploadRef = useRef(null);
 
@@ -36,6 +39,11 @@ const CreateScene = ({ setViewContent }) => {
       updatedFileList.splice(index, 1);
       return updatedFileList;
     });
+
+    let newFileList = [...fileList];
+    newFileList.splice(index, 1);
+
+    formRef?.current?.setFieldsValue({ fileUpload: newFileList });
   };
 
   const handleRadioChange = (e) => {
@@ -74,6 +82,7 @@ const CreateScene = ({ setViewContent }) => {
 
       // 执行上传操作
       message.success('文件上传成功！');
+      formRef.current.setFieldsValue({ imageUpload: [file] });
     } else {
       message.error('请上传不超过1MB的PNG或JPEG格式的图片！');
     }
@@ -82,7 +91,23 @@ const CreateScene = ({ setViewContent }) => {
   const handleContentFileChange = (file) => {
     // 处理文件上传逻辑
     console.log('file:', file.name);
-    setFileList((prevFileList) => [...prevFileList, file]);
+    const fileSizeLimit = 1024 * 1024; // 1MB
+    if (file.size > fileSizeLimit) {
+      message.error('文件大小超过1MB限制！');
+      return;
+    }
+
+
+   let newFileList = [...fileList, file];
+
+    if (newFileList.length > 10) {
+      message.error('文件数量超过10个限制！');
+      return;
+    }
+  
+    formRef?.current?.setFieldsValue({ fileUpload: newFileList });
+
+    setFileList(newFileList);
   };
 
   const onFinish = async (values) => {
@@ -134,7 +159,9 @@ const CreateScene = ({ setViewContent }) => {
   return (
     <div style={{ marginTop: '22px' }}>
       <div style={{ maxWidth: '500px', padding: '12px' }}>
-        <Form layout="vertical" onFinish={onFinish}>
+        <Form
+          ref={formRef}
+         layout="vertical" onFinish={onFinish}>
           <Item
             label="场景名称"
             name="sceneName"
@@ -167,13 +194,13 @@ const CreateScene = ({ setViewContent }) => {
           </Item>
           <Item
             label="数字人形象设置"
-            name="upload"
+            name="imageUpload"
             valuePropName="fileList"
             getValueFromEvent={(e) => e && e.fileList}
             rules={[
               {
-                required: false,
-                message: '请上传文件',
+                required: true,
+                message: '请上传数字人头像',
               },
             ]}
           >
@@ -206,7 +233,7 @@ const CreateScene = ({ setViewContent }) => {
             <div style={{ marginTop: '10px' }}>
               <span>
                 注：最多上传1个头像，支持格式png/jpg，头像大小不得超过1M。
-                <a href="#">升级套餐</a>
+                <a href="/price">升级套餐</a>
               </span>
             </div>
             <input
@@ -239,12 +266,12 @@ const CreateScene = ({ setViewContent }) => {
           </Item>
           <Item
             label=""
-            name="upload"
+            name="fileUpload"
             valuePropName="fileList"
             getValueFromEvent={(e) => e && e.fileList}
             rules={[
               {
-                required: false,
+                required: true,
                 message: '请上传文件',
               },
             ]}
@@ -288,7 +315,7 @@ const CreateScene = ({ setViewContent }) => {
             <div style={{ marginTop: '10px' }}>
               <span>
                 注：最多上传10个文件，每个文件大小不得超过1M。
-                <a href="#">升级套餐</a>
+                <a href="/price">升级套餐</a>
               </span>
             </div>
           </Item>
