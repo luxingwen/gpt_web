@@ -7,7 +7,7 @@ export async function getUserInfo() {
   });
 }
 
-export async function queryChatGoods() {
+export async function queryChatGoods(props:API.ReqGoodsType) {
   return await request(`/api/chat/goods`, {
     method: 'GET',
   });
