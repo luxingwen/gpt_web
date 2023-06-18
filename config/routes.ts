@@ -122,6 +122,7 @@ export default [
         name: '图片生成图',
         path: 'image-to-image',
         component: './AI-Paint/ImageToImage',
+        hideInMenu: true,
       },
       {
         path: 'image-to-image/auto-generate-prompt',
@@ -152,6 +153,7 @@ export default [
         name: '个人展出&收藏',
         path: 'my-works',
         component: './AI-Paint/MyWorks',
+        hideInMenu: true,
       },
       {
         name: '作品详情',
@@ -165,6 +167,7 @@ export default [
     name: '个性化数字人',
     path: '/smart-ai',
     component: './SmartChat',
+    hideInMenu: true,
   },
   {
     name: '场景广场',

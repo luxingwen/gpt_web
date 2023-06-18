@@ -3,7 +3,7 @@ export const Nav00DataSource = {
   page: { className: 'home-page' },
   logo: {
     className: 'header0-logo',
-    children: 'https://os.alipayobjects.com/rmsportal/mlcYmsRilwraoAe.svg',
+    children: 'https://www.kimways.com/static/logo1.webp',
   },
   Menu: {
     className: 'header0-menu',
@@ -46,7 +46,7 @@ export const Nav00DataSource = {
         name: 'item2',
         className: 'header0-item',
         children: {
-          href: '/smart-ai',
+          href: '#',
           children: [
             {
               children: (
@@ -929,7 +929,7 @@ export const Footer10DataSource = {
         title: {
           className: 'logo',
           children:
-            'https://zos.alipayobjects.com/rmsportal/qqaimmXZVSwAhpL.svg',
+            'https://www.kimways.com/static/logo1.webp',
         },
         childWrapper: {
           className: 'slogan',
@@ -1067,7 +1067,7 @@ export const Footer10DataSource = {
     children: (
       <span>
         <p>
-          <span>©23 by AI云助手 All Rights Reserved</span>
+          <span><a href="https://beian.miit.gov.cn/">粤ICP备2022141504号-1</a> ©2023 by AI云助手 All Rights Reserved</span>
         </p>
       </span>
     ),

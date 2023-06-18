@@ -102,6 +102,8 @@ const ChatPage = () => {
         sendBtnType="2"
         scene={scene}
         chat_type="prompt-chat"
+        showVisitDiscourse={false}
+        showOpenNewChat={false}
       />
     </PageContainer>
   );

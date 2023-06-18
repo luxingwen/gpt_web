@@ -73,3 +73,12 @@ export async function hotAiDrawImage(props: any) {
     params: props,
   });
 }
+
+
+// 上传文件
+export async function uploadImage(props: any) {
+  return await request(`/api/chat/image/upload`, {
+    method: 'POST',
+    data: props,
+  });
+}
