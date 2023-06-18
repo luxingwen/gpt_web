@@ -139,7 +139,7 @@ export default function TextToImage() {
         </ProForm.Item>
 
         <ProFormTextArea
-          name="negativePrompt"
+          name="negative_prompt"
           label="反向描述（选填）"
           placeholder="请输入不希望出现的词，多个词用逗号分隔"
           fieldProps={{
@@ -151,7 +151,7 @@ export default function TextToImage() {
           }}
         />
 
-        <ProForm.Item name="filed-1" label="尺寸和像素">
+        <ProForm.Item name="rate" label="尺寸和像素">
           <RadioGroup
             options={sizeList}
             renderItem={(item) => {
@@ -193,9 +193,9 @@ export default function TextToImage() {
         <ProForm.Item>
           <label>数量</label>
           <ProForm.Group>
-            <ProFormSlider noStyle name="batchSize" min={1} max={3} />
+            <ProFormSlider noStyle name="batch_size" min={1} max={3} />
             <ProFormItem noStyle>
-              {formRef.current?.getFieldFormatValue?.('batchSize') || 1}
+              {formRef.current?.getFieldFormatValue?.('batch_size') || 1}
             </ProFormItem>
           </ProForm.Group>
         </ProForm.Item>
@@ -214,31 +214,31 @@ export default function TextToImage() {
                   </ProForm.Group>
                 </ProForm.Item>
                 <ProFormDigit
-                  label="迭代次数"
-                  name="steps"
+                  label="种子"
+                  name="seed"
                   width="sm"
-                  min={1}
-                  max={10}
+                  min={-999}
+                  max={999}
                 />
                 <ProForm.Item>
                   <label>提示词相关性</label>
                   <ProForm.Group>
-                    <ProFormSlider noStyle name="filed-2" min={1} />
+                    <ProFormSlider noStyle name="cfg_scale" min={1} max={3} />
                     <ProFormItem noStyle>
-                      {formRef.current?.getFieldFormatValue?.('filed-2') || 1}
+                      {formRef.current?.getFieldFormatValue?.('cfg_scale') || 1}
                     </ProFormItem>
                   </ProForm.Group>
                 </ProForm.Item>
-                <ProFormCheckbox name="restoreFaces">
+                <ProFormCheckbox name="restore_faces">
                   真人五官优化
                 </ProFormCheckbox>
                 <ProFormCheckbox name="tiling">可平铺</ProFormCheckbox>
                 <ProForm.Item>
                   <label>重绘幅度</label>
                   <ProForm.Group>
-                    <ProFormSlider noStyle name="filed-3" min={1} />
+                    <ProFormSlider noStyle name="denoising_strength" min={1} />
                     <ProFormItem noStyle>
-                      {formRef.current?.getFieldFormatValue?.('filed-3') || 1}
+                      {formRef.current?.getFieldFormatValue?.('denoising_strength') || 1}
                     </ProFormItem>
                   </ProForm.Group>
                 </ProForm.Item>
