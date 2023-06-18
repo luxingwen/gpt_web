@@ -11,11 +11,64 @@ import {
 } from '@ant-design/pro-components';
 import { Link } from '@umijs/max';
 import { Button, Collapse } from 'antd';
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import RadioGroup from '../components/RadioGroup';
+
+
+import {getAiDrawModels} from '@/service/ai-paint';
+
+import './index.less';
+
+const sizeList = [
+  {
+    label: '1:1',
+    value: '1:1',
+    classSuffix: '11'
+  },
+  {
+    label: '3:4',
+    value: '3:4',
+    classSuffix: '34'
+  },
+  {
+    label: '4:3',
+    value: '4:3',
+    classSuffix: '43'
+  },
+  {
+    label: '9:16',
+    value: '9:16',
+    classSuffix: '916'
+  },
+  {
+    label: '16:9',
+    value: '16:9',
+    classSuffix: '169'
+  },
+];
 
 export default function TextToImage() {
   const formRef = useRef<ProFormInstance>();
+
+  const [models, setModels] = useState([]);
+
+  useEffect(() => {
+    getAiDrawModels({}).then((res) => {
+      console.log("getAiDrawModels:",res);
+      if(res.errno ===0) {
+        let modellist = [];
+        res.data.forEach((item) => {
+          modellist.push({
+            label: item.model_name,
+            image: item.img,
+            value: item.model,
+          });
+        })
+        setModels(modellist);
+        }
+      });
+  }, []);
+
   return (
     <PageContainer title={false}>
       <ProForm<API.SDImageToImageParam>
@@ -78,20 +131,7 @@ export default function TextToImage() {
         />
         <ProForm.Item name="model" label="模型">
           <RadioGroup
-            options={[
-              {
-                label: '流光',
-                image:
-                  'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-                value: 'a',
-              },
-              {
-                label: '二次元',
-                image:
-                  'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-                value: 'b',
-              },
-            ]}
+            options={models}
             renderItem={(item) => {
               return (
                 <div className="flex flex-col items-center relative">
@@ -120,24 +160,12 @@ export default function TextToImage() {
 
         <ProForm.Item name="filed-1" label="尺寸和像素">
           <RadioGroup
-            options={[
-              {
-                label: '1:1',
-                image:
-                  'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-                value: 'a',
-              },
-              {
-                label: '3:4',
-                image:
-                  'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-                value: 'b',
-              },
-            ]}
+            options={sizeList}
             renderItem={(item) => {
               return (
                 <div className="flex flex-col items-center relative">
-                  <img src={item?.image} className="w-20 h-20" />
+                  {/* <img src={item?.image} className="w-20 h-20" /> */}
+                  <div className={'size-item-icon' + item.classSuffix}></div>
                   <span className=" w-full bg-black/50 text-xs text-white text-center absolute bottom-0">
                     {item.label}
                   </span>

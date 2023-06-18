@@ -47,7 +47,6 @@ const sizeList = [
 
 export default function TextToImage() {
   const formRef = useRef<ProFormInstance>();
-
   const [models, setModels] = useState([]);
 
   const { state } = useLocation();
@@ -88,7 +87,7 @@ export default function TextToImage() {
           },
         }}
         onFinish={async (values) => {
-          console.log(values);
+          console.log("finish:",values);
           // 这里做提交之后的事情
         }}
         layout="vertical"
@@ -174,11 +173,11 @@ export default function TextToImage() {
             options={[
               {
                 label: '普通',
-                value: 'a',
+                value: '普通',
               },
               {
                 label: '高清',
-                value: 'b',
+                value: '高清',
               },
             ]}
             renderItem={(item) => {

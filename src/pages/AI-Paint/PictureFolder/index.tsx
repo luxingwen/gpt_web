@@ -1,7 +1,8 @@
 import { CheckCircleFilled } from '@ant-design/icons';
 import { PageContainer, ProList } from '@ant-design/pro-components';
-import { Button, Image, Progress, Space } from 'antd';
-import { useState } from 'react';
+import { Button, Image, Progress, Space, message } from 'antd';
+import { useState, useEffect } from 'react';
+import {aiDrawImages} from '@/service/ai-paint';
 
 const data = [
   '语雀的天空',
@@ -40,6 +41,23 @@ function PictureFolder() {
   const [checked, setChecked] = useState<boolean>(false);
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [isAll, setIsAll] = useState<boolean>(false);
+  const [picTotal, setPicTotal] = useState<number>(10);
+  const [picList, setPicList] = useState<any[]>([]);
+
+
+  useEffect(() => {
+    aiDrawImages({}).then((res) => {
+      console.log("aiDrawImages:",res);
+      if(res.errno ===0) {
+        setPicTotal(res.total);
+        
+        setPicList(res.data || []);
+      }else {
+        message.error(res.errmsg);
+      }
+    });
+  }, []);
+
   return (
     <PageContainer title={false}>
       <ProList<any>
@@ -53,7 +71,7 @@ function PictureFolder() {
         headerTitle={
           <Space direction="vertical" className="w-52" size={0}>
             <Progress percent={8} showInfo={false} className="m-0" />
-            <span className="text-xs font-normal text-gray-500">8/100</span>
+            <span className="text-xs font-normal text-gray-500">8/{picTotal}</span>
           </Space>
         }
         toolBarRender={() => [

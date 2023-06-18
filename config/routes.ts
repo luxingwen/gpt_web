@@ -26,6 +26,10 @@ export default [
     path: '/ai',
     routes: [
       {
+        path: '/ai',
+        redirect: '/ai/qa',
+      },
+      {
         name: 'AI问答',
         path: 'qa',
         component: './AiChat',
