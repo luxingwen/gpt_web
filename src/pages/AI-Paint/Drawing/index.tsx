@@ -8,7 +8,24 @@
  */
 import { PageContainer, ProDescriptions } from '@ant-design/pro-components';
 import { Button, Image, Progress, Space } from 'antd';
+import { useParams } from 'react-router-dom';
+import {aiDrawImages,aiDrawProcess} from '@/service/ai-paint';
+import { useEffect, useState } from 'react';
+
 function Drawing() {
+
+  const { id } = useParams<{ id: string }>();
+
+  const [aiImageInfo, setAiImageInfo] = useState({});
+  useEffect(() => {
+    aiDrawImages({id}).then((res) => {
+      console.log('aiDrawImages:', res);
+      if(res.errno === 0 && res.data && res.data.length > 0){
+        setAiImageInfo(res.data[0]);
+      }
+    });
+  }, []);
+
   return (
     <PageContainer title={false}>
       <ProDescriptions column={1}>
@@ -98,13 +115,13 @@ function Drawing() {
             </Space>
           </Space>
         </ProDescriptions.Item>
-        <ProDescriptions.Item label="作品名称">科技之城</ProDescriptions.Item>
+        <ProDescriptions.Item label="作品名称">{aiImageInfo?.title}</ProDescriptions.Item>
         <ProDescriptions.Item label="描述">
-          计的快手快脚打开啊啊是大手大脚深刻的就是将大手大脚的打击啊记得啊的
+          {aiImageInfo?.prompt?.join(',')}
         </ProDescriptions.Item>
-        <ProDescriptions.Item label="风格">二次元，动漫</ProDescriptions.Item>
-        <ProDescriptions.Item label="模型">上课的军事基地</ProDescriptions.Item>
-        <ProDescriptions.Item label="像素尺寸">1280*1280</ProDescriptions.Item>
+        <ProDescriptions.Item label="风格">{aiImageInfo?.model_name}</ProDescriptions.Item>
+        <ProDescriptions.Item label="模型">{aiImageInfo?.model}</ProDescriptions.Item>
+        <ProDescriptions.Item label="像素尺寸">{aiImageInfo?.width}*{aiImageInfo?.height}</ProDescriptions.Item>
       </ProDescriptions>
       <Space>
         <Button>再画一次</Button>
