@@ -10,12 +10,12 @@ import {
   ProFormUploadButton,
 } from '@ant-design/pro-components';
 import { Link } from '@umijs/max';
-import { Button, Collapse } from 'antd';
+import { Button, Collapse, message } from 'antd';
 import { useRef, useEffect, useState } from 'react';
 import RadioGroup from '../components/RadioGroup';
 
 
-import {getAiDrawModels} from '@/service/ai-paint';
+import { getAiDrawModels, aiDrawImageToImage, uploadImage } from '@/service/ai-paint';
 
 import './index.less';
 
@@ -52,10 +52,27 @@ export default function TextToImage() {
 
   const [models, setModels] = useState([]);
 
+  const handleImageFileChange = (file) => {
+    console.log('handleImageFileChange:', file);
+    const fileSizeLimit = 1024 * 1024; // 1MB
+    const allowedTypes = ['image/png', 'image/jpeg'];
+    if (
+      file &&
+      file.size <= fileSizeLimit &&
+      allowedTypes.includes(file.type)
+    ) {
+      // 执行上传操作
+      formRef.current?.setFieldsValue({ upload: [file] });
+    } else {
+      message.error('请上传不超过1MB的PNG或JPEG格式的图片！');
+    }
+
+  };
+
   useEffect(() => {
     getAiDrawModels({}).then((res) => {
-      console.log("getAiDrawModels:",res);
-      if(res.errno ===0) {
+      console.log("getAiDrawModels:", res);
+      if (res.errno === 0) {
         let modellist = [];
         res.data.forEach((item) => {
           modellist.push({
@@ -65,9 +82,39 @@ export default function TextToImage() {
           });
         })
         setModels(modellist);
-        }
-      });
+      }
+    });
   }, []);
+
+  const handleSubmit = (values: any) => {
+    console.log('handleSubmit:', values);
+    values.prompt = values.prompt?.split(',');
+    values.negative_prompt = values.negative_prompt?.split(',');
+
+    const formData = new FormData();
+
+    if(!values.upload || values.upload.length === 0) {
+      message.error('请上传图片！');
+      return;
+    }
+
+    formData.append('file', values.upload[0]);
+
+    uploadImage(formData).then((res) => {
+      console.log('uploadImage:', res);
+      if (res.errno === 0) {
+        values.init_images = [res.data.url];
+        aiDrawImageToImage(values).then((res) => {
+          console.log('aiDrawTextToImage:', res);
+          if (res.errno === 0) {
+            history.push({
+              pathname: '/ai-paint/text-to-image/drawing/' + res.data.id,
+            });
+          }
+        });
+      }
+    });
+  };
 
   return (
     <PageContainer title={false}>
@@ -89,6 +136,7 @@ export default function TextToImage() {
         onFinish={async (values) => {
           console.log(values);
           // 这里做提交之后的事情
+          handleSubmit(values);
         }}
         layout="vertical"
         formRef={formRef}
@@ -127,7 +175,8 @@ export default function TextToImage() {
             name: 'file',
             listType: 'picture-card',
           }}
-          // action="/upload.do"
+          action={handleImageFileChange}
+        // action="/upload.do"
         />
         <ProForm.Item name="model" label="模型">
           <RadioGroup
@@ -146,7 +195,7 @@ export default function TextToImage() {
         </ProForm.Item>
 
         <ProFormTextArea
-          name="negativePrompt"
+          name="negative_prompt"
           label="反向描述（选填）"
           placeholder="请输入不希望出现的词，多个词用逗号分隔"
           fieldProps={{
@@ -158,7 +207,7 @@ export default function TextToImage() {
           }}
         />
 
-        <ProForm.Item name="filed-1" label="尺寸和像素">
+        <ProForm.Item name="rate" label="尺寸和像素">
           <RadioGroup
             options={sizeList}
             renderItem={(item) => {
@@ -200,9 +249,9 @@ export default function TextToImage() {
         <ProForm.Item>
           <label>数量</label>
           <ProForm.Group>
-            <ProFormSlider noStyle name="batchSize" min={1} />
+            <ProFormSlider noStyle name="batch_size" min={1} />
             <ProFormItem noStyle>
-              {formRef.current?.getFieldFormatValue?.('batchSize') || 1}
+              {formRef.current?.getFieldFormatValue?.('batch_size') || 1}
             </ProFormItem>
           </ProForm.Group>
         </ProForm.Item>
@@ -230,22 +279,22 @@ export default function TextToImage() {
                 <ProForm.Item>
                   <label>提示词相关性</label>
                   <ProForm.Group>
-                    <ProFormSlider noStyle name="filed-2" min={1} />
+                    <ProFormSlider noStyle name="cfg_scale" min={1} />
                     <ProFormItem noStyle>
-                      {formRef.current?.getFieldFormatValue?.('filed-2') || 1}
+                      {formRef.current?.getFieldFormatValue?.('cfg_scale') || 1}
                     </ProFormItem>
                   </ProForm.Group>
                 </ProForm.Item>
-                <ProFormCheckbox name="restoreFaces">
+                <ProFormCheckbox name="restore_faces">
                   真人五官优化
                 </ProFormCheckbox>
                 <ProFormCheckbox name="tiling">可平铺</ProFormCheckbox>
                 <ProForm.Item>
                   <label>重绘幅度</label>
                   <ProForm.Group>
-                    <ProFormSlider noStyle name="filed-3" min={1} />
+                    <ProFormSlider noStyle name="denoising_strength" min={1} />
                     <ProFormItem noStyle>
-                      {formRef.current?.getFieldFormatValue?.('filed-3') || 1}
+                      {formRef.current?.getFieldFormatValue?.('denoising_strength') || 1}
                     </ProFormItem>
                   </ProForm.Group>
                 </ProForm.Item>

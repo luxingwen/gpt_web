@@ -3,7 +3,7 @@ import { PageContainer, ProList } from '@ant-design/pro-components';
 import { Button, Image, Progress, Space, message } from 'antd';
 import { Link } from '@umijs/max';
 import { useState, useEffect } from 'react';
-import { aiDrawImages } from '@/service/ai-paint';
+import { aiDrawImages,delAiDrawImages } from '@/service/ai-paint';
 
 import {formatTimestamp} from '@/utils/utils';
 
@@ -85,6 +85,30 @@ function PictureFolder() {
     });
   }, []);
 
+
+  const handleDeleteImage = () => {
+    console.log("handleDeleteImage:", selectedRows);
+    let ids = selectedRows.map((item) => item.id);
+    if(ids.length === 0){
+      message.error('请选择要删除的图片');
+      return;
+    }
+    delAiDrawImages({ids}).then((res) => {
+      console.log("delAiDrawImages:", res);
+      if (res.errno === 0) {
+        message.success('删除成功');
+        setSelectedRows([]);
+        setChecked(false);
+        let newList = picList.filter((item) => !ids.includes(item.id));
+        setPicList(newList);
+      } else {
+        message.error('删除失败');
+
+      }
+    });
+
+  };
+
   return (
     <PageContainer title={false}>
       <ProList<any>
@@ -115,7 +139,7 @@ function PictureFolder() {
                   {checked && (
                     <CheckCircleFilled
                       className={`absolute top-2 left-2 border rounded-full ${selectedRows.findIndex(
-                        (item) => item.title === record.title,
+                        (item) => item.id === record.id,
                       ) > -1
                         ? ' text-primary'
                         : 'text-transparent'
@@ -144,7 +168,7 @@ function PictureFolder() {
               if (!checked) return;
               setSelectedRows((prev) => {
                 const index = prev.findIndex(
-                  (item) => item.title === record.title,
+                  (item) => item.id === record.id,
                 );
                 if (index > -1) {
                   prev.splice(index, 1);
@@ -171,8 +195,8 @@ function PictureFolder() {
             />
             <span>全选</span>
           </Space>
-          <span>已选择 2 张</span>
-          <Button key="1" type="primary">
+          <span>已选择 {selectedRows.length} 张</span>
+          <Button key="1" type="primary" onClick={handleDeleteImage} >
             删除
           </Button>
         </div>
