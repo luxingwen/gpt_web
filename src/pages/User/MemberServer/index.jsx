@@ -15,34 +15,25 @@ const Index = () => {
     {
       title: '会员种类',
       dataIndex: '会员种类',
-      key: '会员种类',
-      render: (text) => <a>{text}</a>,
     },
     {
       title: '会员等级',
-      dataIndex: '会员等级',
-      key: 'a2',
+      dataIndex: 'a2',
       align:'center',
-      render: (text) => <a>{text}</a>,
     },
     {
       title: '购买时间',
       dataIndex: '购买时间',
-      key: '购买时间',
       align:'center',
-      render: (text) => <a>{text}</a>,
     },
     {
       title: '到期时间',
       dataIndex: '到期时间',
-      key: '到期时间',
       align:'center',
-      render: (text) => <a>{text}</a>,
     },
     {
       title: '购买价格',
       dataIndex: '购买价格',
-      key: '购买价格',
       render: (text) => <a>{text}</a>,
     },
   ]
@@ -67,7 +58,7 @@ const Index = () => {
   const getList = useMemo(()=>{
     const formatList = data.map(item=>{
       return Object.keys(item).map(key=>{
-        const targetColumn = columns.find(column=>column.key==key);
+        const targetColumn = columns.find(column=>column.dataIndex==key);
         if(targetColumn){
           return  {
             label: targetColumn.title,

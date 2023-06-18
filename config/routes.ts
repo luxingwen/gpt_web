@@ -22,7 +22,7 @@ export default [
         name: '个人主页',
         path: 'account',
         component: './User/Account',
-        icon: 'robot',
+        // icon: 'UserOutlined',
         hideInMenu: false,
       },
       {
