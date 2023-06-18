@@ -33,6 +33,13 @@ export async function wxlogin() {
   }
 }
 
+
+export async function logout() {
+  Cookies.remove('token');
+  window.location.reload();
+}
+
+
 export async function getUserInfo() {
   return await request<{
     data: API.User;
