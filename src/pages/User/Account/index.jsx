@@ -1,11 +1,3 @@
-import Exchange from '@/assets/images/exchange.svg';
-import GuanZhu from '@/assets/images/guanzhu.svg';
-import RenGongKeFu from '@/assets/images/rengongkefu.svg';
-import vipImg from '@/assets/images/vip.jpg';
-import Xufei from '@/assets/images/xufei.svg';
-import Yaoqing from '@/assets/images/yaoqing.svg';
-import storage from '@/utils/storage';
-import { RightOutlined } from '@ant-design/icons';
 import {
   Avatar,
   Card,
@@ -16,11 +8,43 @@ import {
   Typography,
   message,
 } from 'antd';
-import { useEffect, useState } from 'react';
+
+import { EditOutlined } from '@ant-design/icons';
+import { useEffect, useState, useRef } from 'react';
+import defaultImg from '@/assets/images/icon_profile_c.png';
+import { useModel } from '@umijs/max';
+import MyModal from'./MyModal'
+
+import './index.less'
+
 
 
 const Index = () => {
-  return <div>dd</div>
+  const myModal = useRef();
+  const { initialState, setInitialState } = useModel('@@initialState');
+  console.log(78, initialState);
+  const { currentUser = {} } = initialState;
+  const { wxName, avatar, id, email, nickname } = currentUser;
+
+
+  return <div className='user-account-page'>
+    <div className="header-box">
+      <img src={avatar || defaultImg} alt="" />
+      <div>设置个人头像</div>
+    </div>
+    <div className="main-info">
+      <div className="flex-c">
+        <div className="name">{nickname || '-/-'}</div>
+        <EditOutlined className='anticon-edit' onClick={()=>myModal.current.open()}/>
+      </div>
+      <div className='id-text'>ID: {id}</div>
+      <div className="flex-c">
+        {email && <div>邮箱: {email}</div>}
+        {wxName && <div>微信: {wxName}</div>}
+      </div>
+    </div>
+    <MyModal ref={myModal}/>
+  </div>
 }
 
 export default Index;

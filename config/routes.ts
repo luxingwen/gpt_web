@@ -12,12 +12,46 @@ export default [
   {
     name: '个人中心',
     path: '/user',
+    hideInMenu: true,
     routes: [
+      {
+        path: '/user',
+        redirect: '/user/account',
+      },
       {
         name: '个人主页',
         path: 'account',
         component: './User/Account',
         icon: 'robot',
+        hideInMenu: false,
+      },
+      {
+        name: '会员服务',
+        path: 'member-server',
+        component: './User/MemberServer',
+        icon: 'robot',
+        hideInMenu: false,
+      },
+      {
+        name: '邀请奖励',
+        path: 'invitation-price',
+        component: './User/InvitationPrice',
+        icon: 'robot',
+        hideInMenu: false,
+      },
+      {
+        name: '人工客服',
+        path: 'customer-service',
+        component: './User/CustomerServer',
+        icon: 'robot',
+        hideInMenu: false,
+      },
+      {
+        name: '加入社区',
+        path: 'join-community',
+        component: './User/JoinCommunity',
+        icon: 'robot',
+        hideInMenu: false,
       },
     ]
   },

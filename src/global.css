@@ -78,3 +78,12 @@
 .tc {
   text-align: center;
 }
+
+
+button.primary-btn{
+  background-color: rgba(75, 100, 243, 0.8) !important;
+}
+
+button.primary-btn:hover{
+  background-color: rgba(75, 100, 243, 1) !important;
+}

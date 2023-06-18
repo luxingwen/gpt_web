@@ -8,6 +8,7 @@ import { useModel } from '@umijs/max';
 import { Avatar, Space } from 'antd';
 import Cookies from 'js-cookie';
 import HeaderDropdown from '../HeaderDropdown';
+import { history } from 'umi';
 
 // const defaultToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiIyMTE5IiwiZXhwIjoxNzA0NDYyMzk1LCJpYXQiOjE2ODU3MTM1OTUsImlzcyI6InRlc3QifQ.jfVomRADsD1IaiEjV37Ovvjuukzarflqx_BFDo0kG5o';
 const defaultToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiIyNjAwMDAiLCJleHAiOjE3MDU0MDkzNDksImlhdCI6MTY4NjY2MDU0OSwiaXNzIjoidGVzdCJ9.ACRdI-Y3Mc6UKvOIo7wO2mHVdJKi-97q-hsZEUy0EXE';
@@ -17,7 +18,7 @@ export default function RightContent() {
 
   const currentUser = initialState?.currentUser;
   const fetchUserInfo = initialState?.fetchUserInfo;
-  console.log('RightContent', currentUser);
+  // console.log('RightContent', currentUser);
   const handleClickLogin = async () => {
     Cookies.set('token', defaultToken);
     const res = await fetchUserInfo?.();
@@ -50,6 +51,9 @@ export default function RightContent() {
             onClick: (event) => {
               const { key } = event;
               console.log(key);
+              if (key === 'center') {
+                history.push('/user/account')
+              }
               if (key === 'logout') {
                 handleLogout();
               }
