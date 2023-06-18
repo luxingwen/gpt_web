@@ -3,7 +3,19 @@ import WebSocketClient from './WebSocketClient';
 import { STATUS, WS_CMD } from './constant';
 
 //const wsRootUrl = 'wss://testchat.kimways.com/acc';
- const wsRootUrl = 'wss://chat.kimways.com/acc';
+
+let domain = window.location.hostname;
+
+
+if (window.location.hostname === 'localhost' || window.location.hostname.startsWith('192.168.')) {
+  // 在本地开发环境中
+  domain = 'chat.kimways.com';
+} 
+
+
+console.log('domain >>>>', domain);
+const wsRootUrl = `wss://${domain}/acc`;
+console.log('wsRootUrl >>>>', wsRootUrl);
 //const wsRootUrl = 'ws://192.168.1.5:8018/acc';
 
 const NOT_LOGIN = 1000;
