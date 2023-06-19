@@ -105,7 +105,8 @@ export const Nav00DataSource = {
       },
       {
         name: 'item~login',
-        className: 'header0-item ant-menu-item litys3pmxa-editor_css',
+        className: 'header0-item ant-menu-item',
+        // className: 'header0-item ant-menu-item litys3pmxa-editor_css',
         children: {
           href: '#',
           children: [
