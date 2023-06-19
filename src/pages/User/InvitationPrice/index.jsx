@@ -14,7 +14,7 @@ const Index = () => {
   const shareImgModalRef = useRef();
   const shareLinkModalRef = useRef();
 
-  const { initialState, setInitialState } = useModel('@@initialState');
+  const { initialState } = useModel('@@initialState');
 
   const currentUser = initialState?.currentUser;
 
