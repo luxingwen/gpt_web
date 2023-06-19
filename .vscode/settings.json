@@ -41,5 +41,8 @@
     ".markdownlint.json": ".markdownlint.json, .markdownlintignore",
     "Dockerfile": "Dockerfile, .dockerignore",
     "tailwind.config.js": "tailwind.config.js, tailwind.css"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
   }
 }
