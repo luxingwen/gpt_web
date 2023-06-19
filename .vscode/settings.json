@@ -1,0 +1,45 @@
+{
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue"
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.stylelint": true
+  },
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "stylelint.snippet": ["css", "less", "postcss", "scss", "html"],
+  "stylelint.validate": ["css", "less", "postcss", "scss", "html"],
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  "npm.packageManager": "npm",
+  "npm.scriptExplorerExclude": [
+    "dev",
+    "postinstall",
+    "lint-staged",
+    "lint:fix",
+    "lint:prettier",
+    "lint:js",
+    "lint:style",
+    "build"
+  ],
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "*.ts": "${capture}.js",
+    "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
+    "*.jsx": "${capture}.js",
+    "*.tsx": "${capture}.ts",
+    "tsconfig.json": "tsconfig.*.json",
+    "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, .yarnrc.yml, .npmrc",
+    ".eslintrc.js": ".eslintrc.js, .eslintignore, .eslintcache",
+    ".stylelintrc.js": ".stylelintrc.js, .stylelintignore",
+    ".prettierrc": ".prettierrc, .prettierrc.js, .prettierignore, .editorconfig, .lintstagedrc, .eslintrc.js, .stylelintrc.js",
+    ".markdownlint.json": ".markdownlint.json, .markdownlintignore",
+    "Dockerfile": "Dockerfile, .dockerignore",
+    "tailwind.config.js": "tailwind.config.js, tailwind.css"
+  }
+}
