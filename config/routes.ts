@@ -193,6 +193,11 @@ export default [
     path: '/price',
     component: './Price',
   },
+  {
+    name: '登录',
+    path: '/login',
+    component: './Login',
+  },
   // {
   //   name: '个人中心',
   //   path: '/account/center',
