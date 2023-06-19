@@ -14,11 +14,11 @@ export default defineConfig({
         },
       },
     },
-    styleProvider: {
-      autoClear: true,
-      hashPriority: 'high',
-      legacyTransformer: true,
-    },
+    // styleProvider: {
+    //   autoClear: true,
+    //   hashPriority: 'high',
+    //   legacyTransformer: true,
+    // },
   },
   esbuildMinifyIIFE: true,
   codeSplitting: { jsStrategy: 'granularChunks' },

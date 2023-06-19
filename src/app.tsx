@@ -8,8 +8,11 @@ import { GlobalScrollbar } from 'mac-scrollbar';
 import 'mac-scrollbar/dist/mac-scrollbar.css';
 
 import { getUserInfo, wxlogin } from '@/service/user';
+import {
+  StyleProvider,
+  legacyLogicalPropertiesTransformer,
+} from '@ant-design/cssinjs';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-
 // 运行时配置
 
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
@@ -155,9 +158,13 @@ export const request: RequestConfig = {
 
 export function rootContainer(container: any) {
   return (
-    <>
+    <StyleProvider
+      hashPriority="high"
+      autoClear
+      transformers={[legacyLogicalPropertiesTransformer]}
+    >
       {container}
       <GlobalScrollbar />
-    </>
+    </StyleProvider>
   );
 }
