@@ -233,9 +233,9 @@ export default function TextToImage() {
                 <ProForm.Item>
                   <label>迭代次数</label>
                   <ProForm.Group>
-                    <ProFormSlider noStyle name="batchCount" min={1} />
+                    <ProFormSlider noStyle name="batch_count" min={1} />
                     <ProFormItem noStyle shouldUpdate>
-                      {({ getFieldValue }) => getFieldValue('batchCount') || 1}
+                      {({ getFieldValue }) => getFieldValue('batch_count') || 1}
                     </ProFormItem>
                   </ProForm.Group>
                 </ProForm.Item>
