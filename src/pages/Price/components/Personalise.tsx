@@ -5,6 +5,7 @@ import { CheckCircleTwoTone } from '@ant-design/icons';
 
 import '../index.less';
 import BuyCard from './BuyCard';
+import WxPaymentModal from './WxPaymentModal';
 
 interface PersonHeaderProps {
   select: number
@@ -128,7 +129,13 @@ const Personalise: React.FC<PersonaliseProps> = ({ digitalHumanData, buyData }) 
 
 
 
+
+
   return <>
+    {
+      // 微信支付测试 
+      // <WxPaymentModal productId={437} />
+    }
     <div className='person'>
       <PersonHeader select={headerSelectState} callBack={headerCallBack} />
       <div>
