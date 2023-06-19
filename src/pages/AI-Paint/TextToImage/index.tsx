@@ -8,13 +8,12 @@ import {
   ProFormSlider,
   ProFormTextArea,
 } from '@ant-design/pro-components';
-import { Link, useLocation } from '@umijs/max';
+import { Link, history, useLocation } from '@umijs/max';
 import { Button, Collapse } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import RadioGroup from '../components/RadioGroup';
-import {history} from '@umijs/max';
 
-import { getAiDrawModels, aiDrawTextToImage } from '@/service/ai-paint';
+import { aiDrawTextToImage, getAiDrawModels } from '@/service/ai-paint';
 
 import './index.less';
 
@@ -52,18 +51,16 @@ export default function TextToImage() {
 
   const { state } = useLocation();
 
-
   useEffect(() => {
     if (state?.selectedTagList) {
       console.log('selectedTagList:', state?.selectedTagList);
       const promptList = state?.selectedTagList.map((item) => item.words);
-      console.log("promptList:", promptList);
+      console.log('promptList:', promptList);
       formRef.current?.setFieldsValue({
         prompt: promptList.join(','),
       });
     }
   }, [state?.selectedTagList]);
-
 
   useEffect(() => {
     getAiDrawModels({}).then((res) => {
@@ -80,9 +77,7 @@ export default function TextToImage() {
         setModels(modellist);
       }
     });
-
   }, []);
-
 
   const handleSubmit = (values: any) => {
     console.log('handleSubmit:', values);
@@ -118,7 +113,7 @@ export default function TextToImage() {
           },
         }}
         onFinish={async (values) => {
-          console.log("finish:", values);
+          console.log('finish:', values);
           handleSubmit(values);
           // 这里做提交之后的事情
         }}
@@ -226,8 +221,8 @@ export default function TextToImage() {
           <label>数量</label>
           <ProForm.Group>
             <ProFormSlider noStyle name="batch_size" min={1} max={3} />
-            <ProFormItem noStyle>
-              {formRef.current?.getFieldFormatValue?.('batch_size') || 1}
+            <ProFormItem noStyle shouldUpdate>
+              {({ getFieldValue }) => getFieldValue('batch_size') || 1}
             </ProFormItem>
           </ProForm.Group>
         </ProForm.Item>
@@ -239,9 +234,8 @@ export default function TextToImage() {
                   <label>迭代次数</label>
                   <ProForm.Group>
                     <ProFormSlider noStyle name="batchCount" min={1} />
-                    <ProFormItem noStyle>
-                      {formRef.current?.getFieldFormatValue?.('batchCount') ||
-                        1}
+                    <ProFormItem noStyle shouldUpdate>
+                      {({ getFieldValue }) => getFieldValue('batchCount') || 1}
                     </ProFormItem>
                   </ProForm.Group>
                 </ProForm.Item>
@@ -256,8 +250,8 @@ export default function TextToImage() {
                   <label>提示词相关性</label>
                   <ProForm.Group>
                     <ProFormSlider noStyle name="cfg_scale" min={1} max={3} />
-                    <ProFormItem noStyle>
-                      {formRef.current?.getFieldFormatValue?.('cfg_scale') || 1}
+                    <ProFormItem noStyle shouldUpdate>
+                      {({ getFieldValue }) => getFieldValue('cfg_scale') || 1}
                     </ProFormItem>
                   </ProForm.Group>
                 </ProForm.Item>
@@ -269,8 +263,10 @@ export default function TextToImage() {
                   <label>重绘幅度</label>
                   <ProForm.Group>
                     <ProFormSlider noStyle name="denoising_strength" min={1} />
-                    <ProFormItem noStyle>
-                      {formRef.current?.getFieldFormatValue?.('denoising_strength') || 1}
+                    <ProFormItem noStyle shouldUpdate>
+                      {({ getFieldValue }) =>
+                        getFieldValue('denoising_strength') || 1
+                      }
                     </ProFormItem>
                   </ProForm.Group>
                 </ProForm.Item>

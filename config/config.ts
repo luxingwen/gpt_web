@@ -3,7 +3,6 @@ import proxy from './proxy';
 import routes from './routes';
 
 export default defineConfig({
-  deadCode: {},
   antd: {
     configProvider: {
       theme: {
@@ -21,6 +20,13 @@ export default defineConfig({
       legacyTransformer: true,
     },
   },
+  esbuildMinifyIIFE: true,
+  codeSplitting: { jsStrategy: 'granularChunks' },
+  ignoreMomentLocale: true,
+  fastRefresh: true,
+  hash: true,
+  crossorigin: {},
+  deadCode: {},
   access: {},
   model: {},
   initialState: {},
@@ -32,5 +38,4 @@ export default defineConfig({
   proxy,
   npmClient: 'pnpm',
   tailwindcss: {},
-  esbuildMinifyIIFE: true,
 });

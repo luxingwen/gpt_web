@@ -1,11 +1,7 @@
 export default [
   {
-    path: '/',
-    redirect: '/home',
-  },
-  {
     name: '首页',
-    path: 'home',
+    path: '/',
     component: './Home',
     layout: false,
   },
@@ -53,7 +49,7 @@ export default [
         icon: 'robot',
         hideInMenu: false,
       },
-    ]
+    ],
   },
   {
     name: 'AI百宝助手',
@@ -88,7 +84,6 @@ export default [
         component: './TipsBag',
         icon: 'fire',
       },
-      
     ],
   },
   {

@@ -26,7 +26,12 @@ export async function getInitialState(): Promise<{
       return undefined;
     }
   };
-  return { currentUser: await fetchUserInfo(), fetchUserInfo };
+  let currentUser: API.User | undefined = undefined;
+  if (history.location.pathname !== '/') {
+    currentUser = await fetchUserInfo();
+  }
+
+  return { currentUser, fetchUserInfo };
 }
 
 export const layout: RunTimeLayoutConfig = () => {
@@ -50,14 +55,14 @@ export const layout: RunTimeLayoutConfig = () => {
     pwa: false,
     menu: { locale: false },
     collapsedButtonRender: false,
-    childrenRender: (children: React.ReactNode) => {
-      return (
-        <>
-          {children}
-          <GlobalScrollbar />
-        </>
-      );
-    },
+    // childrenRender: (children: React.ReactNode) => {
+    //   return (
+    //     <>
+    //       {children}
+    //       <GlobalScrollbar />
+    //     </>
+    //   );
+    // },
     rightContentRender: () => <RightContent />,
     menuFooterRender: () => {
       return (
@@ -81,12 +86,11 @@ export const layout: RunTimeLayoutConfig = () => {
   };
 };
 
-const handleResponseInterceptors = (
+const handleResponseInterceptors: IResponseInterceptorTuple = (
   response: Response,
-  options: RequestConfig,
+  // options: RequestConfig,
 ) => {
-
-  let isHome = location.pathname.includes('/home');
+  let isHome = location.pathname === '/';
 
   console.log('isHome:', isHome);
   console.log('location.pathname:', location.pathname);
@@ -103,7 +107,7 @@ const handleResponseInterceptors = (
           key="cancel"
           onClick={() => {
             Modal.destroyAll();
-            history.push('/home');
+            history.push('/');
           }}
         >
           取消
@@ -148,3 +152,12 @@ export const request: RequestConfig = {
     },
   },
 };
+
+export function rootContainer(container: any) {
+  return (
+    <>
+      {container}
+      <GlobalScrollbar />
+    </>
+  );
+}
