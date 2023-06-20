@@ -1,0 +1,151 @@
+em {
+  display: block;
+  width: 16px;
+  height: 2px;
+  background: #fff;
+  margin-top: 4px;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+
+.open {
+  height: auto;
+
+  em {
+    &:nth-child(1) {
+      transform: translateY(6px) rotate(45deg);
+    }
+
+    &:nth-child(2) {
+      opacity: 0;
+    }
+
+    &:nth-child(3) {
+      transform: translateY(-6px) rotate(-45deg);
+    }
+  }
+}
+
+
+.header-layout {
+  background: #181c38;
+  padding: 0 64px 0 24px;
+  height: 64px;
+
+  &.mobile {
+    padding-right: 24px;
+  }
+
+  .logo-img {
+    width: 64px;
+    height: 64px;
+  }
+
+  .pc-nav-list {
+    .nav-item {
+      padding: 0 24px;
+      box-sizing: border-box;
+      font-size: 14px;
+      cursor: pointer;
+      color: #ccc;
+      height: 100%;
+      transition: all 0.3s ease-in-out;
+
+      &:hover {
+        background: rgb(11, 14, 44);
+        color: #fff;
+      }
+
+
+
+      &.home-login {
+        .ant-space.cursor-pointer {
+          height: 100%;
+          gap: 0 !important;
+          margin-right: 0 !important;
+
+          .ant-space-item {
+            height: 100%;
+            display: flex;
+            align-items: center;
+
+            .ant-space {
+              height: 100%;
+              display: flex;
+              align-items: center;
+            }
+          }
+        }
+      }
+    }
+
+    .logined {
+      margin-left: 48px;
+
+      .ant-space.cursor-pointer {
+        height: 100%;
+        gap: 0 !important;
+        margin-right: 0 !important;
+
+        .ant-space-item {
+          height: 100%;
+          display: flex;
+          align-items: center;
+
+          .ant-space {
+            height: 100%;
+            display: flex;
+            align-items: center;
+          }
+        }
+      }
+    }
+  }
+
+}
+
+@media (max-width: 900px) {
+  .header-layout {
+    padding-right: 40px;
+
+    .pc-nav-list .nav-item {
+      padding: 0 12px;
+      min-width: 80px;
+    }
+
+    .pc-nav-list .logined {
+      margin-left: 56px;
+    }
+  }
+}
+
+.mobile-nav-list {
+  background: #181c38;
+  transition: all 0.3s ease-in-out;
+  height: 0;
+  overflow: hidden;
+
+  &.show-nav {
+    padding: 12px 0;
+    transition: all 0.3s ease-in-out;
+    height: 250px;
+    overflow: auto;
+  }
+
+  .nav-item {
+    padding: 12px 24px 12px 30px;
+    box-sizing: border-box;
+    font-size: 14px;
+    cursor: pointer;
+    color: #ccc;
+    transition: all 0.3s ease-in-out;
+    justify-content: flex-start;
+
+    &:hover {
+      background: rgb(11, 14, 44);
+      color: #fff;
+    }
+  }
+
+
+}

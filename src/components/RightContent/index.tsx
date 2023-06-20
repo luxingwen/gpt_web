@@ -14,7 +14,7 @@ import { wxlogin } from '@/service/user';
 // const defaultToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiIyMTE5IiwiZXhwIjoxNzA0NDYyMzk1LCJpYXQiOjE2ODU3MTM1OTUsImlzcyI6InRlc3QifQ.jfVomRADsD1IaiEjV37Ovvjuukzarflqx_BFDo0kG5o';
 const defaultToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiIyNjAwMDAiLCJleHAiOjE3MDU0MDkzNDksImlhdCI6MTY4NjY2MDU0OSwiaXNzIjoidGVzdCJ9.ACRdI-Y3Mc6UKvOIo7wO2mHVdJKi-97q-hsZEUy0EXE';
 
-export default function RightContent() {
+export default function RightContent({ isHome = false }) {
   const { initialState, setInitialState } = useModel('@@initialState');
 
   const currentUser = initialState?.currentUser;
@@ -37,9 +37,10 @@ export default function RightContent() {
   };
 
   return (
-    <Space className="mr-4 cursor-pointer">
+    <Space className={`mr-4 cursor-pointer`}>
       {currentUser ? (
         <HeaderDropdown
+          placement={isHome ? 'bottom' : ''}
           menu={{
             selectedKeys: [],
             onClick: (event) => {
@@ -76,7 +77,7 @@ export default function RightContent() {
         >
           <Space>
             <Avatar src={currentUser.avatar}></Avatar>
-            <span>{currentUser.nickname}</span>
+            {!isHome && <span>{currentUser.nickname}</span>}
           </Space>
         </HeaderDropdown>
       ) : (

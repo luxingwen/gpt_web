@@ -10,6 +10,7 @@ import Feature8 from './Feature8';
 import Footer1 from './Footer1';
 import Nav0 from './Nav0';
 import Teams0 from './Teams0';
+import Header from '@/layouts/Header';
 
 import {
   Banner10DataSource,
@@ -61,12 +62,15 @@ export default class Home extends React.Component {
 
   render() {
     const children = [
-      <Nav0
-        id="Nav0_0"
-        key="Nav0_0"
-        dataSource={Nav00DataSource}
-        isMobile={this.state.isMobile}
+      <Header
+        key='Header'
       />,
+      // <Nav0
+      //   id="Nav0_0"
+      //   key="Nav0_0"
+      //   dataSource={Nav00DataSource}
+      //   isMobile={this.state.isMobile}
+      // />,
       <Banner1
         id="Banner1_0"
         key="Banner1_0"
@@ -129,6 +133,7 @@ export default class Home extends React.Component {
           this.dom = d;
         }}
       >
+
         {/* 如果不是 dva 2.0 替换成 {children} start */}
         {this.state.show && children}
         {/* 如果不是 dva 2.0 替换成 {children} end */}

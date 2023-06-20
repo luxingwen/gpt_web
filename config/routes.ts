@@ -199,4 +199,10 @@ export default [
   //   component: './UserInfo',
   //   hideInMenu: true,
   // },
+  {
+    name: '测试',
+    path: '/test',
+    component: './Test',
+    layout: false,
+  },
 ];
