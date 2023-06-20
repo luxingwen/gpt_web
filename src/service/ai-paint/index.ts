@@ -82,3 +82,4 @@ export async function uploadImage(props: any) {
     data: props,
   });
 }
+

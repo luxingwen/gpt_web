@@ -1,6 +1,5 @@
 import { request } from '@umijs/max';
 
-
 export async function getUserInfo() {
   return await request(`/api/chat/user`, {
     method: 'GET',
@@ -64,6 +63,7 @@ export async function getPromptScenesInfo(props: any) {
   });
 }
 
+//
 export async function invitionCode(props: any) {
   return await request(`/api/chat/invite/code`, {
     method: 'POST',
@@ -77,6 +77,7 @@ export async function getInvitionStatic() {
   });
 }
 
+// 兑换口令
 export async function exchangeByCode(params: any) {
   return await request(`/api/chat/code`, {
     method: 'GET',
@@ -97,7 +98,6 @@ export async function prePay(params: any) {
     data: params,
   });
 }
-
 
 // 获取订单列表
 export async function orderList(params: API.ReqOrdersType) {
