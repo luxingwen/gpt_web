@@ -89,8 +89,8 @@ const PricePage = () => {
 
     for (const item of data) {
       retData.push({
-        id: String(item.id), title: item.title, price: String(item.price / 100),
-        disablePrice: String(item.actual_price / 100), buttonText: "购买",
+        id: String(item.id), title: item.title, price: String(item.actual_price / 100),
+        disablePrice: String(item.price / 100), buttonText: "购买",
         priceUnit: datelong2unit(item.time_period)
       })
     }
