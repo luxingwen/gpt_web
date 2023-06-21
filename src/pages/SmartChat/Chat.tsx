@@ -18,6 +18,7 @@ const SmartChatPage: React.FC<SmartChatPageProps> = ({ sceneId, sessionId }) => 
 
   const [sessionInfo, setSessionInfo] = useState<API.ChatSessionInfo>();
   const [scenceInfo, setScenceInfo] = useState<API.SmartSceneInfo>();
+  const [scene_uuids, setScene_uuids] = useState<string[]>([]);
   console.log("sceneId:", sceneId);
   console.log("sessionId:", sessionId);
 
@@ -30,6 +31,13 @@ const SmartChatPage: React.FC<SmartChatPageProps> = ({ sceneId, sessionId }) => 
         if (resSceneInfo.errno !== 0) {
           return;
         }
+
+        let scene_uuids_tmp: string[] = [];
+        JSON.parse(resSceneInfo.data.params).forEach((item) => {
+          scene_uuids_tmp.push(item.uuid);
+        });
+        console.log("scene_uuids_tmp:", scene_uuids_tmp);
+        setScene_uuids(scene_uuids_tmp);
 
         setScenceInfo(resSceneInfo.data);
 
@@ -64,7 +72,7 @@ const SmartChatPage: React.FC<SmartChatPageProps> = ({ sceneId, sessionId }) => 
         sendBtnType="2"
         chat_type="smart-chat"
         session_id={sessionInfo?.id}
-        scene_id={sessionInfo?.scene_id}
+        scene_uuids={scene_uuids}
         aiAvatar={scenceInfo?.ai_avatar}
       />}
     </>
