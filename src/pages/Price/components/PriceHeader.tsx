@@ -5,10 +5,12 @@ import '../index.less';
 
 type ClickCallback = (status: number) => void;
 
+
 interface PriceHeaderProps {
+  defaultSelect: number,
   onClickCallBack: ClickCallback;
 }
-const PriceHeader: React.FC<PriceHeaderProps> = ({ onClickCallBack }) => {
+const PriceHeader: React.FC<PriceHeaderProps> = ({ defaultSelect, onClickCallBack }) => {
   const showText: Array<string> = [
     '个性化数字人',
     'AI百宝助手',
@@ -16,7 +18,10 @@ const PriceHeader: React.FC<PriceHeaderProps> = ({ onClickCallBack }) => {
     '企业',
   ];
 
-  const [headerState, setHeaderState] = useState<number>(0);
+  const thisHeader = defaultSelect < 0 ? 0 : defaultSelect
+
+
+  const [headerState, setHeaderState] = useState<number>(thisHeader);
 
 
   const onClick = (newIndex: number): void => {
@@ -28,7 +33,9 @@ const PriceHeader: React.FC<PriceHeaderProps> = ({ onClickCallBack }) => {
     <div className='price'>
       <div className={`${"price-header"} ${"header"}`}>
         {showText.map((item, index, _) => {
-          return index == headerState ? (
+          console.log("item => ", item, "index => ", index)
+
+          return (index === headerState) ? (
             <div
               className={`${'price-header-button'} ${'on-select'}`}
               key={item + index}
