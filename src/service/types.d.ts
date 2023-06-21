@@ -25,6 +25,7 @@ declare namespace API {
     Drawing = 1, // AI画图
     DigitalPackage = 2, // 数字人套餐
     ConversationCount = 3, // 与数字人对话次数
+    Enterprise = 4, // 企业信息
   }
 
   // 示例用法

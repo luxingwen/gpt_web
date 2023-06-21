@@ -104,14 +104,16 @@ const PersonCard: React.FC<PersonCardProps> = ({ select, index, info, callBack }
 }
 
 interface PersonaliseProps {
+  defaultSelect: number
   digitalHumanData?: Array<IPersonCard>
   buyData?: Array<IBuyInfo>
 }
-const Personalise: React.FC<PersonaliseProps> = ({ digitalHumanData, buyData }) => {
+const Personalise: React.FC<PersonaliseProps> = ({ defaultSelect, digitalHumanData, buyData }) => {
 
-  console.log("recv data => ", digitalHumanData)
 
-  const [headerSelectState, setHeaderSelectState] = useState<number>(0);
+  const thisSelect = defaultSelect > 1 ? 0 : defaultSelect
+
+  const [headerSelectState, setHeaderSelectState] = useState<number>(thisSelect);
   const [cardSelectState, setCardSelectState] = useState<number>(0);
   const [buyCardSelectState, setBuyCardSelectState] = useState<number>(0);
 
@@ -127,10 +129,6 @@ const Personalise: React.FC<PersonaliseProps> = ({ digitalHumanData, buyData }) 
     setBuyCardSelectState(index)
   }
 
-
-
-
-
   return <>
     {
       // 微信支付测试 
@@ -138,6 +136,8 @@ const Personalise: React.FC<PersonaliseProps> = ({ digitalHumanData, buyData }) 
     }
     <div className='person'>
       <PersonHeader select={headerSelectState} callBack={headerCallBack} />
+
+
       <div>
         {headerSelectState == 0 ?
           <div className='card-list'>
