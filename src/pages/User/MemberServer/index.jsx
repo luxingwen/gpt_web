@@ -44,10 +44,6 @@ const Index = () => {
 
   }, []);
   
-
-
-
-
   const columns = [
     {
       title: '会员种类',

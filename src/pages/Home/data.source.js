@@ -3,7 +3,7 @@ export const Nav00DataSource = {
   page: { className: 'home-page' },
   logo: {
     className: 'header0-logo',
-    children: 'https://www.kimways.com/static/logo1.webp',
+    children: '/logo.png',
   },
   Menu: {
     className: 'header0-menu',

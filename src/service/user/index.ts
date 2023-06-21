@@ -10,7 +10,7 @@ export async function wxlogin() {
 
   let domain = window.location.hostname;
 
-  if (window.location.hostname === 'localhost' || window.location.hostname.startsWith('192.168.') || window.location.hostname.startsWith('testchat.kimways.com')) {  
+  if (window.location.hostname === 'localhost' || window.location.hostname.startsWith('192.168.') || window.location.hostname.startsWith('testchat.kimways.com')) {
     // 在本地开发环境中 或者测试环境中
     console.log('在本地开发环境中 或者测试环境中 wxlogin omain >>>>', domain);
     Cookies.set('token', defaultToken);

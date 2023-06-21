@@ -93,7 +93,7 @@ const handleResponseInterceptors: IResponseInterceptorTuple = (
   response: Response,
   // options: RequestConfig,
 ) => {
-  let isHome = location.pathname === '/';
+  let isHome = (location.pathname === '/' || location.pathname === '/price');
 
   console.log('isHome:', isHome);
   console.log('location.pathname:', location.pathname);
