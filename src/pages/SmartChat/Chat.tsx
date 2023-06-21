@@ -10,7 +10,7 @@ import { getSmartSceneInfo } from '@/service/smart-chat';
 
 
 interface SmartChatPageProps {
-  sceneId: number;
+  sceneId: any;
   sessionId?: string;
 }
 
@@ -22,10 +22,27 @@ const SmartChatPage: React.FC<SmartChatPageProps> = ({ sceneId, sessionId }) => 
   console.log("sceneId:", sceneId);
   console.log("sessionId:", sessionId);
 
+
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resSceneInfo = await getSmartSceneInfo({ id: sceneId });
+        console.log("sceneId 11111:", sceneId);
+        if (sceneId === 'c' || isNaN(sceneId)) {
+          console.log("sceneId 22222:", sceneId);
+          const sessionInfo = await getSessionInfo({
+            id: parseInt(sessionId),
+            chat_type: 'smart-chat',
+          });
+          if (sessionInfo.errno !== 0) {
+            return;
+          }
+
+          sceneId = sessionInfo.data.scene_id;
+        }
+
+        const resSceneInfo = await getSmartSceneInfo({ id: parseInt(sceneId) });
         console.log("getSmartSceneInfo:", resSceneInfo);
 
         if (resSceneInfo.errno !== 0) {
@@ -42,7 +59,7 @@ const SmartChatPage: React.FC<SmartChatPageProps> = ({ sceneId, sessionId }) => 
         setScenceInfo(resSceneInfo.data);
 
         const response = await getSessionInfo({
-          scene_id: resSceneInfo.data.scene_id,
+          scene_id: '' + resSceneInfo.data.id,
           chat_type: 'smart-chat',
           name: resSceneInfo.data.scene_name || '',
         });

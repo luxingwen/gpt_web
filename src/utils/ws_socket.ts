@@ -9,13 +9,13 @@ let domain = window.location.hostname;
 
 if (window.location.hostname === 'localhost' || window.location.hostname.startsWith('192.168.')) {
   // 在本地开发环境中
-  // domain = 'chat.kimways.com';
-  domain = '192.168.182.202:8018'
+   domain = 'chat.kimways.com';
+  //domain = '192.168.1.6:8018'
 } 
 
 
 console.log('domain >>>>', domain);
-const wsRootUrl = `ws://${domain}/acc`;
+const wsRootUrl = `wss://${domain}/acc`;
 console.log('wsRootUrl >>>>', wsRootUrl);
 //const wsRootUrl = 'ws://192.168.1.5:8018/acc';
 
