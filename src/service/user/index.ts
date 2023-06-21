@@ -17,11 +17,7 @@ export async function wxlogin() {
     window.location.reload();
     return;
   }
-
-
   console.log('wxlogin omain >>>>', domain);
-
-
   if (window.WeixinJSBridge) {
     window.location.href = `https://www.kimways.com/api/chat/wechat/oauth/code?redirect_url=${encodeURIComponent(
       window.location.href,

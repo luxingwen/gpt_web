@@ -9,7 +9,8 @@ let domain = window.location.hostname;
 
 if (window.location.hostname === 'localhost' || window.location.hostname.startsWith('192.168.')) {
   // 在本地开发环境中
-  domain = 'chat.kimways.com';
+   domain = 'chat.kimways.com';
+  //domain = '192.168.1.6:8018'
 } 
 
 

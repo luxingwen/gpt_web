@@ -2,7 +2,7 @@ declare namespace API {
 
     // 个人知识助手，提交聊天内容
     export interface ReqSmartChatCompletion {
-        scene_id: string;
+        uuids: string[];
         content: string;
         session_id: number;
     }
@@ -15,7 +15,7 @@ declare namespace API {
         id: number;
         user_id: number;
         scene_name: string;
-        scene_id: string;
+        params: string;
         add_time: number;
         company: string;
         ai_name: string;

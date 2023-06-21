@@ -2,6 +2,7 @@ import { deleteSmartScene } from '@/service/smart-chat';
 import { DeleteOutlined, EditOutlined, EnterOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Modal, Row, Spin, message } from 'antd';
 import React, { useState } from 'react';
+import moment from 'moment-timezone';
 
 import './SceneItemCard.less';
 import { history } from '@umijs/max';
@@ -84,13 +85,13 @@ const SceneItemCard: React.FC<SceneItemCardProps> = ({
             <p>{sceneInfo.scene_name}</p>
           </div>
         </Col>
-        <Col span={8}>
+        <Col span={6}>
           <div>
             <p>创建时间</p>
-            <p>{sceneInfo.create_time}</p>
+            <p>{moment.parseZone(sceneInfo.create_time).format("YYYY-MM-DD HH:mm:ss")}</p>
           </div>
         </Col>
-        <Col span={8}>
+        <Col span={10}>
           <div>
             <Button
               icon={<EnterOutlined />}

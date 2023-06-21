@@ -4,6 +4,7 @@ import { Col, Input, Pagination, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 import SceneItemCard from './SceneItemCard';
 
+
 import './SceneList.less';
 
 const { Search } = Input;
@@ -39,7 +40,7 @@ const SceneListPage: React.FC<SceneListPageProps> = ({ setViewContent }) => {
         // console.log('totalPages:', totalPages);
         setTotal(res.total);
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   useEffect(() => {
@@ -72,7 +73,7 @@ const SceneListPage: React.FC<SceneListPageProps> = ({ setViewContent }) => {
 
   return (
     <Row justify="center">
-      <Col xs={{ span: 24 }} lg={{ span: 14 }}>
+      <Col xs={{ span: 24 }} lg={{ span: 20 }}>
         <div style={{ padding: '16px' }}>
           <SearchBox onSearch={handleSearch} />
 

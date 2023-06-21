@@ -67,7 +67,7 @@ export default function TextToImage() {
       console.log('getAiDrawModels:', res);
       if (res.errno === 0) {
         let modellist = [];
-        res.data.forEach((item) => {
+        res?.data?.forEach((item) => {
           modellist.push({
             label: item.model_name,
             image: item.img,

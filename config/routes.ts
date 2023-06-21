@@ -197,6 +197,7 @@ export default [
     name: '登录',
     path: '/login',
     component: './Login',
+    hideInMenu: true,
   },
   // {
   //   name: '个人中心',
