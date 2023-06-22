@@ -33,7 +33,6 @@ const PriceHeader: React.FC<PriceHeaderProps> = ({ defaultSelect, onClickCallBac
     <div className='price'>
       <div className={`${"price-header"} ${"header"}`}>
         {showText.map((item, index, _) => {
-          console.log("item => ", item, "index => ", index)
 
           return (index === headerState) ? (
             <div

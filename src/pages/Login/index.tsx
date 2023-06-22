@@ -24,7 +24,7 @@ const LoginPage = () => {
                     <div className='title'>欢迎登录</div>
                     <div className='main-info'>
                         <CheckHeader callback={changeIdxCallBack} />
-                        {selectIdx == 0 ? <EmailLogin /> : <WXLogin></WXLogin>}
+                        {selectIdx === 0 ? <EmailLogin /> : <WXLogin></WXLogin>}
                     </div>
                 </div>
             </Content>

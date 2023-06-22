@@ -10,6 +10,7 @@ import TerasureBox from './components/TerasureBox';
 import { queryChatGoods } from '@/service/api';
 import './index.less';
 import { useSearchParams } from '@umijs/max';
+import WxPaymentModal from './components/WxPaymentModal';
 
 
 const { Content } = Layout;
@@ -23,6 +24,9 @@ interface IPriceData {
 
 
 const PricePage = () => {
+
+
+
 
   enum GoodsType {
     QnA = 0, // AI问答
@@ -57,17 +61,18 @@ const PricePage = () => {
 
   const defaultSelect = (param === null ? 0 : param)
 
-
   const [headerSelect, setHeaderSelect] = useState<number>(defaultSelect);
   const [priceData, setPriceData] = useState<IPriceData>();
   const [isLoading, setIsLoading] = useState<boolean>(true)
+
+  const [buyProductId, setbuyProductId] = useState<string>('')
+  const [showBuyModel, setshowBuyModel] = useState(false)
 
   const handleHeaderClick = (select: number) => {
     setHeaderSelect(select + 1);
   };
 
   // util function
-
 
   const datelong2unit = (num: number): string => {
     switch (num) {
@@ -130,7 +135,7 @@ const PricePage = () => {
     const newData = sortData(data)
     const retData: Array<IPersonCard> = []
     const freeData: IPersonCard = {
-      id: "free-card",
+      id: "free",
       title: '体验版',
       price: '免费',
       priceUnit: '',
@@ -205,29 +210,45 @@ const PricePage = () => {
   }, [])
 
 
+  const handleCancelBuy = () => {
+    console.log("do cancel")
+    setshowBuyModel(false)
+  }
+  const handleBuy = (productId: string) => {
+    if (productId != 'free') {
+      setbuyProductId(productId)
+      setshowBuyModel(true)
+    }
+  }
+
+  const handleBuyCallBack = () => {
+    setshowBuyModel(false)
+  }
 
   return (
-    <>
-      <Content>
-        {isLoading ? <Spin /> :
+    <Content>
+      {isLoading ? <Spin /> :
+        <>
+          {showBuyModel ? <WxPaymentModal productId={buyProductId} PayCallback={handleBuyCallBack} CancelCallback={handleCancelBuy} /> : <></>}
+
           <div>
             <PriceHeader defaultSelect={headerSelect - 1} onClickCallBack={handleHeaderClick} />
             <div style={{ display: (headerSelect === 1 || headerSelect === 0) ? '' : 'none' }}>
-              <Personalise defaultSelect={headerSelect} digitalHumanData={priceData?.personData} buyData={priceData?.personBuyData} />
+              <Personalise defaultSelect={headerSelect} digitalHumanData={priceData?.personData} buyData={priceData?.personBuyData} buyCallBack={handleBuy} />
             </div>
             <div style={{ display: headerSelect === 2 ? '' : 'none' }}>
-              <TerasureBox data={priceData!.terasureBoxData} />
+              <TerasureBox data={priceData!.terasureBoxData} buyCallBack={handleBuy} />
             </div>
             <div style={{ display: headerSelect === 3 ? '' : 'none' }}>
-              <Painted data={priceData!.aiHuatuData} />
+              <Painted data={priceData!.aiHuatuData} buyCallBack={handleBuy} />
             </div>
             <div style={{ display: headerSelect === 4 ? '' : 'none' }}>
               <Enterprise />
             </div>
           </div>
-        }
-      </Content>
-    </>
+        </>
+      }
+    </Content>
   );
 };
 

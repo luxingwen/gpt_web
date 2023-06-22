@@ -51,9 +51,10 @@ interface PersonCardProps {
   select: number
   index: number
   info: IPersonCard
-  callBack: (index: number) => void
+  changeCallBack: (index: number) => void
+  buyCallBack: (productId: string) => void
 }
-const PersonCard: React.FC<PersonCardProps> = ({ select, index, info, callBack }) => {
+const PersonCard: React.FC<PersonCardProps> = ({ select, index, info, changeCallBack, buyCallBack }) => {
 
   return <>
     {
@@ -78,10 +79,10 @@ const PersonCard: React.FC<PersonCardProps> = ({ select, index, info, callBack }
             ))}
           </div>
 
-          <Button className={`${'buy-btn'} ${'btn-select'}`}>{info.buttonText}</Button>
+          <Button className={`${'buy-btn'} ${'btn-select'}`} onClick={() => buyCallBack(info.id)}>{info.buttonText}</Button>
 
         </div> :
-        <div className={`${'card'} ${'un-select'}`} onClick={() => callBack(index)}>
+        <div className={`${'card'} ${'un-select'}`} onClick={() => changeCallBack(index)}>
           <span className='title'>{info.title}</span>
           {
             info.priceUnit == '' ? <div>
@@ -100,7 +101,7 @@ const PersonCard: React.FC<PersonCardProps> = ({ select, index, info, callBack }
               </div>
             ))}
           </div>
-          <Button className='buy-btn'>{info.buttonText}</Button>
+          <Button className='buy-btn' onClick={() => buyCallBack(info.id)}>{info.buttonText}</Button>
         </div>
     }
   </>
@@ -110,8 +111,9 @@ interface PersonaliseProps {
   defaultSelect: number
   digitalHumanData?: Array<IPersonCard>
   buyData?: Array<IBuyInfo>
+  buyCallBack: (productId: string) => void
 }
-const Personalise: React.FC<PersonaliseProps> = ({ defaultSelect, digitalHumanData, buyData }) => {
+const Personalise: React.FC<PersonaliseProps> = ({ defaultSelect, digitalHumanData, buyData, buyCallBack }) => {
 
 
   const thisSelect = defaultSelect > 1 ? 0 : defaultSelect
@@ -128,15 +130,13 @@ const Personalise: React.FC<PersonaliseProps> = ({ defaultSelect, digitalHumanDa
     setCardSelectState(index)
   }
 
-  const buyCallBack = (index: number) => {
+  const changeSelect = (index: number) => {
     setBuyCardSelectState(index)
   }
 
   return <>
-    {
-      // 微信支付测试 
-      <WxPaymentModal productId={437} />
-    }
+
+
     <div className='person'>
       <PersonHeader select={headerSelectState} callBack={headerCallBack} />
 
@@ -146,7 +146,7 @@ const Personalise: React.FC<PersonaliseProps> = ({ defaultSelect, digitalHumanDa
           <div className='card-list'>
             <Row gutter={73}>
               {digitalHumanData?.map((item, index, _) => (
-                <Col key={"col-" + item.id}><PersonCard key={item.id} select={cardSelectState} index={index} callBack={cardCallBack} info={item} /></Col>
+                <Col key={"col-" + item.id}><PersonCard key={item.id} select={cardSelectState} index={index} changeCallBack={cardCallBack} info={item} buyCallBack={buyCallBack} /></Col>
               ))}
             </Row>
           </div> :
@@ -155,7 +155,7 @@ const Personalise: React.FC<PersonaliseProps> = ({ defaultSelect, digitalHumanDa
               {
                 buyData?.map((item, index, _) => (
                   <Col key={"col-" + item.id}>
-                    <BuyCard key={item.id} info={item} isSelect={buyCardSelectState == index} index={index} changeCallBack={buyCallBack} />
+                    <BuyCard key={item.id} info={item} isSelect={buyCardSelectState == index} index={index} changeCallBack={changeSelect} buyCallBack={buyCallBack} />
                   </Col>
                 ))
               }

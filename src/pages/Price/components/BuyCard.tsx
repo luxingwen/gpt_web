@@ -8,8 +8,9 @@ interface BuyCardProps {
     isSelect: boolean,
     index: number,
     changeCallBack: (idx: number) => void
+    buyCallBack: (productId: string) => void
 }
-const BuyCard: React.FC<BuyCardProps> = ({ info, isSelect, index, changeCallBack }) => {
+const BuyCard: React.FC<BuyCardProps> = ({ info, isSelect, index, changeCallBack, buyCallBack }) => {
     const click = () => {
         changeCallBack(index)
     }
@@ -31,7 +32,7 @@ const BuyCard: React.FC<BuyCardProps> = ({ info, isSelect, index, changeCallBack
                         }
                     </div>
                     <span className='hit'>{info.hit}</span>
-                    <Button className={`${'buy-btn'} ${'select'}`}>{info.buttonText}</Button>
+                    <Button className={`${'buy-btn'} ${'select'}`} onClick={() => buyCallBack(info.id)}>{info.buttonText}</Button>
 
                 </div> :
                     <div className={`${'vip-box'} ${'un-select'}`} onClick={click}>
@@ -47,7 +48,7 @@ const BuyCard: React.FC<BuyCardProps> = ({ info, isSelect, index, changeCallBack
                             }
                         </div>
                         <span className='hit'>{info.hit}</span>
-                        <Button className={`${'buy-btn'} ${'is-select'}`}>{info.buttonText}</Button>
+                        <Button className={`${'buy-btn'} ${'is-select'}`} onClick={() => buyCallBack(info.id)}>{info.buttonText}</Button>
                     </div>
             }
         </ div>

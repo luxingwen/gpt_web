@@ -5,8 +5,11 @@ import '../index.less';
 import BuyCard from './BuyCard';
 
 
-interface TerasureBoxProps { data: Array<IBuyInfo> }
-const TerasureBox: React.FC<TerasureBoxProps> = ({ data }) => {
+interface TerasureBoxProps {
+  data: Array<IBuyInfo>,
+  buyCallBack: (productId: string) => void
+}
+const TerasureBox: React.FC<TerasureBoxProps> = ({ data, buyCallBack }) => {
   const [selectState, setSelectState] = useState<number>(0);
   const changeSelect = (index: number) => {
     setSelectState(index);
@@ -17,7 +20,7 @@ const TerasureBox: React.FC<TerasureBoxProps> = ({ data }) => {
       <Row gutter={[41, 0]}>
         {data.map((item, index, _) => (
           <Col key={"col-" + item.id}>
-            <BuyCard key={item.id} info={item} isSelect={selectState == index} index={index} changeCallBack={changeSelect} /> :
+            <BuyCard key={item.id} info={item} isSelect={selectState == index} index={index} changeCallBack={changeSelect} buyCallBack={buyCallBack} /> :
           </Col>
         ))}
       </Row>

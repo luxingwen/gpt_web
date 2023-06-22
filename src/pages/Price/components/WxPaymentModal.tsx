@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Button, Row, message } from 'antd';
+import { Modal, Button, Row, message, Spin } from 'antd';
 import QRCode from 'qrcode.react';
 import { orderSubmit, prePay } from '@/service/api';
 
 
-
-const WxPaymentModal = ({ productId }) => {
+interface WxPaymentModalProps {
+    productId: string
+    PayCallback?: Function
+    CancelCallback?: Function
+}
+const WxPaymentModal: React.FC<WxPaymentModalProps> = ({ productId, PayCallback, CancelCallback }) => {
 
     const [paymentData, setPaymentData] = useState<string>('');
 
     const [isVisible, setIsVisible] = useState<boolean>(false);
 
-    const ChatPrePay = (orderId) => {
+    const ChatPrePay = (orderId: Number) => {
         console.log('ChatPrePay', orderId);
         prePay({ order_id: orderId, client: 'web' })
             .then((res) => {
@@ -26,7 +30,7 @@ const WxPaymentModal = ({ productId }) => {
     };
 
     useEffect(() => {
-        orderSubmit({ id: productId })
+        orderSubmit({ id: Number(productId) })
             .then((res) => {
                 console.log('orderSubmit', res);
                 if (res.errno === 0) {
@@ -41,20 +45,24 @@ const WxPaymentModal = ({ productId }) => {
     const handleCompletePayment = () => {
         // TODO: Add logic for completing payment
         setIsVisible(false);
-        window.location.reload();
+        { PayCallback !== undefined ? PayCallback() : window.location.reload() }
     };
 
     const handleCancelPayment = () => {
         // TODO: Add logic for canceling payment
         setIsVisible(false);
+        if (CancelCallback !== undefined) {
+            CancelCallback();
+        }
     };
 
 
 
     return (
         <Modal
+            className='wx-pay'
             title="请使用微信扫码支付"
-            visible={isVisible}
+            open={isVisible}
             onCancel={handleCancelPayment}
             footer={[
                 <Button key="complete" type="primary" onClick={handleCompletePayment}>
@@ -66,7 +74,7 @@ const WxPaymentModal = ({ productId }) => {
             ]}
         >
             <Row justify="center" align="middle">
-                <QRCode value={paymentData} alt="WeChat Pay QR Code" />
+                <QRCode value={paymentData} />
             </Row>
         </Modal>
     );

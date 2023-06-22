@@ -45,8 +45,9 @@ const HuabeiBox: React.FC<HuabeiBoxProps> = ({
 
 interface PainteedProps {
   data: Array<IHuaBei>;
+  buyCallBack: (productId: string) => void;
 }
-const Painted: React.FC<PainteedProps> = ({ data }) => {
+const Painted: React.FC<PainteedProps> = ({ data, buyCallBack }) => {
   const [selectState, setSelectState] = useState<number>(0);
 
   const changeSelectCallBack = (index: number) => {
@@ -114,8 +115,8 @@ const Painted: React.FC<PainteedProps> = ({ data }) => {
                   </Col>
                 </Row>
               </Space>
-              <Button className="buy-btn">购买</Button>
-            </div>
+              <Button className="buy-btn" onClick={() => buyCallBack(data[selectState].id)}>购买</Button>
+            </div>C
             <div className="point">
               <span>说明： </span>
               <span>
@@ -171,7 +172,7 @@ const Painted: React.FC<PainteedProps> = ({ data }) => {
               </tbody>
             </table>
           </div>
-        </div> :
+        </div > :
         <></>
       }
     </>

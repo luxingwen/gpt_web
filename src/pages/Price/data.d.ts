@@ -31,7 +31,6 @@ interface IBackData {
     actual_price: number
     chat_times: 6000
     draw_score: number
-    id: number
     is_del: number
     name: string
     price: number
