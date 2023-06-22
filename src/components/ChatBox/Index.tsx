@@ -28,7 +28,7 @@ const Index = ({
   showOpenNewChat = false,
   sendBtnType = '1', // [1 输入框右外侧] [2输入框右内侧]
   chat_type = 'ai-chat', // ai-chat | smart-chat | prompt-chat
-  scene_id = '', // 智能场景id
+  scene_uuids = [''], // 智能场景id
   session_id = 0, // 会话id
   aiAvatar = AiLogo, // ai头像
   scene = 0, // 场景id  prompt-chat 时使用
@@ -113,7 +113,7 @@ const Index = ({
               self: true,
               is_end: true,
               id: 'u-' + item.id,
-              msg_id:item.id,
+              msg_id: item.id,
               time: item.add_time,
               avatar: currentUser.avatar,
               user_id: item.user_id,
@@ -157,7 +157,7 @@ const Index = ({
         }
       },
 
-      onCancel(){
+      onCancel() {
         console.log('取消');
       },
       onOk() {
@@ -172,7 +172,7 @@ const Index = ({
     const handleMsg = (msg) => {
       setMessages([
         ...messages,
-        {  user_id: currentUser?.id, msg_id:msg.id,  id: 'u-' + msg.id, msg: input, self: true, is_end: true, time: +new Date(), avatar: currentUser.avatar },
+        { user_id: currentUser?.id, msg_id: msg.id, id: 'u-' + msg.id, msg: input, self: true, is_end: true, time: +new Date(), avatar: currentUser.avatar },
         {
           msg: TRYING_MSG,
           self: false,
@@ -190,19 +190,7 @@ const Index = ({
       // const quessionRes = queryQuestion(question);
       const quessionRes = await queryQuestion(question)
       // 剩余次数不足，提示购买次数
-      if(quessionRes.errno == 4002){
-        showBuyModal();
-        return;
-      }
-      if (quessionRes.errno !== 0) {
-        message.error(quessionRes.errmsg)
-        return
-      }
-      handleMsg(quessionRes.data);
-    } 
-    if(chat_type === 'prompt-chat'){
-      const quessionRes = await queryQuestion(question,  parseInt(scene))
-      if(quessionRes.errno == 4002){
+      if (quessionRes.errno == 4002) {
         showBuyModal();
         return;
       }
@@ -212,9 +200,21 @@ const Index = ({
       }
       handleMsg(quessionRes.data);
     }
-    
+    if (chat_type === 'prompt-chat') {
+      const quessionRes = await queryQuestion(question, parseInt(scene))
+      if (quessionRes.errno == 4002) {
+        showBuyModal();
+        return;
+      }
+      if (quessionRes.errno !== 0) {
+        message.error(quessionRes.errmsg)
+        return
+      }
+      handleMsg(quessionRes.data);
+    }
+
     if (chat_type === 'smart-chat') {
-      const quessionRes = await smartChatCompletions({ content: question, scene_id: scene_id, session_id: session_id });
+      const quessionRes = await smartChatCompletions({ content: question, uuids: scene_uuids, session_id: session_id });
       if (quessionRes.errno !== 0) {
         return;
       }
@@ -266,7 +266,7 @@ const Index = ({
               msg: item.answer,
               self: false,
               id: 'ai-' + item.id,
-              msg_id:  item.id,
+              msg_id: item.id,
               is_end: true,
               time: item.create_time,
               avatar: aiAvatar,
@@ -276,7 +276,7 @@ const Index = ({
         });
         setMessages([...messages, ...msgList]);
       })
-      .catch((err) => {});
+      .catch((err) => { });
 
     wssocket.create(currentUser.id);
 
@@ -291,10 +291,10 @@ const Index = ({
       setIsMsgEnd(true);
       return;
     }
-    console.log("itemMsg:",itemMsg)
+    console.log("itemMsg:", itemMsg)
 
     const msgId = 'ai-' + itemMsg.msg_id;
-   // console.log("msgId:",msgId)
+    // console.log("msgId:",msgId)
     setMessages((prevMessages) => {
       const updatedMessages = prevMessages.map((item) => {
         // console.log("item---->:",item);
@@ -429,7 +429,7 @@ const Index = ({
       </>
     );
   }
-  
+
   return (
     <div
       className="chat-box-component"
@@ -437,7 +437,7 @@ const Index = ({
       id="chartFullScreen"
     >
       <div className="w100 scroll-box" ref={messagesContainerRef}>
-        <Messages messages={messages} isMsgEnd={isMsgEnd}/>
+        <Messages messages={messages} isMsgEnd={isMsgEnd} />
         <div className="ai-asnswer-tips tc">
           -- 问答结果由AI生成，仅供参考 --
         </div>

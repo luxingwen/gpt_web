@@ -25,18 +25,18 @@ const HuabeiBox: React.FC<HuabeiBoxProps> = ({
       {isSelect ? (
         <div className={`${'huabei'} ${'is-select'}`}>
           <div>
-            <span className="price1">{info.num}</span>
+            <span className="price1">{info?.num}</span>
             <span className="price2">画贝</span>
           </div>
-          <span className="hit2">¥{info.price}</span>
+          <span className="hit2">¥{info?.price}</span>
         </div>
       ) : (
         <div className={`${'huabei'} ${'un-select'}`} onClick={click}>
           <div>
-            <span className="price1">{info.num}</span>
+            <span className="price1">{info?.num}</span>
             <span className="price2">画贝</span>
           </div>
-          <span className="hit1">¥{info.price}</span>
+          <span className="hit1">¥{info?.price}</span>
         </div>
       )}
     </>
