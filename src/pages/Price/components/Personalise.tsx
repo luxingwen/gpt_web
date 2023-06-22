@@ -30,7 +30,10 @@ const PersonHeader: React.FC<PersonHeaderProps> = ({ select, callBack }) => {
               </div>
             </div>
           ) : (
-            <div className={`${'price-header-button'} ${'other'}`} key={item + index}>
+            <div
+              className={`${'price-header-button'} ${'other'}`}
+              key={item + index}
+            >
               <div className="show-font" onClick={() => callBack(index)}>
                 {item}
               </div>
@@ -132,7 +135,7 @@ const Personalise: React.FC<PersonaliseProps> = ({ defaultSelect, digitalHumanDa
   return <>
     {
       // 微信支付测试 
-      // <WxPaymentModal productId={437} />
+      <WxPaymentModal productId={437} />
     }
     <div className='person'>
       <PersonHeader select={headerSelectState} callBack={headerCallBack} />

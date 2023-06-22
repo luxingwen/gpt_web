@@ -3,6 +3,7 @@ import { Layout } from 'antd';
 import './index.less';
 import CheckHeader from './components/CheckHeader';
 import EmailLogin from './components/EmailLogin';
+import WXLogin from './components/WXLogin';
 
 
 const { Content } = Layout;
@@ -23,7 +24,7 @@ const LoginPage = () => {
                     <div className='title'>欢迎登录</div>
                     <div className='main-info'>
                         <CheckHeader callback={changeIdxCallBack} />
-                        {selectIdx == 0 ? <EmailLogin /> : <div>2</div>}
+                        {selectIdx == 0 ? <EmailLogin /> : <WXLogin></WXLogin>}
                     </div>
                 </div>
             </Content>
