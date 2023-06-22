@@ -1,0 +1,82 @@
+.qa-page {
+    display: flex;
+    flex-direction: column;
+
+    .title-row {
+        .card {
+            width: 61.3px;
+            height: 35px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 400;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .select {
+            background-color: #4B64F3;
+            color: #fff;
+        }
+
+        .un-select {
+            color: #383838;
+            background-color: #F6F6F6;
+            cursor: pointer;
+        }
+    }
+
+    .question {
+        margin-top: 40px;
+
+        .q-sum {
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 23.17px;
+        }
+
+        .q-list {
+            margin-top: 15px;
+
+            .q-item {
+                margin-top: 15px;
+                height: 78px;
+                width: 100%;
+                border: 1px solid #E4E8EB;
+                border-radius: 3px;
+                padding: 20px 27px 10px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+
+                span {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+
+                .q-text {
+                    display: block;
+                    font-size: 20px;
+                    font-weight: 500;
+                    line-height: 20px;
+                    color: #212223;
+                }
+
+                .q-tag {
+                    display: block;
+                    font-size: 13px;
+                    font-weight: 400;
+                    line-height: 20px;
+                    color: #808080;
+                }
+            }
+        }
+
+        .pag {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: row-reverse;
+        }
+    }
+}

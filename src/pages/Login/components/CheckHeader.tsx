@@ -20,7 +20,7 @@ const CheckHeader: React.FC<CheckHeaderProps> = ({ callback }) => {
     <div className='check-header'>
       <Space size={24} direction={'horizontal'}>
         {titleText.map((item, idx, _) => (
-          <div>
+          <div key={'div' + idx}>
             {selectIdx == idx ?
               <span className='select' key={'title' + idx}>{item}</span> :
               <span className='un-select' key={'title' + idx} onClick={() => { click(idx) }}>{item}</span>}

@@ -81,7 +81,7 @@ export default [
       {
         name: '热门问题',
         path: 'hot-qa',
-        component: './TipsBag',
+        component: './HotQuestion',
         icon: 'fire',
       },
     ],

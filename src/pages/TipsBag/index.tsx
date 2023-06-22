@@ -119,17 +119,15 @@ const TipsBagPage = () => {
         <div>
           <div style={{ marginTop: '24px' }}>
             <Tag
-              className={`custom-tag ${
-                selectedTag === '全部' ? 'selected' : ''
-              }`}
+              className={`custom-tag ${selectedTag === '全部' ? 'selected' : ''
+                }`}
               onClick={() => handleTagClick('全部')}
             >
               全部
             </Tag>
             <Tag
-              className={`custom-tag ${
-                selectedTag === '热门' ? 'selected' : ''
-              }`}
+              className={`custom-tag ${selectedTag === '热门' ? 'selected' : ''
+                }`}
               onClick={() => handleTagClick('热门')}
             >
               热门
@@ -138,9 +136,8 @@ const TipsBagPage = () => {
             {categoryList.map((category, index) => (
               <Tag
                 key={index}
-                className={`custom-tag ${
-                  selectedTag === category.name ? 'selected' : ''
-                }`}
+                className={`custom-tag ${selectedTag === category.name ? 'selected' : ''
+                  }`}
                 onClick={() => handleTagClick(category.name, category.id)}
               >
                 {category.name}
