@@ -44,4 +44,9 @@ declare namespace API {
     type: GoodsType; // -1返回全部  0: AI问答 1: AI画图 2: 数字人套餐 3: 与数字人对话次数
   };
 
+
+  export interface ReqPageType {
+    page: number;
+    per_page: number;
+  };
 }

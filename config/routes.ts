@@ -117,7 +117,7 @@ export default [
         name: '图片生成图',
         path: 'image-to-image',
         component: './AI-Paint/ImageToImage',
-        hideInMenu: true,
+        hideInMenu: false,
       },
       {
         path: 'image-to-image/auto-generate-prompt',

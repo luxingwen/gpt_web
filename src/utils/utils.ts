@@ -23,3 +23,14 @@ export function getCurrentTimestampInSeconds(): number {
   const currentTimestamp = Math.floor(Date.now() / 1000); // 将当前时间戳转换为秒
   return currentTimestamp;
 }
+
+
+
+export function readFileAsync(file: File): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(new Blob([reader.result as ArrayBuffer]));
+    reader.onerror = reject;
+    reader.readAsArrayBuffer(file);
+  });
+};
