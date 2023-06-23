@@ -80,6 +80,9 @@ export async function uploadImage(props: any) {
   return await request(`/api/chat/image/upload`, {
     method: 'POST',
     data: props,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
   });
 }
 
