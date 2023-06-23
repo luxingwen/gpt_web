@@ -9,10 +9,12 @@ import {
   ProFormTextArea,
   ProFormUploadButton,
 } from '@ant-design/pro-components';
-import { Link } from '@umijs/max';
+import { Link, history } from '@umijs/max';
 import { Button, Collapse, message } from 'antd';
 import { useRef, useEffect, useState } from 'react';
 import RadioGroup from '../components/RadioGroup';
+import { readFileAsync } from '@/utils/utils';
+
 
 
 import { getAiDrawModels, aiDrawImageToImage, uploadImage } from '@/service/ai-paint';
@@ -52,8 +54,10 @@ export default function TextToImage() {
 
   const [models, setModels] = useState([]);
 
-  const handleImageFileChange = (file) => {
-    console.log('handleImageFileChange:', file);
+  const handleImageFileChange = (fileobj) => {
+    console.log('handleImageFileChange:', fileobj);
+    const { file } = fileobj;
+
     const fileSizeLimit = 1024 * 1024; // 1MB
     const allowedTypes = ['image/png', 'image/jpeg'];
     if (
@@ -86,19 +90,27 @@ export default function TextToImage() {
     });
   }, []);
 
-  const handleSubmit = (values: any) => {
+  const handleSubmit = async (values: any) => {
     console.log('handleSubmit:', values);
     values.prompt = values.prompt?.split(',');
     values.negative_prompt = values.negative_prompt?.split(',');
 
     const formData = new FormData();
 
-    if(!values.upload || values.upload.length === 0) {
+    if (!values.upload || values.upload.length === 0) {
       message.error('请上传图片！');
       return;
     }
 
-    formData.append('file', values.upload[0]);
+    const file = values.upload[0];
+    const fileData = await readFileAsync(file.originFileObj); // 使用异步函数读取文件数据
+    if (!fileData) {
+      message.error('无法读取文件！');
+      return;
+    }
+
+    formData.append('file', fileData, file.name);
+
 
     uploadImage(formData).then((res) => {
       console.log('uploadImage:', res);
@@ -175,7 +187,7 @@ export default function TextToImage() {
             name: 'file',
             listType: 'picture-card',
           }}
-          action={handleImageFileChange}
+          onChange={handleImageFileChange}
         // action="/upload.do"
         />
         <ProForm.Item name="model" label="模型">
