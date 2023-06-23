@@ -9,7 +9,7 @@ import { Avatar, Space } from 'antd';
 import Cookies from 'js-cookie';
 import HeaderDropdown from '../HeaderDropdown';
 import { history } from 'umi';
-import { wxlogin } from '@/service/user';
+import { wxlogin, logout } from '@/service/user';
 
 // const defaultToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiIyMTE5IiwiZXhwIjoxNzA0NDYyMzk1LCJpYXQiOjE2ODU3MTM1OTUsImlzcyI6InRlc3QifQ.jfVomRADsD1IaiEjV37Ovvjuukzarflqx_BFDo0kG5o';
 const defaultToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiIyNjAwMDAiLCJleHAiOjE3MDU0MDkzNDksImlhdCI6MTY4NjY2MDU0OSwiaXNzIjoidGVzdCJ9.ACRdI-Y3Mc6UKvOIo7wO2mHVdJKi-97q-hsZEUy0EXE';
@@ -25,13 +25,14 @@ export default function RightContent({ isHome = false }) {
   };
 
   const handleLogout = () => {
+    logout();
     console.log('logout');
     // storage.removeItem('userInfo');
-    Cookies.remove('token');
-    setInitialState({
-      ...initialState,
-      currentUser: undefined,
-    });
+    // Cookies.remove('token');
+    // setInitialState({
+    //   ...initialState,
+    //   currentUser: undefined,
+    // });
     // setUserInfo(null);
     // history.push('/');
   };

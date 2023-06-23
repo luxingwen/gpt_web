@@ -37,7 +37,35 @@ export async function getInitialState(): Promise<{
   return { currentUser, fetchUserInfo };
 }
 
-export const layout: RunTimeLayoutConfig = () => {
+// 需要登录的路由路径
+const protectedRoutes = [
+  '/user',
+  '/ai',
+  '/ai-paint',
+  '/smart-ai',
+  '/smart-ai/:viewType',
+  '/smart-ai/:viewType/:sceneId',
+  '/smart-ai/:viewType/:sceneId/:sessionId',
+];
+
+
+export const layout: RunTimeLayoutConfig = ({ location, initialState }) => {
+
+  // 检查用户是否已登录的函数
+  const checkUserLoggedIn = () => {
+    const currentUser = initialState?.currentUser;
+    return !!currentUser;
+  };
+
+  // 根据登录状态和路由路径判断是否需要重定向到登录页面
+  const shouldRedirectToLogin = () => {
+    const isLoggedIn = checkUserLoggedIn();
+    const isProtectedRoute = protectedRoutes.some((route) =>
+      history.location.pathname.includes(route),
+    );
+    return isProtectedRoute && !isLoggedIn;
+  };
+
   return {
     token: {
       bgLayout: '#fff',
@@ -66,6 +94,29 @@ export const layout: RunTimeLayoutConfig = () => {
     //     </>
     //   );
     // },
+    onPageChange: () => {
+      if (shouldRedirectToLogin()) {
+        Modal.error({
+          title: '登录',
+          content: '请登录后在使用',
+          footer: [
+            <Button key="login" onClick={wxlogin}>
+              登录
+            </Button>,
+            <Button
+              style={{ marginLeft: 10 }}
+              key="cancel"
+              onClick={() => {
+                Modal.destroyAll();
+                history.push('/');
+              }}
+            >
+              取消
+            </Button>,
+          ],
+        });
+      }
+    },
     rightContentRender: () => <RightContent />,
     menuFooterRender: () => {
       return (
@@ -89,37 +140,7 @@ export const layout: RunTimeLayoutConfig = () => {
   };
 };
 
-const handleResponseInterceptors: IResponseInterceptorTuple = (
-  response: Response,
-  // options: RequestConfig,
-) => {
-  let isHome = (location.pathname === '/' || location.pathname === '/price');
 
-  console.log('isHome:', isHome);
-  console.log('location.pathname:', location.pathname);
-  if (response.data.errno === 401 && !isHome) {
-    Modal.error({
-      title: '登录',
-      content: '请登录后在使用',
-      footer: [
-        <Button key="login" onClick={wxlogin}>
-          登录
-        </Button>,
-        <Button
-          style={{ marginLeft: 10 }}
-          key="cancel"
-          onClick={() => {
-            Modal.destroyAll();
-            history.push('/');
-          }}
-        >
-          取消
-        </Button>,
-      ],
-    });
-  }
-  return response;
-};
 
 export const request: RequestConfig = {
   withCredentials: true,
@@ -138,7 +159,6 @@ export const request: RequestConfig = {
       };
     },
   ],
-  responseInterceptors: [handleResponseInterceptors],
   errorConfig: {
     errorHandler: (error, opts) => {
       if (opts?.skipErrorHandler) throw error;
