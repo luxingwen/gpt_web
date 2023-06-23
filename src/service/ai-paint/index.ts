@@ -86,3 +86,19 @@ export async function uploadImage(props: any) {
   });
 }
 
+// 获取收藏的画作
+export async function getImageLikeList(props: API.ReqPageType) {
+  return await request(`/api/chat/image/like/images`, {
+    method: 'POST',
+    data: props,
+  });
+}
+
+// 获取展出的画作
+export async function getImageShowsList(props: API.ReqPageType) {
+  return await request(`/api/chat/sd/image/shows`, {
+    method: 'POST',
+    data: props,
+  });
+}
+
