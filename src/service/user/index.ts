@@ -1,16 +1,18 @@
 import { request } from '@umijs/max';
 import Cookies from 'js-cookie';
 
-
-const defaultToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiIyMTE5IiwiZXhwIjoxNzA0NDYyMzk1LCJpYXQiOjE2ODU3MTM1OTUsImlzcyI6InRlc3QifQ.jfVomRADsD1IaiEjV37Ovvjuukzarflqx_BFDo0kG5o';
+const defaultToken =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiIyMTE5IiwiZXhwIjoxNzA0NDYyMzk1LCJpYXQiOjE2ODU3MTM1OTUsImlzcyI6InRlc3QifQ.jfVomRADsD1IaiEjV37Ovvjuukzarflqx_BFDo0kG5o';
 //const defaultToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiIyNjAwMDAiLCJleHAiOjE3MDU0MDkzNDksImlhdCI6MTY4NjY2MDU0OSwiaXNzIjoidGVzdCJ9.ACRdI-Y3Mc6UKvOIo7wO2mHVdJKi-97q-hsZEUy0EXE';
 
-
 export async function wxlogin() {
-
   let domain = window.location.hostname;
 
-  if (window.location.hostname === 'localhost' || window.location.hostname.startsWith('192.168.') || window.location.hostname.startsWith('testchat.kimways.com')) {
+  if (
+    window.location.hostname === 'localhost' ||
+    window.location.hostname.startsWith('192.168.') ||
+    window.location.hostname.startsWith('testchat.kimways.com')
+  ) {
     // 在本地开发环境中 或者测试环境中
     console.log('在本地开发环境中 或者测试环境中 wxlogin omain >>>>', domain);
     Cookies.set('token', defaultToken);
@@ -29,12 +31,12 @@ export async function wxlogin() {
   }
 }
 
-
 export async function logout() {
   Cookies.remove('token');
-  window.location.reload();
+  // 重定向主页面
+  window.location.href = '/';
+  //window.location.reload();
 }
-
 
 export async function getUserInfo() {
   return await request<{
@@ -51,9 +53,12 @@ export async function getUserInfo() {
 
 export async function getUserList(params: any) {
   try {
-    return request < API.Response<API.User[]>(`/api/chat/user/list`, {
-      method: 'POST',
-      data: params,
-    });
-  } catch (error) { }
+    return (
+      request <
+      API.Response<API.User[]>(`/api/chat/user/list`, {
+        method: 'POST',
+        data: params,
+      })
+    );
+  } catch (error) {}
 }
