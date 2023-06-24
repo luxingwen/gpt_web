@@ -177,6 +177,12 @@ export default [
     hideInMenu: true,
   },
   {
+    name: '编辑场景',
+    path: '/smart-ai/:viewType/:sceneId',
+    component: './SmartChat',
+    hideInMenu: true,
+  },
+  {
     name: '智能会话',
     path: '/smart-ai/:viewType/:sceneId',
     component: './SmartChat',

@@ -1,6 +1,7 @@
 import { Layout, Menu, theme } from 'antd';
 import PropTypes, { InferProps } from 'prop-types';
 import React from 'react';
+import { history } from '@umijs/max';
 
 import './left.less';
 
@@ -36,8 +37,9 @@ const VerticalNav: React.FC<VerticalNavProps> = ({
           defaultOpenKeys={[defaultOpenKeys]}
           items={items}
           onClick={(e) => {
-            console.log('key', e.key);
+            console.log('key:', e.key);
             setViewContent(e.key);
+            history.push(`/smart-ai/${e.key}`);
           }}
         />
         <div style={{ marginTop: '12px', marginBottom: '12px' }}>
@@ -56,7 +58,7 @@ const VerticalNav: React.FC<VerticalNavProps> = ({
           }}
         >
           <p style={{ margin: 0 }}>
-           copyright@AI云助手
+            copyright@AI云助手
           </p>
         </div>
       </div>
