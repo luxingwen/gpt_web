@@ -4,6 +4,7 @@ import { Image, Progress, Space, Tabs } from 'antd';
 import { getImageLikeList, getImageShowsList } from '@/service/ai-paint';
 import { useEffect, useState } from 'react';
 import { formatTimestamp } from '@/utils/utils';
+import { Link } from '@umijs/max';
 
 
 
@@ -18,12 +19,15 @@ function MyWorks() {
 
   const [picShowsList, setPicShowsList] = useState<any[]>([]);
   const [data, setData] = useState<any[]>([]);
+  const [showCount, setShowCount] = useState<number>(0);
+  const [likeCount, setLikeCount] = useState<number>(0);
 
   useEffect(() => {
     getImageShowsList(queryPage).then((res) => {
       if (res.errno === 0) {
         console.log("getImageShowsList:", res.data);
         setPicShowsList(res?.data?.list || []);
+        setShowCount(res?.data?.total)
       } else {
         console.log("getImageShowsList:", res.errmsg);
       }
@@ -32,6 +36,7 @@ function MyWorks() {
       if (res.errno === 0) {
         setPicLikesList(res?.data?.list || []);
         setData(res?.data?.list || [])
+        setLikeCount(res?.data?.total)
       }
       console.log("getImageLikeList:", res);
 
@@ -45,11 +50,11 @@ function MyWorks() {
         items={[
           {
             key: '1',
-            label: '展出 2',
+            label: `展出 ${showCount}`,
           },
           {
             key: '2',
-            label: '收藏 21',
+            label: `收藏 ${likeCount}`,
           },
         ]}
         onChange={(activeKey) => {
@@ -82,15 +87,17 @@ function MyWorks() {
           content: {
             render: (_, record) => {
               return (
-                <div className="w-full">
-                  <Space direction="vertical" className="w-full">
-                    <Image src={record.image_info[0]} width="100%" preview={false} />
-                    <span className="text-center">{record.title}</span>
-                    <span className="text-center text-xs text-gray-500">
-                      {formatTimestamp(record.create_time)}
-                    </span>
-                  </Space>
-                </div>
+                <Link to={`/ai-paint/work-detail/${record.id}`}>
+                  <div className="w-full">
+                    <Space direction="vertical" className="w-full">
+                      <Image src={record.image_info[0]} width="100%" preview={false} />
+                      <span className="text-center">{record.title}</span>
+                      <span className="text-center text-xs text-gray-500">
+                        {formatTimestamp(record.create_time)}
+                      </span>
+                    </Space>
+                  </div>
+                </Link>
               );
             },
           },

@@ -56,7 +56,7 @@ function FeaturedWorks() {
     <PageContainer title={false}>
       <ProList<any>
         pagination={{
-          defaultPageSize: 10,
+          defaultPageSize: 12,
           showSizeChanger: false,
         }}
         showActions="hover"
