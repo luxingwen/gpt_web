@@ -317,7 +317,7 @@ export default function TextToImage() {
         <ProForm.Item>
           <label>数量</label>
           <ProForm.Group>
-            <ProFormSlider noStyle name="batch_size" min={1} />
+            <ProFormSlider noStyle name="batch_size" min={1} max={3} />
             <ProFormItem noStyle shouldUpdate>
               {({ getFieldValue }) => {
                 onChange()
