@@ -169,6 +169,18 @@ const Painted: React.FC<PainteedProps> = ({ data, buyCallBack }) => {
                   <td>1024*1364</td>
                   <td>3</td>
                 </tr>
+                <tr>
+                  <td>1364*1024</td>
+                  <td>3</td>
+                </tr>
+                <tr>
+                  <td>1024*1820</td>
+                  <td>4.5</td>
+                </tr>
+                <tr>
+                  <td>1820*1024</td>
+                  <td>4.5</td>
+                </tr>
               </tbody>
             </table>
           </div>

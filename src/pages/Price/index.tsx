@@ -9,7 +9,7 @@ import TerasureBox from './components/TerasureBox';
 
 import { queryChatGoods } from '@/service/api';
 import './index.less';
-import { useSearchParams } from '@umijs/max';
+import { useSearchParams, history } from '@umijs/max';
 import WxPaymentModal from './components/WxPaymentModal';
 
 
@@ -216,6 +216,10 @@ const PricePage = () => {
     if (productId != 'free') {
       setbuyProductId(productId)
       setshowBuyModel(true)
+    } else {
+      if (headerSelect == 2) {
+        history.push('/ai')
+      }
     }
   }
 
