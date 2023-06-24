@@ -29,8 +29,18 @@ export async function deleteSmartScene(params: API.ReqDeleteSmartScene) {
   });
 }
 
+
+// 获取场景详情信息
 export async function getSmartSceneInfo(params: API.ReqGetSmartSceneInfo) {
   return await request(`/api/v1/smart/scene/info`, {
+    method: 'POST',
+    data: params,
+  });
+}
+
+// 更新场景信息
+export async function updateSmartSceneInfo(params:any) {
+  return await request(`/api/v1/smart/scene/update`, {
     method: 'POST',
     data: params,
   });

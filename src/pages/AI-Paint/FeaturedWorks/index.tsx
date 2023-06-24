@@ -1,9 +1,9 @@
 import { ProList } from '@ant-design/pro-components';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Image, Progress, Space } from 'antd';
-import {getHotAiDraws} from '@/service/ai-paint';
-import { useEffect,useState } from 'react';
-import {formatTimestamp} from '@/utils/utils';
+import { getHotAiDraws } from '@/service/ai-paint';
+import { useEffect, useState } from 'react';
+import { formatTimestamp } from '@/utils/utils';
 import { Link } from '@umijs/max';
 
 const data = [
@@ -45,8 +45,8 @@ function FeaturedWorks() {
 
   useEffect(() => {
     getHotAiDraws().then((res) => {
-      console.log("getHotAiDraws:",res);
-      if(res.errno === 0){
+      console.log("getHotAiDraws:", res);
+      if (res.errno === 0) {
         setPicList(res.data || []);
       }
     });
@@ -56,7 +56,7 @@ function FeaturedWorks() {
     <PageContainer title={false}>
       <ProList<any>
         pagination={{
-          defaultPageSize: 10,
+          defaultPageSize: 12,
           showSizeChanger: false,
         }}
         showActions="hover"
@@ -69,13 +69,13 @@ function FeaturedWorks() {
               return (
                 <div className="w-full">
                   <Link to={`/ai-paint/work-detail/${record.id}`}>
-                  <Space direction="vertical" className="w-full">
-                    <Image src={record.image_info[0]} width="100%" preview={false} />
-                    <span className="text-center">{record.title}</span>
-                    <span className="text-center text-xs text-gray-500">
-                      {formatTimestamp(record.create_time)}
-                    </span>
-                  </Space>
+                    <Space direction="vertical" className="w-full">
+                      <Image src={record.image_info[0]} width="100%" preview={false} />
+                      <span className="text-center">{record.title}</span>
+                      <span className="text-center text-xs text-gray-500">
+                        {formatTimestamp(record.create_time)}
+                      </span>
+                    </Space>
                   </Link>
                 </div>
               );

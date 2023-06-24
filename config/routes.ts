@@ -148,7 +148,7 @@ export default [
         name: '个人展出&收藏',
         path: 'my-works',
         component: './AI-Paint/MyWorks',
-        hideInMenu: true,
+        hideInMenu: false,
       },
       {
         name: '作品详情',

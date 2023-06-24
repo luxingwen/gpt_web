@@ -3,42 +3,10 @@ import { PageContainer, ProList } from '@ant-design/pro-components';
 import { Button, Image, Progress, Space, message } from 'antd';
 import { Link } from '@umijs/max';
 import { useState, useEffect } from 'react';
-import { aiDrawImages,delAiDrawImages } from '@/service/ai-paint';
+import { aiDrawImages, delAiDrawImages } from '@/service/ai-paint';
 
-import {formatTimestamp} from '@/utils/utils';
+import { formatTimestamp } from '@/utils/utils';
 
-const data = [
-  '语雀的天空',
-  'Ant Design',
-  '蚂蚁金服体验科技',
-  'TechUI',
-  'TechUI 2.0',
-  'Bigfish',
-  'Umi',
-  'Ant Design Pro',
-].map((item) => ({
-  title: item,
-  subTitle: new Date().toLocaleDateString(),
-  actions: [<a key="run">邀请</a>, <a key="delete">删除</a>],
-  avatar:
-    'https://gw.alipayobjects.com/zos/antfincdn/UCSiy1j6jx/xingzhuang.svg',
-  content: (
-    <div
-      style={{
-        flex: 1,
-      }}
-    >
-      <div
-        style={{
-          width: 200,
-        }}
-      >
-        <div>发布中</div>
-        <Progress percent={80} />
-      </div>
-    </div>
-  ),
-}));
 
 function PictureFolder() {
   const [checked, setChecked] = useState<boolean>(false);
@@ -89,11 +57,11 @@ function PictureFolder() {
   const handleDeleteImage = () => {
     console.log("handleDeleteImage:", selectedRows);
     let ids = selectedRows.map((item) => item.id);
-    if(ids.length === 0){
+    if (ids.length === 0) {
       message.error('请选择要删除的图片');
       return;
     }
-    delAiDrawImages({ids}).then((res) => {
+    delAiDrawImages({ ids }).then((res) => {
       console.log("delAiDrawImages:", res);
       if (res.errno === 0) {
         message.success('删除成功');
@@ -113,7 +81,7 @@ function PictureFolder() {
     <PageContainer title={false}>
       <ProList<any>
         pagination={{
-          defaultPageSize: 10,
+          defaultPageSize: 12,
           showSizeChanger: false,
         }}
         showActions="hover"
@@ -121,7 +89,7 @@ function PictureFolder() {
         grid={{ gutter: 16, column: 6 }}
         headerTitle={
           <Space direction="vertical" className="w-52" size={0}>
-            <Progress percent={picUsed/picTotal*100} showInfo={false} className="m-0" />
+            <Progress percent={picUsed / picTotal * 100} showInfo={false} className="m-0" />
             <span className="text-xs font-normal text-gray-500">{picUsed}/{picTotal}</span>
           </Space>
         }
@@ -147,8 +115,8 @@ function PictureFolder() {
                     />
                   )}
                   <Space direction="vertical" className="w-full">
-                    {record.status == 3 && <Link to={`/ai-paint/text-to-image/drawing/${record.id}`}> <Image src={record.image_url} width="100%" preview={false} /> </Link> }
-                    {record.status != 3 &&   <Link to={`/ai-paint/text-to-image/drawing/${record.id}`}><div className="w-full h-32 bg-gray-200">{record.status_txt}</div></Link> }
+                    {record.status == 3 && <Link to={`/ai-paint/text-to-image/drawing/${record.id}`}> <Image src={record.image_url} width="100%" preview={false} /> </Link>}
+                    {record.status != 3 && <Link to={`/ai-paint/text-to-image/drawing/${record.id}`}><div className="w-full h-32 bg-gray-200">{record.status_txt}</div></Link>}
                     <span className="text-center">{record.title}</span>
                     <span className="text-center text-xs text-gray-500">
                       {formatTimestamp(record.create_time)}
