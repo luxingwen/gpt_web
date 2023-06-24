@@ -115,7 +115,7 @@ function PictureFolder() {
                     />
                   )}
                   <Space direction="vertical" className="w-full">
-                    {record.status == 3 && <Link to={`/ai-paint/text-to-image/drawing/${record.id}`}> <Image src={record.image_url} width="100%" preview={false} /> </Link>}
+                    {record.status == 3 && <Link to={`/ai-paint/text-to-image/drawinfo/${record.id}`}> <Image src={record.image_url} width="100%" preview={false} /> </Link>}
                     {record.status != 3 && <Link to={`/ai-paint/text-to-image/drawing/${record.id}`}><div className="w-full h-32 bg-gray-200">{record.status_txt}</div></Link>}
                     <span className="text-center">{record.title}</span>
                     <span className="text-center text-xs text-gray-500">

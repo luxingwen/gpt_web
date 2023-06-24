@@ -49,6 +49,10 @@ function Drawing() {
   }, []);
 
 
+  const handleSaveImage = () => {
+    window.open(aiImageInfo.image_info[0]);
+  };
+
   return (
     <PageContainer title={false}>
       <ProDescriptions column={1}>
@@ -136,23 +140,23 @@ function Drawing() {
           <ProDescriptions.Item>
             <Space direction="vertical">
               <span className="ant-descriptions-item-label after:hidden">
-                图片 (2)
+                图片 ({aiImageInfo?.image_info.length})
               </span>
               <Space>
-                <div className="relative w-16 h-16 overflow-hidden">
-                  <Image
-                    width="100%"
-                    height="100%"
-                    src={`https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png`}
-                  />
-                </div>
-                <div className="relative w-16 h-16 overflow-hidden">
-                  <Image
-                    width="100%"
-                    height="100%"
-                    src={`https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png`}
-                  />
-                </div>
+                {aiImageInfo?.image_info.map((item, index) => {
+                  return (
+                    <div key={index} className="relative w-16 h-16 overflow-hidden">
+                      <Image
+                        width="100%"
+                        height="100%"
+                        src={item}
+                        preview={false}
+                      />
+                    </div>
+                  );
+                })
+                }
+
               </Space>
             </Space>
           </ProDescriptions.Item>}
@@ -169,7 +173,9 @@ function Drawing() {
         {
           aiImageInfo?.status === 3 &&
           <>
-            <Button>保存图片</Button>
+            <Button onClick={
+              handleSaveImage
+            }>保存图片</Button>
             <Button type="primary" className="text-primary bg-secondary">
               分享
             </Button>
