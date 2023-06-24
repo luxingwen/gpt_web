@@ -7,8 +7,9 @@ import {
   UploadOutlined,
 } from '@ant-design/icons';
 import { Button, Card, Form, Input, Radio, Space, Upload, message } from 'antd';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import UserSelect from './UserSelect.tsx';
+import { history } from '@umijs/max';
 
 
 import './CreateScene.less';
@@ -26,6 +27,10 @@ const CreateScene = ({ setViewContent }) => {
   const [loading, setLoading] = useState(false); // 添加loading状态变量
   const formRef = useRef();
 
+
+  useEffect(() => {
+    formRef?.current?.setFieldsValue({ dataType: 'pdf' });
+  }, []);
 
   const uploadRef = useRef(null);
 
@@ -98,13 +103,13 @@ const CreateScene = ({ setViewContent }) => {
     }
 
 
-   let newFileList = [...fileList, file];
+    let newFileList = [...fileList, file];
 
     if (newFileList.length > 10) {
       message.error('文件数量超过10个限制！');
       return;
     }
-  
+
     formRef?.current?.setFieldsValue({ fileUpload: newFileList });
 
     setFileList(newFileList);
@@ -145,7 +150,7 @@ const CreateScene = ({ setViewContent }) => {
       if (response.errno === 0) {
         message.success('创建场景成功！');
         setLoading(false); // 结束加载状态
-        setViewContent('scene_list');
+        history.push('/smart-ai/scene-list');
       }
 
       // 处理响应
@@ -161,7 +166,7 @@ const CreateScene = ({ setViewContent }) => {
       <div style={{ maxWidth: '500px', padding: '12px' }}>
         <Form
           ref={formRef}
-         layout="vertical" onFinish={onFinish}>
+          layout="vertical" onFinish={onFinish}>
           <Item
             label="场景名称"
             name="sceneName"
@@ -257,11 +262,12 @@ const CreateScene = ({ setViewContent }) => {
             <Radio.Group
               className="custom-radio-group"
               onChange={handleFileTypeChange}
+              defaultValue="pdf"
             >
-              <Radio value="txt">TXT</Radio>
+              <Radio value="txt" disabled>TXT</Radio>
               <Radio value="pdf">PDF</Radio>
-              <Radio value="excel">Excel</Radio>
-              <Radio value="word">Word</Radio>
+              <Radio value="excel" disabled>Excel</Radio>
+              <Radio value="word" disabled>Word</Radio>
             </Radio.Group>
           </Item>
           <Item
@@ -297,12 +303,12 @@ const CreateScene = ({ setViewContent }) => {
                   fileType === 'txt'
                     ? '.txt'
                     : fileType === 'pdf'
-                    ? '.pdf'
-                    : fileType === 'excel'
-                    ? '.xls,.xlsx'
-                    : fileType === 'word'
-                    ? '.doc,.docx'
-                    : ''
+                      ? '.pdf'
+                      : fileType === 'excel'
+                        ? '.xls,.xlsx'
+                        : fileType === 'word'
+                          ? '.doc,.docx'
+                          : ''
                 }
                 onChange={({ file }) => handleContentFileChange(file)}
                 maxCount={10}

@@ -9,21 +9,21 @@
 import { HeartOutlined, UserOutlined } from '@ant-design/icons';
 import { PageContainer, ProDescriptions } from '@ant-design/pro-components';
 import { Avatar, Button, Image, Space } from 'antd';
-import { useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import {hotAiDrawImage} from '@/service/ai-paint';
+import { hotAiDrawImage, sdImageLike } from '@/service/ai-paint';
 import { Link } from '@umijs/max';
 
 function Drawing() {
 
-  const {id} = useParams<{id:string}>();
+  const { id } = useParams<{ id: string }>();
 
   const [aiImageInfo, setAiImageInfo] = useState({});
 
   useEffect(() => {
-    hotAiDrawImage({id}).then((res) => {
+    hotAiDrawImage({ id }).then((res) => {
       console.log('hotAiDrawImage:', res);
-      if(res.errno === 0 && res.data && res.data.length > 0){
+      if (res.errno === 0 && res.data && res.data.length > 0) {
         setAiImageInfo(res.data[0]);
       }
     });
@@ -37,7 +37,19 @@ function Drawing() {
     }
     return 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png';
   }
-  
+
+
+  const handleLike = () => {
+    sdImageLike({ resource_id: parseInt(id) }).then((res) => {
+      console.log('sdImageLike:', res);
+      if (res.errno === 0) {
+        setAiImageInfo({
+          ...aiImageInfo,
+          like_count: aiImageInfo.like_count + 1
+        });
+      }
+    });
+  }
 
   return (
     <PageContainer title={false}>
@@ -57,36 +69,36 @@ function Drawing() {
                 {aiImageInfo?.nickname}
               </Space>
               <Space>
-                <HeartOutlined className="text-2xl" />
+                <HeartOutlined className="text-2xl" onClick={handleLike} />
                 {aiImageInfo?.like_count}
               </Space>
             </div>
           </Space>
         </ProDescriptions.Item>
-        { aiImageInfo.image_info && aiImageInfo.image_info.length > 1 &&
-        <ProDescriptions.Item>
-          <Space direction="vertical">
-            <span className="ant-descriptions-item-label after:hidden">
-              图片 (2)
-            </span>
-            <Space>
-              <div className="relative w-16 h-16 overflow-hidden">
-                <Image
-                  width="100%"
-                  height="100%"
-                  src={`https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png`}
-                />
-              </div>
-              <div className="relative w-16 h-16 overflow-hidden">
-                <Image
-                  width="100%"
-                  height="100%"
-                  src={`https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png`}
-                />
-              </div>
+        {aiImageInfo.image_info && aiImageInfo.image_info.length > 1 &&
+          <ProDescriptions.Item>
+            <Space direction="vertical">
+              <span className="ant-descriptions-item-label after:hidden">
+                图片 (2)
+              </span>
+              <Space>
+                <div className="relative w-16 h-16 overflow-hidden">
+                  <Image
+                    width="100%"
+                    height="100%"
+                    src={`https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png`}
+                  />
+                </div>
+                <div className="relative w-16 h-16 overflow-hidden">
+                  <Image
+                    width="100%"
+                    height="100%"
+                    src={`https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png`}
+                  />
+                </div>
+              </Space>
             </Space>
-          </Space>
-        </ProDescriptions.Item>}
+          </ProDescriptions.Item>}
         <ProDescriptions.Item label="作品名称">{aiImageInfo?.title}</ProDescriptions.Item>
         <ProDescriptions.Item label="描述">
           {aiImageInfo?.prompt?.join(',')}

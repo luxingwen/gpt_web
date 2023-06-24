@@ -1,6 +1,6 @@
 import { getUserList } from '@/service/user';
 import { Avatar, Button, Input, List, Modal, message } from 'antd';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './UserSelect.less';
 
 const testUser = [
@@ -9,11 +9,12 @@ const testUser = [
   { id: 3, nickname: 'User 3', avatar: 'avatar3.jpg' },
 ];
 
-const UserSelect = ({ setUserList }) => {
+const UserSelect = ({ setUserList, initSelectUsers = [] }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchText, setSearchText] = useState('');
-  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState(initSelectUsers);
   const [searchResults, setSearchResults] = useState([]);
+
 
   const handleOpenModal = () => {
     setIsModalVisible(true);
@@ -45,7 +46,7 @@ const UserSelect = ({ setUserList }) => {
 
       getUserList({ args: searchText })
         .then((res) => {
-          console.log(res);
+          console.log("getUserList:", res);
           if (res.errno === 0) {
             if (res.data.length === 0) {
               message.info('没有找到相关用户');
@@ -95,7 +96,7 @@ const UserSelect = ({ setUserList }) => {
       <Modal
         className="custom-modal"
         title="添加访问者"
-        visible={isModalVisible}
+        open={isModalVisible}
         onCancel={handleCloseModal}
         footer={null}
       >

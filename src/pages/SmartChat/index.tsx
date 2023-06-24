@@ -17,6 +17,7 @@ import SceneList from './SceneList';
 import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
 import { ProCard } from '@ant-design/pro-components';
 import { useParams } from 'react-router-dom';
+import EditScene from './EditScene';
 
 const { Header, Content, Sider } = Layout;
 
@@ -32,7 +33,7 @@ const SmartChatPage: React.FC = () => {
   console.log("sessionId:", sessionId);
 
   const [cardData, setCardData] = useState([]);
-  const [viewContent, setViewContent] = useState('scene_list');
+  const [viewContent, setViewContent] = useState('scene-list');
 
   useEffect(() => {
     console.log("viewType1111111:", viewType);
@@ -40,22 +41,28 @@ const SmartChatPage: React.FC = () => {
       setViewContent('chat');
       return;
     }
-    if (viewType === 'scence-list') {
-      setViewContent('scence-list');
+    if (viewType === 'scene-list') {
+      setViewContent('scene-list');
       return;
     }
-    if (viewType === 'scence-create') {
-      setViewContent('scence-create');
+    if (viewType === 'scene-create') {
+      setViewContent('scene-create');
       return;
     }
-    setViewContent('scence-list');
 
-  }, [viewType]);
+    if (viewType === 'scene-edit') {
+      setViewContent('scene-edit');
+      return;
+    }
+
+    setViewContent('scene-list');
+
+  }, []);
 
 
   const items: MenuProps['items'] = [
-    { key: 'scence-list', icon: <UserOutlined />, label: '场景广场' },
-    { key: 'scence-create', icon: <LaptopOutlined />, label: '创建场景' },
+    { key: 'scene-list', icon: <UserOutlined />, label: '场景广场' },
+    { key: 'scene-create', icon: <LaptopOutlined />, label: '创建场景' },
   ];
 
 
@@ -70,19 +77,20 @@ const SmartChatPage: React.FC = () => {
         <LeftNav
           items={items}
           centerContent={<HistorySession chat_type='smart-chat' onClick={handleChatSessionClick}></HistorySession>}
-          defaultSelectedKeys={'scence-list'}
-          defaultOpenKeys={'scence-list'}
+          defaultSelectedKeys={'scene-list'}
+          defaultOpenKeys={'scene-list'}
           setViewContent={setViewContent}
         ></LeftNav>
 
         <Content>
-          {viewContent === 'scence-list' && (
+          {viewContent === 'scene-list' && (
             <SceneList setViewContent={setViewContent}></SceneList>
           )}
-          {viewContent === 'scence-create' && (
+          {viewContent === 'scene-create' && (
             <CreateScene setViewContent={setViewContent}></CreateScene>
           )}
           {viewContent === 'chat' && <Chat sceneId={parseInt(sceneId || '0')} sessionId={sessionId}></Chat>}
+          {viewContent === 'scene-edit' && (<EditScene setViewContent={setViewContent} sceneId={parseInt(sceneId || '0')} ></EditScene>)}
         </Content>
       </Layout>
     </Layout>

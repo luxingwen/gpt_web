@@ -52,13 +52,8 @@ export async function getUserInfo() {
 }
 
 export async function getUserList(params: any) {
-  try {
-    return (
-      request <
-      API.Response<API.User[]>(`/api/chat/user/list`, {
+    return await request(`/api/chat/user/list`, {
         method: 'POST',
         data: params,
-      })
-    );
-  } catch (error) {}
+      });
 }

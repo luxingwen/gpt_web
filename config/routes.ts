@@ -148,7 +148,7 @@ export default [
         name: '个人展出&收藏',
         path: 'my-works',
         component: './AI-Paint/MyWorks',
-        hideInMenu: true,
+        hideInMenu: false,
       },
       {
         name: '作品详情',
@@ -173,6 +173,12 @@ export default [
   {
     name: '创建场景',
     path: '/smart-ai/:viewType',
+    component: './SmartChat',
+    hideInMenu: true,
+  },
+  {
+    name: '编辑场景',
+    path: '/smart-ai/:viewType/:sceneId',
     component: './SmartChat',
     hideInMenu: true,
   },
