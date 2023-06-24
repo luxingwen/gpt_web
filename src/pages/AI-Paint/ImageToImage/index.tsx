@@ -54,6 +54,9 @@ export default function TextToImage() {
 
   const [models, setModels] = useState([]);
 
+
+  const [defaultCost, setDefaultCost] = useState<number>(0)
+
   const handleImageFileChange = (fileobj) => {
     console.log('handleImageFileChange:', fileobj);
     const { file } = fileobj;
@@ -72,6 +75,57 @@ export default function TextToImage() {
     }
 
   };
+
+
+  const onChange = () => {
+    const bs = formRef.current?.getFieldValue('batch_size') ? formRef.current?.getFieldValue('batch_size') : 1
+    const r = formRef.current?.getFieldValue('rate')
+    const q = formRef.current?.getFieldValue('quality')
+    if (!(bs && r && q)) {
+      return
+    }
+
+    let cost = 0
+    if (q == 'a') {
+      switch (r) {
+        case '1:1':
+          cost = 1.5 * bs
+          break
+        case '3:4':
+          cost = 1.8 * bs
+          break;
+        case '4:3':
+          cost = 1.8 * bs
+          break;
+        case '16:9':
+          cost = 2 * bs
+          break
+        case '9:16':
+          cost = 2 * bs
+          break
+      }
+    } else {
+      switch (r) {
+        case '1:1':
+          cost = 2.9 * bs
+          break
+        case '3:4':
+          cost = 3 * bs
+          break;
+        case '4:3':
+          cost = 3 * bs
+          break;
+        case '16:9':
+          cost = 4.5 * bs
+          break
+        case '9:16':
+          cost = 4.5 * bs
+          break
+      }
+    }
+
+    setDefaultCost(cost)
+  }
 
   useEffect(() => {
     getAiDrawModels({}).then((res) => {
@@ -140,7 +194,7 @@ export default function TextToImage() {
                 key="submit"
                 onClick={() => props.form?.submit?.()}
               >
-                开始生成 ｜ 消耗画贝 12.2
+                开始生成 ｜ 消耗画贝 {defaultCost}
               </Button>,
             ];
           },
@@ -221,6 +275,7 @@ export default function TextToImage() {
 
         <ProForm.Item name="rate" label="尺寸和像素">
           <RadioGroup
+            onChange={onChange}
             options={sizeList}
             renderItem={(item) => {
               return (
@@ -238,6 +293,7 @@ export default function TextToImage() {
 
         <ProForm.Item name="quality" label="质量">
           <RadioGroup
+            onChange={onChange}
             options={[
               {
                 label: '普通',
@@ -262,8 +318,11 @@ export default function TextToImage() {
           <label>数量</label>
           <ProForm.Group>
             <ProFormSlider noStyle name="batch_size" min={1} />
-            <ProFormItem noStyle>
-              {formRef.current?.getFieldFormatValue?.('batch_size') || 1}
+            <ProFormItem noStyle shouldUpdate>
+              {({ getFieldValue }) => {
+                onChange()
+                return getFieldValue('batch_size') || 1
+              }}
             </ProFormItem>
           </ProForm.Group>
         </ProForm.Item>
