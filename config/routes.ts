@@ -199,6 +199,12 @@ export default [
     component: './Login',
     hideInMenu: true,
   },
+  {
+    name: '登录',
+    path: '/auth-block',
+    component: './AuthBlock',
+    hideInMenu: true,
+  },
   // {
   //   name: '个人中心',
   //   path: '/account/center',
