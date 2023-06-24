@@ -1,6 +1,8 @@
 import { ProList } from '@ant-design/pro-components';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Image, Progress, Space, Tabs } from 'antd';
+import { getImageLikeList, getImageShowsList } from '@/service/ai-paint';
+import { useEffect, useState } from 'react';
 
 const data = [
   '语雀的天空',
@@ -36,6 +38,28 @@ const data = [
 }));
 
 function MyWorks() {
+
+  const [queryPage, setQueryPage] = useState<API.ReqPageType>({
+    page: 0,
+    per_page: 10,
+  });
+
+
+
+  useEffect(() => {
+    getImageShowsList(queryPage).then((res) => {
+      if (res.errno === 0) {
+        console.log("getImageShowsList:", res.data);
+      } else {
+        console.log("getImageShowsList:", res.errmsg);
+      }
+    });
+    getImageLikeList(queryPage).then((res) => {
+      console.log("getImageLikeList:", res);
+
+    });
+  }, []);
+
   return (
     <PageContainer title={false}>
       <Tabs

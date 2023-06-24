@@ -88,7 +88,7 @@ export async function uploadImage(props: any) {
 
 // 获取收藏的画作
 export async function getImageLikeList(props: API.ReqPageType) {
-  return await request(`/api/chat/image/like/images`, {
+  return await request(`/api/chat/sd/image/like/images`, {
     method: 'POST',
     data: props,
   });
