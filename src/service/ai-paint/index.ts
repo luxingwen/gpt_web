@@ -102,3 +102,20 @@ export async function getImageShowsList(props: API.ReqPageType) {
   });
 }
 
+
+//喜欢作品
+export async function sdImageLike(props: API.SdImageLike) {
+  return await request(`/api/chat/sd/image/like`, {
+    method: 'POST',
+    data: props,
+  });
+}
+
+
+//展出作品
+export async function saveSdImage(props: API.SaveSdImageType) {
+  return await request(`/api/chat/sd/image/save`, {
+    method: 'POST',
+    data: props,
+  });
+}

@@ -75,4 +75,14 @@ declare namespace API {
     sampler_name: string;
     hr_upscaler: string;
   }
+
+  // 点赞
+  export interface SdImageLike {
+    resource_id: number;
+  }
+
+  export interface SaveSdImageType {
+    id: number;
+    title: string;
+  }
 }
