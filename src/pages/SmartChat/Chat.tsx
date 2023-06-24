@@ -76,13 +76,14 @@ const SmartChatPage: React.FC<SmartChatPageProps> = ({ sceneId, sessionId }) => 
     };
 
     fetchData();
-  }, [sceneId]);
+  }, [sceneId, sessionId]);
 
 
 
   return (
     <>
       {sessionInfo && <ChatBox
+        key={sessionId}
         showFullScreen={true}
         showVisitDiscourse={true}
         showOpenNewChat={true}

@@ -39,7 +39,7 @@ const HistorySession: React.FC<HistorySessionProps> = ({
   }
 
   return (
-    <div style={{ marginLeft: '20px' }}>
+    <div style={{ paddingLeft: '24px' }}>
       <h2>历史会话</h2>
       <List
         dataSource={historySessions}

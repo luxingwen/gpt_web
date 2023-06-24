@@ -26,6 +26,11 @@ const SceneItemCard: React.FC<SceneItemCardProps> = ({
     history.push(`/smart-ai/chat/${sceneInfo.id}`);
   }
 
+  const handlerClickEdit = () => {
+    setViewContent('scene-edit');
+    history.push(`/smart-ai/scene-edit/${sceneInfo.id}`);
+  }
+
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -100,7 +105,7 @@ const SceneItemCard: React.FC<SceneItemCardProps> = ({
             >
               进入对话
             </Button>
-            <Button icon={<EditOutlined />} style={{ marginRight: '8px' }}>
+            <Button icon={<EditOutlined />} style={{ marginRight: '8px' }} onClick={handlerClickEdit}>
               编辑
             </Button>
             <Button type="danger" icon={<DeleteOutlined />} onClick={showModal}>

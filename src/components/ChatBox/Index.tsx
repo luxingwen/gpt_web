@@ -40,7 +40,10 @@ const Index = ({
   const messagesContainerRef = useRef(null);
 
   const [isMsgEnd, setIsMsgEnd] = useState(true);
-  const [loadAllMsg, setLoadAllMsg] = useState(false);
+
+
+  let lastLoadAllMessageTime = 0;
+  let loadAllMsg = false;
 
   const [historyQuery, setHistoryQuery] = useState({
     page: 0,
@@ -87,8 +90,16 @@ const Index = ({
   }, [messagesContainerRef, requestOlderMessages]);
 
   const requestOlderMessages = () => {
+    console.log('requestOlderMessages, loadAllMsg:', loadAllMsg);
     if (loadAllMsg) {
-      message.success('没有更多消息了');
+      const currentTime = Date.now(); // 获取当前时间
+      if (currentTime - lastLoadAllMessageTime > 2000) { // 检查时间差是否大于 5 秒
+        console.log('loadAllMsg', loadAllMsg);
+        console.log('lastLoadAllMessageTime:', lastLoadAllMessageTime);
+        console.log('currentTime:', currentTime);
+        message.success('没有更多消息了');
+        lastLoadAllMessageTime = currentTime; // 更新上次显示消息的时间
+      }
       return;
     }
 
@@ -101,8 +112,12 @@ const Index = ({
     getHistoryChatMessage(historyQuery)
       .then((res) => {
         if (res.data.data.length === 0) {
-          setLoadAllMsg(true);
-          message.success('没有更多消息了');
+
+          loadAllMsg = true;
+          const currentTime = Date.now(); // 获取当前时间
+          // lastLoadAllMessageTime = currentTime;  // 更新上次显示消息的时间
+          //  message.success('没有更多消息了');
+
           return;
         }
         let msgList = [];
