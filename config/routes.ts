@@ -113,6 +113,12 @@ export default [
         hideInMenu: true,
       },
       {
+        path: 'text-to-image/drawinfo/:id',
+        name: '图片详情',
+        component: './AI-Paint/Drawing',
+        hideInMenu: true,
+      },
+      {
         icon: 'bgColors',
         name: '图片生成图',
         path: 'image-to-image',

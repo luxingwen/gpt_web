@@ -1,8 +1,9 @@
 import { List } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { history } from '@umijs/max';
-
+import { HistoryOutlined } from '@ant-design/icons';
 import { getSessionList } from '@/service/ai-chat';
+
 
 interface HistorySessionProps {
   chat_type: string;
@@ -39,8 +40,11 @@ const HistorySession: React.FC<HistorySessionProps> = ({
   }
 
   return (
-    <div style={{ paddingLeft: '24px' }}>
-      <h2>历史会话</h2>
+    <div style={{ paddingLeft: '28px' }}>
+      <h2>
+        <HistoryOutlined style={{ marginRight: '10px' }} />
+        历史会话
+      </h2>
       <List
         dataSource={historySessions}
         renderItem={(session) => (
