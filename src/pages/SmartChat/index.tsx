@@ -74,13 +74,16 @@ const SmartChatPage: React.FC = () => {
   return (
     <Layout className="flex -mt-6 -mx-10">
       <Layout style={{ padding: 0 }}>
-        <LeftNav
-          items={items}
-          centerContent={<HistorySession chat_type='smart-chat' onClick={handleChatSessionClick}></HistorySession>}
-          defaultSelectedKeys={'scene-list'}
-          defaultOpenKeys={'scene-list'}
-          setViewContent={setViewContent}
-        ></LeftNav>
+        <div className='w-52'>
+          <LeftNav
+
+            items={items}
+            centerContent={<HistorySession chat_type='smart-chat' onClick={handleChatSessionClick} session_id={parseInt(sessionId)}></HistorySession>}
+            defaultSelectedKeys={`${viewType}`}
+            defaultOpenKeys={`${viewType}`}
+            setViewContent={setViewContent}
+          ></LeftNav>
+        </div>
 
         <Content>
           {viewContent === 'scene-list' && (
