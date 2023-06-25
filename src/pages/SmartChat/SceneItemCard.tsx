@@ -113,7 +113,7 @@ const SceneItemCard: React.FC<SceneItemCardProps> = ({
             </Button>
             <Modal
               title="确认删除"
-              visible={isModalVisible}
+              open={isModalVisible}
               onOk={handleOk}
               onCancel={handleCancel}
               className="custom-modal"

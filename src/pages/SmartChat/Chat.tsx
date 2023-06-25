@@ -6,7 +6,7 @@ import { getSessionInfo } from '@/service/ai-chat';
 
 import { getSmartSceneInfo } from '@/service/smart-chat';
 
-
+import PageLoading from "@/components/PageLoading";
 
 
 interface SmartChatPageProps {
@@ -82,7 +82,7 @@ const SmartChatPage: React.FC<SmartChatPageProps> = ({ sceneId, sessionId }) => 
 
   return (
     <>
-      {sessionInfo && <ChatBox
+      {sessionInfo ? <ChatBox
         key={sessionId}
         showFullScreen={true}
         showVisitDiscourse={true}
@@ -92,7 +92,7 @@ const SmartChatPage: React.FC<SmartChatPageProps> = ({ sceneId, sessionId }) => 
         session_id={sessionInfo?.id}
         scene_uuids={scene_uuids}
         aiAvatar={scenceInfo?.ai_avatar}
-      />}
+      /> : <PageLoading />}
     </>
 
   );

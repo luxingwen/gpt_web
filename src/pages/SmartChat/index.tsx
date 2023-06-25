@@ -76,9 +76,9 @@ const SmartChatPage: React.FC = () => {
       <Layout style={{ padding: 0 }}>
         <LeftNav
           items={items}
-          centerContent={<HistorySession chat_type='smart-chat' onClick={handleChatSessionClick}></HistorySession>}
-          defaultSelectedKeys={'scene-list'}
-          defaultOpenKeys={'scene-list'}
+          centerContent={<HistorySession chat_type='smart-chat' onClick={handleChatSessionClick} session_id={parseInt(sessionId)}></HistorySession>}
+          defaultSelectedKeys={`${viewType}`}
+          defaultOpenKeys={`${viewType}`}
           setViewContent={setViewContent}
         ></LeftNav>
 
