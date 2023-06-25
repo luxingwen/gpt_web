@@ -2,12 +2,13 @@
 
 import AiLogo from '@/assets/images/logo.png';
 import { FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons';
-import { Input, message, Button, Modal } from 'antd';
+import { Input, message, Spin, Modal } from 'antd';
 import { useCallback, useEffect, useMemo, useRef, useState, memo } from 'react';
-
+import { useRequest } from 'umi';
 import { getHistoryChatMessage, queryQuestion } from '@/service/api';
 import { wssocket } from '@/utils/ws_socket';
 import Messages from './components/Messages'
+
 
 import './index.less';
 import { toogleFullScreen } from './utils';
@@ -38,7 +39,6 @@ const Index = ({
   const [messages, setMessages] = useState<API.MessageType[]>([]);
   const [input, setInput] = useState('');
   const messagesContainerRef = useRef(null);
-
   const [isMsgEnd, setIsMsgEnd] = useState(true);
 
 
@@ -51,7 +51,6 @@ const Index = ({
     session_id: session_id,
     scene: scene,
   });
-  const [newMessageReceived, setNewMessageReceived] = useState(true);
 
   const [isFullScreen, setIsFullScreen] = useState(false);
 
@@ -64,6 +63,22 @@ const Index = ({
     ][+sendBtnType];
   }, [placeholderText, sendBtnType]);
 
+
+
+  /**
+   * 滚动到聊天记录底部
+   */
+  const scrollToBottom = () => {
+    setTimeout(() => {
+      document.querySelector('#chartFullScreen .scroll-box .ai-asnswer-tips')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }, 300)
+  }
+
+
+  /**
+   * 滚动到头部加载历史记录
+   * @returns 
+   */
   useEffect(() => {
     let prevScrollTop = 0;
 
@@ -105,51 +120,8 @@ const Index = ({
 
     historyQuery.page = historyQuery.page + 1;
 
-    setNewMessageReceived(false);
-
     setHistoryQuery(historyQuery);
-
-    getHistoryChatMessage(historyQuery)
-      .then((res) => {
-        if (res.data.data.length === 0) {
-
-          loadAllMsg = true;
-          const currentTime = Date.now(); // 获取当前时间
-          // lastLoadAllMessageTime = currentTime;  // 更新上次显示消息的时间
-          //  message.success('没有更多消息了');
-
-          return;
-        }
-        let msgList = [];
-        res.data.data.forEach((item) => {
-          msgList.push(
-            {
-              msg: item.question,
-              self: true,
-              is_end: true,
-              id: 'u-' + item.id,
-              msg_id: item.id,
-              time: item.add_time,
-              avatar: currentUser.avatar,
-              user_id: item.user_id,
-            },
-            {
-              msg: item.answer,
-              self: false,
-              id: 'ai-' + item.id,
-              msg_id: item.id,
-              is_end: true,
-              time: item.create_time,
-              avatar: aiAvatar,
-              user_id: item.user_id,
-            },
-          );
-        });
-        setMessages((prev) => [...msgList, ...prev]); // prepend the older messages to the start of the list
-      })
-      .catch((err) => {
-        console.log('getHistory ChatMessage', err);
-      });
+    getChatHistoryList.run()
   };
 
 
@@ -235,6 +207,7 @@ const Index = ({
       }
       handleMsg(quessionRes.data);
     }
+    scrollToBottom()
   };
 
   const handleSend = () => {
@@ -249,59 +222,79 @@ const Index = ({
     }
   };
 
-  const scrollToBottom = () => {
-    const messagesContainer = messagesContainerRef.current;
-    if (messagesContainer) {
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    }
-  };
 
-  useEffect(() => {
+  // 滚动到top后，加载历史记录
+  const getChatHistoryList = useRequest(() => getHistoryChatMessage(historyQuery), {
+    manual: true,
+    onSuccess: (res) => {
+      if (res.data.length === 0) {
+        loadAllMsg = true;
+        return;
+      }
+      let msgList = [];
+      res.data.forEach((item) => {
+        msgList.push(
+          {
+            msg: item.question,
+            self: true,
+            is_end: true,
+            id: 'u-' + item.id,
+            msg_id: item.id,
+            time: item.add_time,
+            avatar: currentUser.avatar,
+            user_id: item.user_id,
+          },
+          {
+            msg: item.answer,
+            self: false,
+            id: 'ai-' + item.id,
+            msg_id: item.id,
+            is_end: true,
+            time: item.create_time,
+            avatar: aiAvatar,
+            user_id: item.user_id,
+          },
+        );
+      });
+      setMessages((prev) => [...msgList, ...prev]); // prepend the older messages to the start of the list
+    },
+  })
 
-    if (!currentUser) {
-      return;
-    }
-
-    getHistoryChatMessage(historyQuery)
-      .then((res) => {
-        let msgList = [];
-        res.data.data.forEach((item) => {
-          msgList.unshift(
-            {
-              msg: item.question,
-              self: true,
-              is_end: true,
-              id: 'u-' + item.id,
-              msg_id: item.id,
-              time: item.add_time,
-              avatar: currentUser.avatar,
-              user_id: item.user_id,
-            },
-            {
-              msg: item.answer,
-              self: false,
-              id: 'ai-' + item.id,
-              msg_id: item.id,
-              is_end: true,
-              time: item.create_time,
-              avatar: aiAvatar,
-              user_id: item.user_id,
-            },
-          );
-        });
-        setMessages([...messages, ...msgList]);
-      })
-      .catch((err) => { });
-
-    wssocket.create(currentUser.id);
-
-    wssocket.addHandler((msg) => {
-      handleReceive(msg.response.data);
-    });
-  }, []);
+  // 初始化获取首屏记录
+  const getChatInitList = useRequest(() => getHistoryChatMessage(historyQuery), {
+    manual: true,
+    onSuccess: (res) => {
+      let msgList = [];
+      res.data.forEach((item) => {
+        msgList.unshift(
+          {
+            msg: item.question,
+            self: true,
+            is_end: true,
+            id: 'u-' + item.id,
+            msg_id: item.id,
+            time: item.add_time,
+            avatar: currentUser.avatar,
+            user_id: item.user_id,
+          },
+          {
+            msg: item.answer,
+            self: false,
+            id: 'ai-' + item.id,
+            msg_id: item.id,
+            is_end: true,
+            time: item.create_time,
+            avatar: aiAvatar,
+            user_id: item.user_id,
+          },
+        );
+      });
+      setMessages([...messages, ...msgList]);
+      scrollToBottom()
+    },
+  });
 
   const handleReceive = (itemMsg) => {
-    setNewMessageReceived(true);
     if (itemMsg.msg.includes(END_MSG)) {
       setIsMsgEnd(true);
       return;
@@ -329,17 +322,10 @@ const Index = ({
     });
   };
 
-  useEffect(() => {
-    if (newMessageReceived) {
-      scrollToBottom();
-    }
-  }, [messages]);
-
   /**
    * 点击全屏按钮
    */
   const handleFullScreen = () => {
-    console.log(8889);
     const chartDom = document.getElementById('chartFullScreen');
     toogleFullScreen(isFullScreen, chartDom);
     setIsFullScreen(!isFullScreen);
@@ -358,6 +344,19 @@ const Index = ({
   const handleOpenNewChat = () => {
     console.log('点击进入新会话按钮');
   };
+
+  /**
+   * 页面初始化
+   * 加载首屏记录
+   */
+  useEffect(() => {
+    if (!currentUser) return;
+    getChatInitList.run();
+    wssocket.create(currentUser.id);
+    wssocket.addHandler((msg) => {
+      handleReceive(msg.response.data);
+    });
+  }, []);
 
   /**
    * 输入框左侧的按钮组
@@ -452,7 +451,11 @@ const Index = ({
       id="chartFullScreen"
     >
       <div className="w100 scroll-box" ref={messagesContainerRef}>
-        <Messages messages={messages} isMsgEnd={isMsgEnd} />
+        {getChatInitList.loading ?
+          <Spin className='chat-loading' ></Spin> :
+          <Messages messages={messages} isMsgEnd={isMsgEnd} loading={getChatHistoryList.loading}></Messages>
+        }
+
         <div className="ai-asnswer-tips tc">
           -- 问答结果由AI生成，仅供参考 --
         </div>
@@ -463,8 +466,6 @@ const Index = ({
         {/* 不同类型的输入框 */}
         {renderInputContent()}
       </div>
-
-
     </div>
   );
 };

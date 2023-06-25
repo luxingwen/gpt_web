@@ -7,6 +7,7 @@
   box-sizing: border-box;
   overflow: hidden;
   background: #fff;
+
   @media (max-width: 767px) {
     padding-top: 64px;
   }
@@ -35,6 +36,22 @@
       color: rgba(166, 166, 166, 100%);
       margin: 48px 0;
     }
+
+    .chat-loading {
+      position: absolute;
+      left: 50%;
+      top: 40%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+    }
+
+    .chat-top-loading {
+      position: absolute;
+      left: 50%;
+      top: 16px;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+    }
   }
 
   .send-info-box {
@@ -42,6 +59,7 @@
     padding: 0 12%;
     box-sizing: border-box;
     display: flex;
+
     @media (max-width: 767px) {
       padding: 0 4%;
     }

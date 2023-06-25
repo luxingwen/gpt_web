@@ -9,7 +9,7 @@ import {
 import { useEffect, useState, useMemo } from 'react';
 import './index.less';
 import { orderList } from '@/service/api';
-import {formatTimestamp} from  '@/utils/utils';
+import { formatTimestamp } from '@/utils/utils';
 import { useModel, Link } from '@umijs/max';
 
 
@@ -43,7 +43,7 @@ const Index = () => {
 
 
   }, []);
-  
+
   const columns = [
     {
       title: '会员种类',
@@ -52,33 +52,33 @@ const Index = () => {
     {
       title: '会员等级',
       dataIndex: 'a2',
-      align:'center',
+      align: 'center',
     },
     {
       title: '购买时间',
       dataIndex: 'pay_time',
-      align:'center',
+      align: 'center',
       render: (value) => <a>{formatTimestamp(value)}</a>,
     },
     {
       title: '到期时间',
       dataIndex: '到期时间',
-      align:'center',
+      align: 'center',
     },
     {
       title: '购买价格',
       dataIndex: 'price',
-      render: (text) => <a>¥{text / 100 }</a>,
+      render: (text) => <a>¥{text / 100}</a>,
     },
   ]
 
-  const getList = useMemo(()=>{
-    const formatList = payOrderList.map(item=>{
-      return Object.keys(item).map(key=>{
+  const getList = useMemo(() => {
+    const formatList = payOrderList.map(item => {
+      return Object.keys(item).map(key => {
 
-        const targetColumn = columns.find(column=>column.dataIndex==key);
-        if(targetColumn){
-          return  {
+        const targetColumn = columns.find(column => column.dataIndex == key);
+        if (targetColumn) {
+          return {
             label: targetColumn.title,
             value: item[key]
           }
@@ -86,12 +86,11 @@ const Index = () => {
         return null
       })
     })
-    return formatList.map(item=>{
-      return item.filter(i=>i)
+    return formatList.map(item => {
+      return item.filter(i => i)
     })
-  },[payOrderList])
-  console.log(123, getList);
-  
+  }, [payOrderList])
+
   return <div className='member-server-page'>
     <div className="list">
       <div className='item'>
@@ -102,7 +101,7 @@ const Index = () => {
             <div>剩余对话次数：{userInfo?.chat_times} 次</div>
           </div>
           <div className='item-center'>
-          <Link to='/price'><Button className='primary-btn' size='small' type='primary'>购买会员</Button></Link>
+            <Link to='/price'><Button className='primary-btn' size='small' type='primary'>购买会员</Button></Link>
           </div>
           <div className='item-right'>
             <div>当前会员：VIP1</div>
@@ -129,7 +128,7 @@ const Index = () => {
             <div>当前会员：体验版</div>
           </div>
           <div className='item-center'>
-          <Link to='/price'><Button className='primary-btn' size='small' type='primary'>购买会员</Button></Link>
+            <Link to='/price'><Button className='primary-btn' size='small' type='primary'>购买会员</Button></Link>
           </div>
           <div className='item-right'>
             <div>当前会员：VIP1</div>
@@ -138,17 +137,17 @@ const Index = () => {
         </div>
       </div>
     </div>
-    <Divider/>
+    <Divider />
     <div className="table-box">
       <div className="table-label">历史购买记录</div>
-      <Table className='table-dom' columns={columns} dataSource={payOrderList} rowKey='id' pagination={false}/>
+      <Table className='table-dom' columns={columns} dataSource={payOrderList} rowKey='id' pagination={false} />
       <div className="buy-list">
-        {getList.map((item,index)=>{
+        {getList.map((item, index) => {
           return <div className="buy-item" key={index}>
-          {item.map(i=>(
-            <div key={i.label}>{i.label}: {i.value}</div>
-          ))}
-        </div>
+            {item.map(i => (
+              <div key={i.label}>{i.label}: {i.value}</div>
+            ))}
+          </div>
         })}
       </div>
     </div>
