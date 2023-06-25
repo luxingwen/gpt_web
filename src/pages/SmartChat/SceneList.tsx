@@ -3,8 +3,7 @@ import { getSmartSceneList } from '@/service/smart-chat';
 import { Col, Input, Pagination, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 import SceneItemCard from './SceneItemCard';
-
-
+import PageLoading from '@/components/PageLoading';
 import './SceneList.less';
 
 const { Search } = Input;
@@ -29,18 +28,21 @@ const SceneListPage: React.FC<SceneListPageProps> = ({ setViewContent }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [sceneList, setSceneList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchData = (params) => {
+    setIsLoading(true);
     getSmartSceneList(params)
       .then((res) => {
+        setIsLoading(false);
         console.log('res:', res);
         setSceneList(res.list);
-        // 计算总页数
-        // const totalPages = Math.ceil(res.total / reqSmartSceneParams.pageSize);
-        // console.log('totalPages:', totalPages);
         setTotal(res.total);
       })
-      .catch((err) => { });
+      .catch((err) => {
+        setIsLoading(false);
+        console.log('err:', err);
+      });
   };
 
   useEffect(() => {
@@ -72,35 +74,41 @@ const SceneListPage: React.FC<SceneListPageProps> = ({ setViewContent }) => {
   };
 
   return (
-    <Row justify="center">
-      <Col xs={{ span: 24 }} lg={{ span: 20 }}>
-        <div style={{ padding: '16px' }}>
-          <SearchBox onSearch={handleSearch} />
+    <>
+      {isLoading ? (
+        <PageLoading />
+      ) : (
+        <Row justify="center">
+          <Col xs={{ span: 24 }} lg={{ span: 20 }}>
+            <div style={{ padding: '16px' }}>
+              <SearchBox onSearch={handleSearch} />
 
-          <div style={{ marginTop: '12px' }}>
-            {/* SceneItemCard 列表 */}
-            {sceneList.map((item, index) => (
-              <SceneItemCard
-                sceneInfo={item}
-                deleteScene={deleteScene}
-                setViewContent={setViewContent}
-                key={index}
-              />
-            ))}
-          </div>
+              <div style={{ marginTop: '12px' }}>
+                {/* SceneItemCard 列表 */}
+                {sceneList.map((item, index) => (
+                  <SceneItemCard
+                    sceneInfo={item}
+                    deleteScene={deleteScene}
+                    setViewContent={setViewContent}
+                    key={index}
+                  />
+                ))}
+              </div>
 
-          <div style={{ marginTop: '12px', textAlign: 'center' }}>
-            <Pagination
-              current={currentPage}
-              total={total}
-              pageSize={reqSmartSceneParams.pageSize}
-              onChange={(page) => setCurrentPage(page)}
-              showSizeChanger={false}
-            />
-          </div>
-        </div>
-      </Col>
-    </Row>
+              <div style={{ marginTop: '12px', textAlign: 'center' }}>
+                <Pagination
+                  current={currentPage}
+                  total={total}
+                  pageSize={reqSmartSceneParams.pageSize}
+                  onChange={(page) => setCurrentPage(page)}
+                  showSizeChanger={false}
+                />
+              </div>
+            </div>
+          </Col>
+        </Row>
+      )}
+    </>
   );
 };
 
