@@ -40,10 +40,10 @@ const Index = ({
   const [input, setInput] = useState('');
   const messagesContainerRef = useRef(null);
   const [isMsgEnd, setIsMsgEnd] = useState(true);
+  const [loadAllMsg, setLoadAllMsg] = useState(false);
 
 
   let lastLoadAllMessageTime = 0;
-  let loadAllMsg = false;
 
   const [historyQuery, setHistoryQuery] = useState({
     page: 0,
@@ -70,7 +70,7 @@ const Index = ({
    */
   const scrollToBottom = () => {
     setTimeout(() => {
-      document.querySelector('#chartFullScreen .scroll-box .ai-asnswer-tips')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      document.querySelector('#chartFullScreen .scroll-box .ai-asnswer-tips')?.scrollIntoView({ behavior: 'smooth' })
     }, 300)
   }
 
@@ -81,20 +81,27 @@ const Index = ({
    */
   useEffect(() => {
     let prevScrollTop = 0;
-
     const handleScroll = (event) => {
       const { scrollTop } = event.target;
       const isScrollingUp = scrollTop < prevScrollTop;
 
       if (scrollTop <= 100 && isScrollingUp) {
-        requestOlderMessages();
+        if (loadAllMsg) {
+          const currentTime = Date.now(); // 获取当前时间
+          if (currentTime - lastLoadAllMessageTime > 2000) { // 检查时间差是否大于 5 秒
+            message.success('没有更多消息了');
+            lastLoadAllMessageTime = currentTime; // 更新上次显示消息的时间
+          }
+        }
+
+        historyQuery.page = historyQuery.page + 1;
+        setHistoryQuery(historyQuery);
+
+        getChatHistoryList.run()
       }
 
       prevScrollTop = scrollTop;
     };
-
-    console.log('useEffect:', prevScrollTop);
-
     const messagesContainer = messagesContainerRef.current;
     if (messagesContainer) {
       messagesContainer.addEventListener('scroll', handleScroll);
@@ -102,27 +109,7 @@ const Index = ({
         messagesContainer.removeEventListener('scroll', handleScroll);
       };
     }
-  }, [messagesContainerRef, requestOlderMessages]);
-
-  const requestOlderMessages = () => {
-    console.log('requestOlderMessages, loadAllMsg:', loadAllMsg);
-    if (loadAllMsg) {
-      const currentTime = Date.now(); // 获取当前时间
-      if (currentTime - lastLoadAllMessageTime > 2000) { // 检查时间差是否大于 5 秒
-        console.log('loadAllMsg', loadAllMsg);
-        console.log('lastLoadAllMessageTime:', lastLoadAllMessageTime);
-        console.log('currentTime:', currentTime);
-        message.success('没有更多消息了');
-        lastLoadAllMessageTime = currentTime; // 更新上次显示消息的时间
-      }
-      return;
-    }
-
-    historyQuery.page = historyQuery.page + 1;
-
-    setHistoryQuery(historyQuery);
-    getChatHistoryList.run()
-  };
+  }, [messagesContainerRef, loadAllMsg]);
 
 
 
@@ -222,13 +209,14 @@ const Index = ({
     }
   };
 
+  console.log('=====');
 
   // 滚动到top后，加载历史记录
   const getChatHistoryList = useRequest(() => getHistoryChatMessage(historyQuery), {
     manual: true,
     onSuccess: (res) => {
       if (res.data.length === 0) {
-        loadAllMsg = true;
+        setLoadAllMsg(true)
         return;
       }
       let msgList = [];
@@ -257,6 +245,7 @@ const Index = ({
         );
       });
       setMessages((prev) => [...msgList, ...prev]); // prepend the older messages to the start of the list
+
     },
   })
 
