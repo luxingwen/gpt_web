@@ -209,21 +209,15 @@ const CreateScene = ({ setViewContent }) => {
               },
             ]}
           >
-            <Card
-              bordered={false}
-              className="upload-card-user"
-              onClick={handleUploadClick}
-            >
-              <div className="image-container">
+            <div className="upload-card-user" onClick={handleUploadClick}>
+              <div className="image-container w-full h-full flex items-center justify-center">
                 {selectedImage ? (
-                  <img
-                    src={selectedImage}
-                    alt="Selected"
-                    className="uploaded-image"
-                  />
+                  <img src={selectedImage} alt="Selected" className="uploaded-image object-cover w-full h-full" />
                 ) : (
                   <Upload beforeUpload={() => false} showUploadList={false}>
-                    <PlusOutlined />
+                    <div className="flex items-center justify-center w-full h-full">
+                      <PlusOutlined className="text-4xl" />
+                    </div>
                   </Upload>
                 )}
               </div>
@@ -234,7 +228,7 @@ const CreateScene = ({ setViewContent }) => {
                 style={{ display: 'none' }}
                 onChange={handleImageFileChange}
               />
-            </Card>
+            </div>
             <div style={{ marginTop: '10px' }}>
               <span>
                 注：最多上传1个头像，支持格式png/jpg，头像大小不得超过1M。
