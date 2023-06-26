@@ -29,7 +29,10 @@ const VerticalNav: React.FC<VerticalNavProps> = ({
   } = theme.useToken();
 
   return (
-    <Sider width={200} style={{ background: colorBgContainer, position: 'fixed' }}>
+    <Sider
+      className="border-r border-gray-300"
+      width={200}
+      style={{ background: colorBgContainer, position: 'fixed' }}>
       <div style={{ position: 'relative', minHeight: 'calc(100vh - 64px)' }}>
         <Menu
           mode="inline"

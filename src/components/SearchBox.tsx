@@ -17,11 +17,11 @@ const SearchBox = ({ onSearch }) => {
   };
 
   return (
-    <div className="custom-search">
+    <div className="w-full flex items-center justify-center my-4">
       <Input
-        className="custom-input"
+        className="w-full rounded-md border-gray-300 focus:border-blue-500 focus:ring-blue-500"
         placeholder="搜索场景"
-        prefix={<SearchOutlined />}
+        prefix={<SearchOutlined className="text-gray-400" />}
         onKeyPress={handleKeyPress}
         value={searchValue}
         onChange={handleChange}

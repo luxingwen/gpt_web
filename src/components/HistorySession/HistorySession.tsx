@@ -45,7 +45,7 @@ const HistorySession: React.FC<HistorySessionProps> = ({
 
   return (
     <div className='ml-1'>
-      <h2 className='ml-6'>
+      <h2 className='ml-6 h-10'>
         <HistoryOutlined style={{ marginRight: '10px' }} />
         历史会话
       </h2>
@@ -53,7 +53,7 @@ const HistorySession: React.FC<HistorySessionProps> = ({
         dataSource={historySessions}
         renderItem={(session) => (
           <List.Item
-            className={`rounded pl-7 ${session_id === session.id ? 'text-white' : ''}`}
+            className={`hover:bg-gray-200 rounded pl-7 h-10 ${session_id === session.id ? 'text-white' : ''}`}
             onClick={() => handleSessionClick(session.id)}
             style={{
               cursor: 'pointer', background: session.id === session_id ? '#4B64F3' : 'transparent'
