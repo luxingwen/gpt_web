@@ -5,10 +5,12 @@ import { FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons';
 import { Input, message, Spin, Modal } from 'antd';
 import { useCallback, useEffect, useMemo, useRef, useState, memo } from 'react';
 import { useRequest } from 'umi';
+import { useThrottleFn } from 'ahooks'
 import { getHistoryChatMessage, queryQuestion } from '@/service/api';
 import { wssocket } from '@/utils/ws_socket';
 import Messages from './components/Messages'
 
+console.log(896, useThrottleFn);
 
 import './index.less';
 import { toogleFullScreen } from './utils';
@@ -47,7 +49,7 @@ const Index = ({
 
   const [historyQuery, setHistoryQuery] = useState({
     page: 0,
-    per_page: 10,
+    per_page: 30,
     session_id: session_id,
     scene: scene,
   });
@@ -74,18 +76,13 @@ const Index = ({
     }, 300)
   }
 
-
-  /**
-   * 滚动到头部加载历史记录
-   * @returns 
-   */
-  useEffect(() => {
-    let prevScrollTop = 0;
-    const handleScroll = (event) => {
+  let prevScrollTop = 0;
+  const { run } = useThrottleFn(
+    (event) => {
       const { scrollTop } = event.target;
       const isScrollingUp = scrollTop < prevScrollTop;
 
-      if (scrollTop <= 100 && isScrollingUp) {
+      if (scrollTop <= 50 && isScrollingUp) {
         if (loadAllMsg) {
           const currentTime = Date.now(); // 获取当前时间
           if (currentTime - lastLoadAllMessageTime > 2000) { // 检查时间差是否大于 5 秒
@@ -101,12 +98,43 @@ const Index = ({
       }
 
       prevScrollTop = scrollTop;
-    };
+    },
+    { wait: 500 },
+  );
+
+  /**
+   * 滚动到头部加载历史记录
+   * @returns 
+   */
+  useEffect(() => {
+
+
+    // const handleScroll = (event) => {
+    //   const { scrollTop } = event.target;
+    //   const isScrollingUp = scrollTop < prevScrollTop;
+
+    //   if (scrollTop <= 100 && isScrollingUp) {
+    //     if (loadAllMsg) {
+    //       const currentTime = Date.now(); // 获取当前时间
+    //       if (currentTime - lastLoadAllMessageTime > 2000) { // 检查时间差是否大于 5 秒
+    //         message.success('没有更多消息了');
+    //         lastLoadAllMessageTime = currentTime; // 更新上次显示消息的时间
+    //       }
+    //     }
+
+    //     historyQuery.page = historyQuery.page + 1;
+    //     setHistoryQuery(historyQuery);
+
+    //     getChatHistoryList.run()
+    //   }
+
+    //   prevScrollTop = scrollTop;
+    // };
     const messagesContainer = messagesContainerRef.current;
     if (messagesContainer) {
-      messagesContainer.addEventListener('scroll', handleScroll);
+      messagesContainer.addEventListener('scroll', run);
       return () => {
-        messagesContainer.removeEventListener('scroll', handleScroll);
+        messagesContainer.removeEventListener('scroll', run);
       };
     }
   }, [messagesContainerRef, loadAllMsg]);
@@ -208,8 +236,6 @@ const Index = ({
       setInput('');
     }
   };
-
-  console.log('=====');
 
   // 滚动到top后，加载历史记录
   const getChatHistoryList = useRequest(() => getHistoryChatMessage(historyQuery), {

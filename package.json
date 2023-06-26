@@ -18,6 +18,7 @@
     "@umijs/max": "^4.0.71",
     "@umijs/plugin-esbuild": "^1.4.2",
     "@umijs/preset-react": "1.x",
+    "ahooks": "^3.7.8",
     "antd": "^5.6.1",
     "classnames": "^2.3.2",
     "copy-to-clipboard": "^3.3.3",
