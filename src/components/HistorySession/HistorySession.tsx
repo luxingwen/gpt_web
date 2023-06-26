@@ -44,7 +44,7 @@ const HistorySession: React.FC<HistorySessionProps> = ({
   }
 
   return (
-    <div className='ml-1'>
+    <div className='ml-1 mr-1'>
       <h2 className='ml-6 h-10'>
         <HistoryOutlined style={{ marginRight: '10px' }} />
         历史会话

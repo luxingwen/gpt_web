@@ -109,7 +109,7 @@ const SceneItemCard: React.FC<SceneItemCardProps> = ({
             <Button icon={<EditOutlined />} style={{ marginRight: '8px' }} onClick={handlerClickEdit}>
               编辑
             </Button>
-            <Button className="bg-red-500 hover:bg-red-600" type="danger" icon={<DeleteOutlined />} onClick={showModal}>
+            <Button className="bg-red-500 hover:bg-red-600 text-white" type="danger" icon={<DeleteOutlined />} onClick={showModal}>
               删除
             </Button>
             <Modal

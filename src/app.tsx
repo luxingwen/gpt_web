@@ -127,7 +127,7 @@ export const layout: RunTimeLayoutConfig = ({ location, initialState }) => {
             width: '100%',
           }}
         >
-          <Button type="primary" onClick={() => history.push('/home')}>
+          <Button type="primary" onClick={() => history.push('/')}>
             返回首页
           </Button>
           <a href="" target="_blank" className="text-black">
