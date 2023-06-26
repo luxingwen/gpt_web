@@ -366,12 +366,13 @@ const Index = ({
    */
   useEffect(() => {
     if (!currentUser) return;
+    setMessages([]);
     getChatInitList.run();
     wssocket.create(currentUser.id);
     wssocket.addHandler((msg) => {
       handleReceive(msg.response.data);
     });
-  }, []);
+  }, [session_id]);
 
   /**
    * 输入框左侧的按钮组

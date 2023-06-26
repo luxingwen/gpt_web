@@ -1,3 +1,15 @@
+import dayjs from 'dayjs';
+
+export const getFormatTime = (time) => {
+  let t = time;
+  if (!t) return '';
+  if (typeof t == 'number' && t < 10000000000) {
+    // 10位数的时间戳
+    t = t * 1000;
+  }
+  return dayjs(t).format('YYYY-MM-DD HH:mm:ss');
+};
+
 export function formatTimestamp(timestamp: number): string {
   const date = new Date(timestamp * 1000);
 
@@ -24,8 +36,6 @@ export function getCurrentTimestampInSeconds(): number {
   return currentTimestamp;
 }
 
-
-
 export function readFileAsync(file: File): Promise<Blob> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -33,4 +43,4 @@ export function readFileAsync(file: File): Promise<Blob> {
     reader.onerror = reject;
     reader.readAsArrayBuffer(file);
   });
-};
+}
