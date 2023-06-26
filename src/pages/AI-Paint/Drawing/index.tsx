@@ -21,6 +21,8 @@ function Drawing() {
 
   const [aiDrawProcessInfo, setAiDrawProcessInfo] = useState({});
 
+  const [showImage, setShowImage] = useState(0)
+
   useEffect(() => {
     let timer;
     const fetchData = async () => {
@@ -48,6 +50,10 @@ function Drawing() {
     return () => clearInterval(timer);
   }, []);
 
+  const changeImage = (idx: number) => {
+    setShowImage(idx)
+  }
+
 
   const handleSaveImage = () => {
     window.open(aiImageInfo.image_info[0]);
@@ -58,11 +64,11 @@ function Drawing() {
       <ProDescriptions column={1}>
         {aiImageInfo && aiImageInfo?.image_info && aiImageInfo?.image_info.length > 0 &&
           <ProDescriptions.Item>
-            <div className="relative w-52 h-52 overflow-hidden">
+            <div className="relative w-52 overflow-hidden">
               <Image
                 width="100%"
                 height="100%"
-                src={aiImageInfo.image_info[0]}
+                src={aiImageInfo.image_info[showImage]}
               />
             </div>
           </ProDescriptions.Item>}
@@ -145,7 +151,7 @@ function Drawing() {
               <Space>
                 {aiImageInfo?.image_info.map((item, index) => {
                   return (
-                    <div key={index} className="relative w-16 h-16 overflow-hidden">
+                    <div key={index} className="relative w-16 h-16 hover:cursor-pointer overflow-hidden" onClick={() => changeImage(index)}>
                       <Image
                         width="100%"
                         height="100%"
