@@ -44,6 +44,7 @@ const VerticalNav: React.FC<VerticalNavProps> = ({
             setViewContent(e.key);
             history.push(`/smart-ai/${e.key}`);
           }}
+          style={{ borderRight: 'none' }}
         />
         <div style={{ marginTop: '12px', marginBottom: '12px' }}>
           {centerContent}
