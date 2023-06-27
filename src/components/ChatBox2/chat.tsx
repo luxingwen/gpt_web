@@ -10,6 +10,8 @@ import { smartChatCompletions } from '@/service/smart-chat';
 import { wssocket } from '@/utils/ws_socket';
 import { message } from 'antd';
 import { useScroll } from 'ahooks';
+import { newChatSession } from '@/service/ai-chat';
+import { history } from '@umijs/max';
 
 
 const IS_PREVIEW = process.env.VERCEL_ENV === 'preview';
@@ -245,6 +247,18 @@ export default function Chat({ id, initialMessages, className, chat_type, scene 
         setHistoryQuery((prev) => ({ ...prev, page: prev.page + 1 }));
     };
 
+
+    const newSession = async () => {
+        newChatSession({
+            chat_type: chat_type,
+            scene_id: '' + scene,
+        }).then((res) => {
+            if (res.errno === 0) {
+                history.push(`/smart-ai/chat/c/${res.data.id}`);
+            }
+        });
+    };
+
     return (
         <>
             <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
@@ -260,6 +274,7 @@ export default function Chat({ id, initialMessages, className, chat_type, scene 
                 messages={messages}
                 input={input}
                 setInput={setInput}
+                newSession={newSession}
             />
         </>
     );

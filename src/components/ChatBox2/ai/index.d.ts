@@ -169,6 +169,8 @@ declare type UseChatHelpers = {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   /** Whether the API request is in progress */
   isLoading: boolean;
+
+  newSession: () => void;
 };
 declare function useChat({
   api,

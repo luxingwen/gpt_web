@@ -48,7 +48,7 @@ export function PromptForm({
         >
 
 
-            <div className="w-96 relative bg-white flex max-h-60 grow flex-col overflow-hidden bg-background  sm:rounded-md sm:border">
+            <div className="w-full relative bg-white flex max-h-60 grow flex-col overflow-hidden bg-background  sm:rounded-md sm:border">
                 <Textarea
                     ref={inputRef}
                     tabIndex={0}
