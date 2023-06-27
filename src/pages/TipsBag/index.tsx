@@ -28,8 +28,8 @@ const TipsBagPage = () => {
 
     let searchResultList = [];
     allCardData.forEach((item) => {
-      console.log(item);
-      if (item.title?.includes(value) || item.scene_desc?.includes(value)) {
+      console.log("value:", value, "item:", item);
+      if (item?.name.includes(value) || item?.title?.includes(value) || item.scene_desc?.includes(value)) {
         searchResultList.push(item);
       }
     });
