@@ -20,7 +20,7 @@ const TerasureBox: React.FC<TerasureBoxProps> = ({ data, buyCallBack }) => {
       <Row gutter={[41, 0]}>
         {data.map((item, index, _) => (
           <Col key={"col-" + item.id}>
-            <BuyCard key={item.id} info={item} isSelect={selectState == index} index={index} changeCallBack={changeSelect} buyCallBack={buyCallBack} /> :
+            <BuyCard key={item.id} info={item} isSelect={selectState == index} index={index} changeCallBack={changeSelect} buyCallBack={buyCallBack} />
           </Col>
         ))}
       </Row>
