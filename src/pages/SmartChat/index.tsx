@@ -92,7 +92,7 @@ const SmartChatPage: React.FC = () => {
           {viewContent === 'scene-create' && (
             <CreateScene setViewContent={setViewContent}></CreateScene>
           )}
-          {viewContent === 'chat' && <Chat sceneId={parseInt(sceneId || '0')} sessionId={sessionId}></Chat>}
+          {viewContent === 'chat' && <Chat key={`viewType-${sessionId}`} sceneId={parseInt(sceneId || '0')} sessionId={sessionId}></Chat>}
           {viewContent === 'scene-edit' && (<EditScene setViewContent={setViewContent} sceneId={parseInt(sceneId || '0')} ></EditScene>)}
         </Content>
       </Layout>

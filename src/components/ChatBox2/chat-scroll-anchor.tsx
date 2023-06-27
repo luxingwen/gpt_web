@@ -1,51 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { useInView } from 'react-intersection-observer';
-import { useAtBottom } from '@/lib/hooks/use-at-bottom';
+'use client'
+
+import * as React from 'react'
+import { useInView } from 'react-intersection-observer'
+
+import { useAtBottom } from '@/lib/hooks/use-at-bottom'
 
 interface ChatScrollAnchorProps {
-    trackVisibility?: boolean;
-    onScrollToTop?: () => void;
-    onScrollToBottom?: () => void;
+    trackVisibility?: boolean
 }
 
-const ChatScrollAnchor: React.FC<ChatScrollAnchorProps> = ({
-    trackVisibility,
-    onScrollToTop,
-    onScrollToBottom,
-}) => {
-    const isAtBottom = useAtBottom();
-    const [isAtTop, setIsAtTop] = useState(false);
+export default function ChatScrollAnchor({ trackVisibility }: ChatScrollAnchorProps) {
+    const isAtBottom = useAtBottom()
     const { ref, entry, inView } = useInView({
         trackVisibility,
         delay: 100,
-        rootMargin: '-100px 0px 0px 0px',
-    });
+        rootMargin: '0px 0px -150px 0px'
+    })
 
-    useEffect(() => {
-        setIsAtTop(!inView);
-    }, [inView]);
-
-    useEffect(() => {
-        if (isAtTop && onScrollToTop) {
-            onScrollToTop();
-        }
-    }, [isAtTop, onScrollToTop]);
-
-    useEffect(() => {
-        if (isAtBottom && onScrollToBottom) {
-            onScrollToBottom();
-        }
-    }, [isAtBottom, onScrollToBottom]);
-
-    useEffect(() => {
+    React.useEffect(() => {
         if (isAtBottom && trackVisibility && !inView) {
             entry?.target.scrollIntoView({
-                block: 'end',
-            });
+                block: 'start'
+            })
         }
-    }, [isAtBottom, trackVisibility, inView, entry]);
+    }, [inView, entry, isAtBottom, trackVisibility])
 
-    return <div id="chat-ai-scroll" ref={ref} className="h-px w-full" />;
-};
-
-export default ChatScrollAnchor;
+    return <div id="chat-ai-scroll" ref={ref} className="h-px w-full" />
+}
