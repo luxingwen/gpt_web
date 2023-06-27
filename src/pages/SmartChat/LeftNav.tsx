@@ -11,8 +11,6 @@ const VerticalNav = ({ setViewContent }) => {
   const handleSceneButtonClick = (content) => {
     setViewContent(content);
     setActiveButton(content); // Update active button state
-
-    console.log('content:', content);
     history.push(`/smart-ai/${content}`);
   };
 

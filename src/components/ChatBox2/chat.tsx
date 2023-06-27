@@ -9,6 +9,7 @@ import { useRequest, useModel } from 'umi';
 import { smartChatCompletions } from '@/service/smart-chat';
 import { wssocket } from '@/utils/ws_socket';
 import { message } from 'antd';
+import { useScroll } from 'ahooks';
 
 
 const IS_PREVIEW = process.env.VERCEL_ENV === 'preview';
@@ -25,7 +26,6 @@ export interface ChatProps extends React.ComponentProps<'div'> {
 const TRYING_MSG = '正在努力思考...';
 const END_MSG = '###### [END] ######';
 
-
 export default function Chat({ id, initialMessages, className, chat_type, scene = 0, session_id = 0, aiAvatar = "", scene_uuids = [] }: ChatProps) {
 
     const { initialState } = useModel('@@initialState');
@@ -35,12 +35,24 @@ export default function Chat({ id, initialMessages, className, chat_type, scene 
     const [isLoading, setIsLoading] = useState(false);
     const [input, setInput] = useState('');
     const [isLoadAllMsg, setIsLoadAllMsg] = useState(false);
+    const [isFirstInit, setIsFirstInit] = useState(true);
     const [historyQuery, setHistoryQuery] = useState({
         page: 0,
         per_page: 30,
         session_id: session_id,
         scene: scene,
     });
+
+    const scroll = useScroll(document);
+
+
+    useEffect(() => {
+        if (scroll?.top === 0) {
+            console.log('到顶了');
+            scrollToTop();
+        }
+    }, [scroll]);
+
 
     const append = async (message: Message) => {
 
@@ -80,10 +92,7 @@ export default function Chat({ id, initialMessages, className, chat_type, scene 
             }
             hanedleRequestQuestion(quessionRes.data);
         }
-
     };
-
-
     // 处理发送消息
     const hanedleRequestQuestion = async (question) => {
         console.log("question:", question);
@@ -112,7 +121,9 @@ export default function Chat({ id, initialMessages, className, chat_type, scene 
             role: 'assistant',
         };
         setMessages((messages) => [...messages, userMessage, aiMessage]);
+
     };
+
 
 
     useEffect(() => {
@@ -127,7 +138,6 @@ export default function Chat({ id, initialMessages, className, chat_type, scene 
             // setIsMsgEnd(true);
             return;
         }
-        console.log("itemMsg:", itemMsg)
 
         const msgId = 'ai-' + itemMsg.msg_id;
         // console.log("msgId:",msgId)
@@ -158,13 +168,8 @@ export default function Chat({ id, initialMessages, className, chat_type, scene 
     };
     const stop = () => setIsLoading(false);
 
-
-
-
-    const fetchHistoryChatMessage = async (params: any) => {
-
+    const fetchHistoryChatMessage = async (params: any, isInit: any) => {
         if (isLoadAllMsg) {
-            console.log('111没有更多消息了');
             message.info('没有更多消息了');
             return;
         }
@@ -174,7 +179,6 @@ export default function Chat({ id, initialMessages, className, chat_type, scene 
         if (res.errno === 0) {
             if (res.data.data.length === 0) {
                 setIsLoadAllMsg(true);
-                console.log('222没有更多消息了');
                 return;
             }
             let msgList = [];
@@ -206,31 +210,26 @@ export default function Chat({ id, initialMessages, className, chat_type, scene 
             });
             console.log('msgList:', msgList);
             setMessages((prev) => [...msgList, ...prev]); // prepend the older messages to the start of the list
-            setHistoryQuery((prev) => ({ ...prev, page: prev.page + 1 }));
+
+            if (isInit) {
+                scrollToBottom();
+            }
         }
     };
 
     useEffect(() => {
-        console.log("aiAvatar:", aiAvatar);
-        console.log('chat session_id:', session_id);
-        console.log('history->', historyQuery);
+
         setMessages(initialMessages ?? []);
         fetchHistoryChatMessage({
             page: 0,
             per_page: 10,
             session_id: session_id,
-        })
-        scrollToBottom();
+        }, true);
+
     }, [session_id, aiAvatar]);
 
 
     const scrollToBottom = () => {
-        console.log('scrollToBottom');
-        console.log('document.body.offsetHeight:', document.body.offsetHeight);
-        // window.scrollTo({
-        //     top: document.body.offsetHeight,
-        //     behavior: 'smooth'
-        // });
         setTimeout(() => {
             document.querySelector('#chat-ai-scroll')?.scrollIntoView({ behavior: 'smooth' })
         }, 300)
@@ -238,19 +237,19 @@ export default function Chat({ id, initialMessages, className, chat_type, scene 
 
 
     const scrollToTop = () => {
-        console.log('scrollToTop');
         fetchHistoryChatMessage({
             page: historyQuery.page + 1,
             per_page: historyQuery.per_page,
             session_id: session_id,
-        });
+        }, false);
+        setHistoryQuery((prev) => ({ ...prev, page: prev.page + 1 }));
     };
 
     return (
         <>
             <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
                 <ChatList messages={messages} />
-                <ChatScrollAnchor trackVisibility={isLoading} onScrollToTop={scrollToTop} />
+                <ChatScrollAnchor trackVisibility={isLoading} />
             </div>
             <ChatPanel
                 id={id}
