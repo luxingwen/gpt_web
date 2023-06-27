@@ -1017,7 +1017,7 @@ export const Footer10DataSource = {
                 </span>
               ),
             },
-            { href: '#', name: 'link1', children: '联系我们' },
+            { href: '/price', name: 'link1', children: '价格' },
           ],
         },
       },
