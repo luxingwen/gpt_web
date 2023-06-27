@@ -9,7 +9,7 @@ import {
   ProFormTextArea,
   ProFormUploadButton,
 } from '@ant-design/pro-components';
-import { Link, history } from '@umijs/max';
+import { Link, history, useLocation } from '@umijs/max';
 import { Button, Collapse, message } from 'antd';
 import { useRef, useEffect, useState } from 'react';
 import RadioGroup from '../components/RadioGroup';
@@ -56,6 +56,105 @@ export default function TextToImage() {
 
 
   const [defaultCost, setDefaultCost] = useState<number>(0)
+
+
+  const { state } = useLocation();
+
+  useEffect(() => {
+    if (state?.selectedTagList) {
+      console.log('selectedTagList:', state?.selectedTagList);
+      const promptList = state?.selectedTagList.map((item) => item.words);
+      console.log('promptList:', promptList);
+      formRef.current?.setFieldsValue({
+        prompt: promptList.join(','),
+      });
+    }
+  }, [state?.selectedTagList]);
+
+  useEffect(() => {
+
+    if (state?.aiImageInfo) {
+      // 给表单设置初始变量
+      console.log('state?.aiImageInfo:', state?.aiImageInfo);
+      formRef.current?.setFieldsValue({
+        prompt: state?.aiImageInfo?.prompt.join(","),
+        negative_prompt: state?.aiImageInfo?.negative_prompt.join(","),
+        cfg_scale: state?.aiImageInfo?.cfg_scale,
+        denoising_strength: state?.aiImageInfo?.denoising_strength,
+        steps: state?.aiImageInfo?.steps,
+        seed: state?.aiImageInfo?.seed,
+      });
+
+      models?.forEach((item) => {
+        if (item.value === state?.aiImageInfo?.model) {
+          formRef.current?.setFieldsValue({
+            model: item.value,
+          });
+        }
+      })
+
+      const width = state?.aiImageInfo?.width;
+      const height = state?.aiImageInfo?.height;
+
+      let sizeVal = '';
+      let qualityVal = '普通';
+      if (width === 512 && height == 512) {
+        sizeVal = '1:1'
+
+      }
+
+      if (width === 512 && height == 910) {
+        sizeVal = '9:16'
+      }
+
+      if (height === 910 && height === 512) {
+        sizeVal = '16:9'
+      }
+
+      if (width === 512 && height == 682) {
+        sizeVal = '3:4'
+      }
+
+      if (width === 682 && height === 512) {
+        sizeVal = '4:3'
+      }
+
+
+      if (width === 512 * 2 && height == 512 * 2) {
+        sizeVal = '1:1'
+        qualityVal = '高清'
+      }
+
+      if (width === 512 * 2 && height == 910 * 2) {
+        sizeVal = '9:16'
+        qualityVal = '高清'
+      }
+
+      if (height === 910 * 2 && height === 512 * 2) {
+        sizeVal = '16:9'
+        qualityVal = '高清'
+      }
+
+      if (width === 512 * 2 && height == 682 * 2) {
+        sizeVal = '3:4'
+        qualityVal = '高清'
+      }
+
+      if (width === 682 * 2 && height === 512 * 2) {
+        sizeVal = '4:3'
+        qualityVal = '高清'
+      }
+
+
+      formRef.current?.setFieldsValue({
+        rate: sizeVal,
+        quality: qualityVal,
+      });
+
+    }
+
+  }, [state?.aiImageInfo, models]);
+
 
   const handleImageFileChange = (fileobj) => {
     console.log('handleImageFileChange:', fileobj);
