@@ -56,7 +56,7 @@ const HotQuestionPage = () => {
     return (
         <PageContainer title={false}>
             <div className='qa-page'>
-                <TitleRow data={titleList} changeCallBack={handleChangeSelect}></TitleRow>
+                {/* <TitleRow data={titleList} changeCallBack={handleChangeSelect}></TitleRow> */}
                 <Question data={questionList} sumNum={questionSumNum} />
             </div>
         </PageContainer>

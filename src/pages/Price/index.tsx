@@ -229,7 +229,10 @@ const PricePage = () => {
 
   return (
     <Content>
-      {isLoading ? <Spin /> :
+      {isLoading ?
+        <div className='flex h-screen justify-center items-center'>
+          <Spin />
+        </div> :
         <>
           {showBuyModel ? <WxPaymentModal productId={buyProductId} PayCallback={handleBuyCallBack} CancelCallback={handleCancelBuy} /> : <></>}
 

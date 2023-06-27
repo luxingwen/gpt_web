@@ -16,6 +16,9 @@ const WxPaymentModal: React.FC<WxPaymentModalProps> = ({ productId, PayCallback,
 
     const [isVisible, setIsVisible] = useState<boolean>(false);
 
+    const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
+
+
     const ChatPrePay = (orderId: Number) => {
         console.log('ChatPrePay', orderId);
         prePay({ order_id: orderId, client: 'web' })
@@ -84,6 +87,7 @@ const WxPaymentModal: React.FC<WxPaymentModalProps> = ({ productId, PayCallback,
             title="请使用微信扫码支付"
             open={isVisible}
             onCancel={handleCancelPayment}
+            confirmLoading={confirmLoading}
             footer={[
                 <Button key="complete" type="primary" onClick={handleCompletePayment}>
                     我已完成支付
