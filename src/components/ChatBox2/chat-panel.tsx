@@ -1,14 +1,24 @@
-import { type UseChatHelpers } from './ai';
+import { type UseChatHelpers } from './ai'
 
-import { Button } from '@/components/ui/button';
-import { PromptForm } from './prompt-form';
-import { ButtonScrollToBottom } from './button-scroll-to-bottom';
-import { IconRefresh, IconStop } from '@/components/ui/icons';
+import { Button } from '@/components/ui/button'
+import { PromptForm } from './prompt-form'
+import { ButtonScrollToBottom } from './button-scroll-to-bottom'
+import { IconRefresh, IconStop } from '@/components/ui/icons'
 import { FooterText } from './footer';
-import { TooltipProvider } from '@/components/ui/tooltip';
+import { TooltipProvider } from '@/components/ui/tooltip'
 
-export interface ChatPanelProps extends Pick<UseChatHelpers, 'append' | 'isLoading' | 'reload' | 'messages' | 'stop' | 'input' | 'setInput'> {
-    id?: string;
+export interface ChatPanelProps
+    extends Pick<
+        UseChatHelpers,
+        | 'append'
+        | 'isLoading'
+        | 'reload'
+        | 'messages'
+        | 'stop'
+        | 'input'
+        | 'setInput'
+    > {
+    id?: string
 }
 
 export function ChatPanel({
@@ -22,33 +32,39 @@ export function ChatPanel({
     messages
 }: ChatPanelProps) {
     return (
-        <div className="fixed bottom-0 bg-white w-full">
-            <ButtonScrollToBottom />
-            <div className="mx-auto sm:max-w-2xl sm:px-4">
-                <div className="flex h-10 items-center justify-center">
-                    {isLoading && (
-                        <Button variant="outline" onClick={() => stop()} className="bg-background">
-                            <IconStop className="mr-2" />
-                            停止生成
-                        </Button>
-                    )}
-                </div>
-                <div className="space-y-4 border-t bg-background px-4 py-2 shadow-lg sm:rounded-t-xl sm:border md:py-4">
-                    <TooltipProvider>
-                        <PromptForm
-                            onSubmit={async value => {
-                                await append({
-                                    id,
-                                    content: value,
-                                    role: 'user'
-                                })
-                            }}
-                            input={input}
-                            setInput={setInput}
-                            isLoading={isLoading}
-                        />
-                    </TooltipProvider>
-                    <FooterText className="hidden sm:block" />
+        <div className="w-full flex justify-center">
+            <div className="fixed bottom-0">
+                <ButtonScrollToBottom />
+                <div className="mx-auto sm:max-w-2xl sm:px-4">
+                    <div className="flex h-10 items-center justify-center">
+                        {isLoading && (
+                            <Button
+                                variant="outline"
+                                onClick={() => stop()}
+                                className="bg-background"
+                            >
+                                <IconStop className="mr-2" />
+                                停止生成
+                            </Button>
+                        )}
+                    </div>
+                    <div className="space-y-4 border-t bg-white px-4 py-2 shadow-lg sm:rounded-t-xl sm:border md:py-4">
+                        <TooltipProvider>
+                            <PromptForm
+                                onSubmit={async value => {
+                                    await append({
+                                        id,
+                                        content: value,
+                                        role: 'user'
+                                    })
+                                }}
+                                input={input}
+                                setInput={setInput}
+                                isLoading={isLoading}
+                            />
+                        </TooltipProvider>
+                        <FooterText className="hidden sm:block" />
+                    </div>
                 </div>
             </div>
         </div>

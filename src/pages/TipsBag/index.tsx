@@ -24,12 +24,9 @@ const TipsBagPage = () => {
       return;
     }
 
-    console.log(value); // 这里你可以做你的搜索操作
-
     let searchResultList = [];
     allCardData.forEach((item) => {
-      console.log(item);
-      if (item.title?.includes(value) || item.scene_desc?.includes(value)) {
+      if (item?.name.includes(value) || item?.title?.includes(value) || item.scene_desc?.includes(value)) {
         searchResultList.push(item);
       }
     });
@@ -41,9 +38,7 @@ const TipsBagPage = () => {
 
   useEffect(() => {
     getAllScenes().then((res) => {
-      console.log('getAllScenes', res.data);
       setAllCardData(res.data.all_scenes);
-
       let categorySenes = {};
       res.data.all_scenes.forEach((scene) => {
         const categoryId = scene.cat_id;
