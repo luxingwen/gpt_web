@@ -98,7 +98,7 @@ export const layout: RunTimeLayoutConfig = ({ location, initialState }) => {
       if (shouldRedirectToLogin()) {
         Modal.error({
           title: '登录',
-          content: '请登录后在使用',
+          content: '请登录后再使用',
           footer: [
             <Button key="login" onClick={wxlogin}>
               登录

@@ -96,9 +96,9 @@ const CreateScene = ({ setViewContent }) => {
   const handleContentFileChange = (file) => {
     // 处理文件上传逻辑
     console.log('file:', file.name);
-    const fileSizeLimit = 1024 * 1024; // 1MB
+    const fileSizeLimit = 1024 * 1024 * 2; // 2MB
     if (file.size > fileSizeLimit) {
-      message.error('文件大小超过1MB限制！');
+      message.error('文件大小超过2MB限制！');
       return;
     }
 

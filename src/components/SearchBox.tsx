@@ -3,8 +3,8 @@ import { Input } from 'antd';
 import { useState } from 'react';
 import './SearchBox.less';
 
-const SearchBox = ({ onSearch }) => {
-  const [searchValue, setSearchValue] = useState('');
+const SearchBox = ({ onSearch, initSearchValue = '' }) => {
+  const [searchValue, setSearchValue] = useState(initSearchValue);
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {

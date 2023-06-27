@@ -110,6 +110,7 @@ const Index = () => {
           </div>
         </div>
       </div>
+      <Divider />
       <div className='item'>
         <div className="item-label">AI画涂</div>
         <div className='item-main flex w100'>
@@ -121,6 +122,7 @@ const Index = () => {
           </div>
         </div>
       </div>
+      <Divider />
       <div className='item'>
         <div className="item-label">个性化数字人</div>
         <div className='item-main flex w100'>
