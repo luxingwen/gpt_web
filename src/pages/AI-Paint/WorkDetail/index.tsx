@@ -6,13 +6,13 @@
  * @FilePath: /gpt_web/src/pages/AI-Paint/Drawing/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import { HeartOutlined, UserOutlined } from '@ant-design/icons';
+import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import { PageContainer, ProDescriptions } from '@ant-design/pro-components';
 import { Avatar, Button, Image, Space } from 'antd';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { hotAiDrawImage, sdImageLike } from '@/service/ai-paint';
-import { Link } from '@umijs/max';
+import { history } from '@umijs/max';
 
 function Drawing() {
 
@@ -51,6 +51,19 @@ function Drawing() {
     });
   }
 
+  const handleDrawSome = () => {
+    if (aiImageInfo?.type === "text_to_image") {
+      history.push('/ai-paint/text-to-image', {
+        aiImageInfo
+      });
+    } else {
+      history.push('/ai-paint/image-to-image', {
+        aiImageInfo
+      });
+    }
+
+  }
+
   return (
     <PageContainer title={false}>
       <ProDescriptions column={1}>
@@ -69,9 +82,20 @@ function Drawing() {
                 {aiImageInfo?.nickname}
               </Space>
               <Space>
-                <HeartOutlined className="text-2xl" onClick={handleLike} />
+                {aiImageInfo.is_like ? (
+                  <HeartFilled
+                    className="text-2xl text-red-500"
+                  />
+                ) : (
+                  <HeartOutlined
+                    className="text-2xl"
+                    onClick={handleLike}
+                  />
+                )}
                 {aiImageInfo?.like_count}
               </Space>
+
+
             </div>
           </Space>
         </ProDescriptions.Item>
@@ -111,7 +135,7 @@ function Drawing() {
         <Button type="primary" className="text-primary bg-secondary">
           分享
         </Button>
-        <Link to={'/ai-paint/text-to-image'} ><Button type="primary">画同款</Button></Link>
+        <Button type="primary" onClick={handleDrawSome}>画同款</Button>
       </Space>
     </PageContainer>
   );

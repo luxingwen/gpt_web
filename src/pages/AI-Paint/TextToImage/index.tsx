@@ -64,6 +64,92 @@ export default function TextToImage() {
     }
   }, [state?.selectedTagList]);
 
+
+  useEffect(() => {
+
+    if (state?.aiImageInfo) {
+      // 给表单设置初始变量
+      console.log('state?.aiImageInfo:', state?.aiImageInfo);
+      formRef.current?.setFieldsValue({
+        prompt: state?.aiImageInfo?.prompt.join(","),
+        negative_prompt: state?.aiImageInfo?.negative_prompt.join(","),
+        cfg_scale: state?.aiImageInfo?.cfg_scale,
+        denoising_strength: state?.aiImageInfo?.denoising_strength,
+        steps: state?.aiImageInfo?.steps,
+        seed: state?.aiImageInfo?.seed,
+      });
+
+      models?.forEach((item) => {
+        if (item.value === state?.aiImageInfo?.model) {
+          formRef.current?.setFieldsValue({
+            model: item.value,
+          });
+        }
+      })
+
+      const width = state?.aiImageInfo?.width;
+      const height = state?.aiImageInfo?.height;
+
+      let sizeVal = '';
+      let qualityVal = '普通';
+      if (width === 512 && height == 512) {
+        sizeVal = '1:1'
+
+      }
+
+      if (width === 512 && height == 910) {
+        sizeVal = '9:16'
+      }
+
+      if (height === 910 && height === 512) {
+        sizeVal = '16:9'
+      }
+
+      if (width === 512 && height == 682) {
+        sizeVal = '3:4'
+      }
+
+      if (width === 682 && height === 512) {
+        sizeVal = '4:3'
+      }
+
+
+      if (width === 512 * 2 && height == 512 * 2) {
+        sizeVal = '1:1'
+        qualityVal = '高清'
+      }
+
+      if (width === 512 * 2 && height == 910 * 2) {
+        sizeVal = '9:16'
+        qualityVal = '高清'
+      }
+
+      if (height === 910 * 2 && height === 512 * 2) {
+        sizeVal = '16:9'
+        qualityVal = '高清'
+      }
+
+      if (width === 512 * 2 && height == 682 * 2) {
+        sizeVal = '3:4'
+        qualityVal = '高清'
+      }
+
+      if (width === 682 * 2 && height === 512 * 2) {
+        sizeVal = '4:3'
+        qualityVal = '高清'
+      }
+
+
+      formRef.current?.setFieldsValue({
+        rate: sizeVal,
+        quality: qualityVal,
+      });
+
+
+    }
+
+  }, [state?.aiImageInfo, models]);
+
   useEffect(() => {
     getAiDrawModels({}).then((res) => {
       console.log('getAiDrawModels:', res);
@@ -291,9 +377,9 @@ export default function TextToImage() {
                 <ProForm.Item>
                   <label>迭代次数</label>
                   <ProForm.Group>
-                    <ProFormSlider noStyle name="batch_count" min={1} />
+                    <ProFormSlider noStyle name="steps" min={1} />
                     <ProFormItem noStyle shouldUpdate>
-                      {({ getFieldValue }) => getFieldValue('batch_count') || 1}
+                      {({ getFieldValue }) => getFieldValue('steps') || 1}
                     </ProFormItem>
                   </ProForm.Group>
                 </ProForm.Item>
