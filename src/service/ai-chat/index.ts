@@ -26,3 +26,11 @@ export async function queryHotQuestion(params: any) {
     params: params,
   });
 }
+
+// 新建会话
+export async function newChatSession(params: any) {
+  return await request(`/api/chat/session`, {
+    method: 'POST',
+    data: params,
+  });
+}

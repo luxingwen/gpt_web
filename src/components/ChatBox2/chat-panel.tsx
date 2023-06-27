@@ -1,11 +1,14 @@
-import { type UseChatHelpers } from './ai'
+import { type UseChatHelpers } from './ai';
 
-import { Button } from '@/components/ui/button'
-import { PromptForm } from './prompt-form'
-import { ButtonScrollToBottom } from './button-scroll-to-bottom'
-import { IconRefresh, IconStop } from '@/components/ui/icons'
+import { Button } from '@/components/ui/button';
+import { IconStop } from '@/components/ui/icons';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { ButtonScrollToBottom } from './button-scroll-to-bottom';
 import { FooterText } from './footer';
-import { TooltipProvider } from '@/components/ui/tooltip'
+import { PromptForm } from './prompt-form';
+import { useState } from 'react';
+import { Modal } from 'antd';
+import GroupQrcode from '@/assets/images/group-qrcode.png';
 
 export interface ChatPanelProps
     extends Pick<
@@ -17,8 +20,9 @@ export interface ChatPanelProps
         | 'stop'
         | 'input'
         | 'setInput'
+        | 'newSession'
     > {
-    id?: string
+    id?: string;
 }
 
 export function ChatPanel({
@@ -29,11 +33,22 @@ export function ChatPanel({
     reload,
     input,
     setInput,
-    messages
+    messages,
+    newSession,
 }: ChatPanelProps) {
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const handleJoinCommunity = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleModalCancel = () => {
+        setIsModalVisible(false);
+    };
     return (
-        <div className="w-full flex justify-center">
-            <div className="fixed bottom-0">
+        <div className="w-full flex justify-center h-auto">
+            <div className="fixed w-full bottom-0">
                 <ButtonScrollToBottom />
                 <div className="mx-auto sm:max-w-2xl sm:px-4">
                     <div className="flex h-10 items-center justify-center">
@@ -51,22 +66,44 @@ export function ChatPanel({
                     <div className="space-y-4 border-t bg-white px-4 py-2 shadow-lg sm:rounded-t-xl sm:border md:py-4">
                         <TooltipProvider>
                             <PromptForm
-                                onSubmit={async value => {
+                                onSubmit={async (value) => {
                                     await append({
                                         id,
                                         content: value,
-                                        role: 'user'
-                                    })
+                                        role: 'user',
+                                    });
                                 }}
                                 input={input}
                                 setInput={setInput}
                                 isLoading={isLoading}
                             />
                         </TooltipProvider>
+                        <div className="flex justify-center">
+                            <button onClick={newSession} className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg mr-4">
+                                新会话
+                            </button>
+                            <button onClick={handleJoinCommunity} className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg">
+                                加入社群
+                            </button>
+                        </div>
+
+                        <Modal
+                            open={isModalVisible}
+                            onCancel={handleModalCancel}
+                            footer={null}
+                            className="text-center"
+                        >
+                            <p className="text-lg font-semibold mb-4">
+                                使用微信扫一扫加入社群
+                            </p>
+                            <img src={GroupQrcode} alt="Community Image" className="mx-auto" />
+                        </Modal>
+
+
                         <FooterText className="hidden sm:block" />
                     </div>
                 </div>
             </div>
         </div>
-    )
+    );
 }

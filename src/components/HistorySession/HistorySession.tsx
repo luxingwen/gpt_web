@@ -59,7 +59,7 @@ const HistorySession: React.FC<HistorySessionProps> = ({
               cursor: 'pointer', background: session.id === session_id ? '#4B64F3' : 'transparent'
             }} // 添加选中状态的样式
           >
-            {session.name}
+            <span className="truncate">{session.name}</span>
           </List.Item>
         )}
       />

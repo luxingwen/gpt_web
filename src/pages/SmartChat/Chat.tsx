@@ -89,11 +89,12 @@ const SmartChatPage: React.FC<SmartChatPageProps> = ({
         aiAvatar={scenceInfo?.ai_avatar}
       /> : <PageLoading />} */}
 
-      {sessionInfo ? (
+      {sessionInfo && scenceInfo ? (
         <Chat
           key={sessionId}
           id={sessionId}
           session_id={sessionId}
+          scene={scenceInfo?.id}
           chat_type="smart-chat"
           scene_uuids={scene_uuids}
           aiAvatar={scenceInfo?.ai_avatar} />
