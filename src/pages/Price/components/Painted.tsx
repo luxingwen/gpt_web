@@ -61,62 +61,19 @@ const Painted: React.FC<PainteedProps> = ({ data, buyCallBack }) => {
         <div className="painted">
           <div className="body">
             <div className="huabei-box">
-              <Space direction={'vertical'} size={55}>
-                <Row gutter={[67, 0]}>
-                  <Col span={8}>
-                    <HuabeiBox
-                      info={data[0]}
-                      isSelect={selectState == 0}
-                      index={0}
-                      changeSelect={changeSelectCallBack}
-                    />
-                  </Col>
-                  <Col span={8}>
-                    <HuabeiBox
-                      info={data[1]}
-                      isSelect={selectState == 1}
-                      index={1}
-                      changeSelect={changeSelectCallBack}
-                    />
-                  </Col>
-                  <Col span={8}>
-                    <HuabeiBox
-                      info={data[2]}
-                      isSelect={selectState == 2}
-                      index={2}
-                      changeSelect={changeSelectCallBack}
-                    />
-                  </Col>
-                </Row>
-                <Row gutter={[67, 0]}>
-                  <Col span={8}>
-                    <HuabeiBox
-                      info={data[3]}
-                      isSelect={selectState == 3}
-                      index={3}
-                      changeSelect={changeSelectCallBack}
-                    />
-                  </Col>
-                  <Col span={8}>
-                    <HuabeiBox
-                      info={data[4]}
-                      isSelect={selectState == 4}
-                      index={4}
-                      changeSelect={changeSelectCallBack}
-                    />
-                  </Col>
-                  <Col span={8}>
-                    <HuabeiBox
-                      info={data[5]}
-                      isSelect={selectState == 5}
-                      index={5}
-                      changeSelect={changeSelectCallBack}
-                    />
-                  </Col>
-                </Row>
-              </Space>
+              <div className='grid grid-cols-3 gap-x-16 gap-y-14'>
+                {data.map((item, index, _) => (
+                  <HuabeiBox
+                    key={item.id}
+                    info={item}
+                    isSelect={selectState == index}
+                    index={index}
+                    changeSelect={changeSelectCallBack}
+                  />
+                ))}
+              </div>
               <Button className="buy-btn" onClick={() => buyCallBack(data[selectState].id)}>购买</Button>
-            </div>C
+            </div>
             <div className="point">
               <span>说明： </span>
               <span>
