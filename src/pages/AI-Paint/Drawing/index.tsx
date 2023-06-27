@@ -7,11 +7,12 @@
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import { PageContainer, ProDescriptions } from '@ant-design/pro-components';
-import { Button, Image, Progress, Space } from 'antd';
+import { Button, Image, Progress, Space, Modal, Input, message } from 'antd';
 import { useParams } from 'react-router-dom';
 import { aiDrawImages, aiDrawProcess } from '@/service/ai-paint';
 import { useEffect, useState } from 'react';
 import { Link } from '@umijs/max';
+import { saveSdImage } from '@/service/ai-paint';
 
 function Drawing() {
 
@@ -22,6 +23,11 @@ function Drawing() {
   const [aiDrawProcessInfo, setAiDrawProcessInfo] = useState({});
 
   const [showImage, setShowImage] = useState(0)
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [title, setTitle] = useState('');
+
+
+
 
   useEffect(() => {
     let timer;
@@ -57,6 +63,36 @@ function Drawing() {
 
   const handleSaveImage = () => {
     window.open(aiImageInfo.image_info[0]);
+  };
+
+
+  const handleShowModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleSubmit = () => {
+    // 在此处处理提交逻辑，例如将标题发送到后端或执行其他操作
+    console.log('提交作品标题:', title);
+    if (title === '') {
+      message.error('请输入作品标题');
+      return;
+    }
+
+
+    saveSdImage({ id: parseInt(id), title: title }).then((res) => {
+      if (res.errno === 0) {
+        message.success('展出成功');
+        setIsModalVisible(false);
+      } else {
+        message.error('失败');
+      }
+    });
+
+
   };
 
   return (
@@ -185,10 +221,30 @@ function Drawing() {
             <Button type="primary" className="text-primary bg-secondary">
               分享
             </Button>
-            <Button type="primary">展出作品</Button>
+            <Button type="primary" onClick={handleShowModal}>展出作品</Button>
           </>
         }
       </Space>
+
+      <Modal
+        title="输入作品标题"
+        open={isModalVisible}
+        onCancel={handleCancel}
+        footer={[
+          <Button key="cancel" onClick={handleCancel}>
+            取消
+          </Button>,
+          <Button key="submit" type="primary" onClick={handleSubmit}>
+            提交
+          </Button>,
+        ]}
+      >
+        <Input
+          placeholder="请输入作品标题"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+      </Modal>
     </PageContainer >
   );
 }
