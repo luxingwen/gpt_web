@@ -18,6 +18,9 @@ export async function wxlogin() {
     window.location.reload();
     return;
   }
+
+  
+
   console.log('wxlogin omain >>>>', domain);
   if (window.WeixinJSBridge) {
     window.location.href = `https://www.kimways.com/api/chat/wechat/oauth/code?redirect_url=${encodeURIComponent(
@@ -52,6 +55,14 @@ export async function getUserInfo() {
 
 export async function getUserList(params: any) {
   return await request(`/api/chat/user/list`, {
+    method: 'POST',
+    data: params,
+  });
+}
+
+
+export async function updateUser(params: any) {
+  return await request(`/api/chat/user/update`, {
     method: 'POST',
     data: params,
   });
