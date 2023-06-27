@@ -930,7 +930,7 @@ export const Footer10DataSource = {
         title: {
           className: 'logo',
           children:
-            'https://www.kimways.com/static/logo1.webp',
+            'https://www.kimways.com/logo.png',
         },
         childWrapper: {
           className: 'slogan',
