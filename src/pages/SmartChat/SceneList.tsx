@@ -81,7 +81,9 @@ const SceneListPage: React.FC<SceneListPageProps> = ({ setViewContent }) => {
         <Row justify="center">
           <Col xs={{ span: 24 }} lg={{ span: 20 }}>
             <div style={{ padding: '16px' }}>
-              <SearchBox onSearch={handleSearch} />
+              <SearchBox
+                initSearchValue={searchValue}
+                onSearch={handleSearch} />
 
               <div style={{ marginTop: '12px' }}>
                 {/* SceneItemCard 列表 */}
