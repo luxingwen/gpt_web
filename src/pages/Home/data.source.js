@@ -958,6 +958,7 @@ export const Footer10DataSource = {
           children: [
             {
               name: 'link0',
+              // href: '/smart-ai',
               href: '#',
               children: (
                 <span>
@@ -969,7 +970,7 @@ export const Footer10DataSource = {
             },
             {
               name: 'link1',
-              href: '#',
+              href: '/ai-paint',
               children: (
                 <span>
                   <span>
@@ -980,7 +981,7 @@ export const Footer10DataSource = {
             },
             {
               name: 'link2',
-              href: '#',
+              href: '/ai',
               children: (
                 <span>
                   <p>AI百宝助手</p>

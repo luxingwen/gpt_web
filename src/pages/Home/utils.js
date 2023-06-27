@@ -1,5 +1,6 @@
 import { Button } from 'antd';
 import React from 'react';
+import { message } from 'antd';
 
 export const isImg = /^http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?/;
 export const getChildrenToRender = (item, i) => {
@@ -13,6 +14,13 @@ export const getChildrenToRender = (item, i) => {
     children = React.createElement(Button, {
       ...item.children,
     });
+  }
+  const messageClick = () => {
+    message.info('该功能正在开发中，敬请期待。');
+  }
+
+  if (tag == 'a' && item.href == '#') {
+    return React.createElement(tag, { onClick: messageClick, key: i.toString(), ...item }, children);
   }
   return React.createElement(tag, { key: i.toString(), ...item }, children);
 };
