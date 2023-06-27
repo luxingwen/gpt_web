@@ -1,3 +1,6 @@
+import QrcodeImage from '@/assets/images/qrcode.jpg';
+import { Modal } from 'antd';
+
 export const Nav00DataSource = {
   wrapper: { className: 'header0 home-page-wrapper' },
   page: { className: 'home-page' },
@@ -138,6 +141,14 @@ export const Nav00DataSource = {
   },
   mobileMenu: { className: 'header0-mobile-menu' },
 };
+
+const handleJoinClick = () => {
+  // 处理 "马上参与" 按钮的点击事件逻辑
+  console.log('Join clicked!');
+  window.location.href = 'https://mp.weixin.qq.com/s/glRCs56JRI9Oc-FBe7jWzw';
+  // 在这里添加您想要执行的逻辑
+};
+
 export const Banner10DataSource = {
   wrapper: { className: 'banner1' },
   BannerAnim: {
@@ -175,7 +186,7 @@ export const Banner10DataSource = {
             <span>
               <span>
                 <span>
-                  <p>马上参与</p>
+                  <p onClick={handleJoinClick}>马上参与</p>
                 </span>
               </span>
             </span>
@@ -473,6 +484,22 @@ export const Content110DataSource = {
     },
   },
 };
+
+const onclickAiBaiBao = () => {
+  Modal.info({
+    title: '使用方式',
+    content: (
+      <div>
+        <p>扫描小程序码：</p>
+        <img src={QrcodeImage} alt="小程序码" />
+        <a href="/ai">在网页上使用</a>
+      </div>
+    ),
+    centered: true,
+    okText: '知道了',
+  });
+};
+
 export const Content112DataSource = {
   show: 'Content112DataSource',
   OverPack: {
@@ -509,10 +536,9 @@ export const Content112DataSource = {
     children: {
       a: {
         className: 'button',
-        href: '#',
         children: (
           <span>
-            <p>立即体验</p>
+            <p onClick={onclickAiBaiBao}>立即体验</p>
           </span>
         ),
       },
@@ -929,8 +955,7 @@ export const Footer10DataSource = {
         className: 'block',
         title: {
           className: 'logo',
-          children:
-            'https://www.kimways.com/logo.png',
+          children: 'https://www.kimways.com/logo.png',
         },
         childWrapper: {
           className: 'slogan',
@@ -1069,7 +1094,10 @@ export const Footer10DataSource = {
     children: (
       <span>
         <p>
-          <span><a href="https://beian.miit.gov.cn/">粤ICP备2022141504号-1</a> ©2023 by AI云助手 All Rights Reserved</span>
+          <span>
+            <a href="https://beian.miit.gov.cn/">粤ICP备2022141504号-1</a> ©2023
+            by AI云助手 All Rights Reserved
+          </span>
         </p>
       </span>
     ),
