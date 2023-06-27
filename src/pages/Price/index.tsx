@@ -1,4 +1,4 @@
-import { Layout, Spin } from 'antd';
+import { Spin } from 'antd';
 import { useState, useEffect } from 'react';
 
 import Enterprise from './components/Enterprise';
@@ -6,14 +6,12 @@ import Painted from './components/Painted';
 import Personalise from './components/Personalise';
 import PriceHeader from './components/PriceHeader';
 import TerasureBox from './components/TerasureBox';
-
+import Header from '@/layouts/Header';
 import { queryChatGoods } from '@/service/api';
 import './index.less';
 import { useSearchParams, history } from '@umijs/max';
 import WxPaymentModal from './components/WxPaymentModal';
 
-
-const { Content } = Layout;
 
 interface IPriceData {
   terasureBoxData: Array<IBuyInfo>
@@ -228,7 +226,8 @@ const PricePage = () => {
   }
 
   return (
-    <Content>
+    <>
+      <Header />
       {isLoading ?
         <div className='flex h-screen justify-center items-center'>
           <Spin />
@@ -253,7 +252,7 @@ const PricePage = () => {
           </div>
         </>
       }
-    </Content>
+    </>
   );
 };
 

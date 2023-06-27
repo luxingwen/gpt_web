@@ -204,6 +204,7 @@ export default [
     name: '价格',
     path: '/price',
     component: './Price',
+    layout: false,
   },
   {
     name: '登录',
