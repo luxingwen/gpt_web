@@ -1,7 +1,8 @@
 import { request } from '@umijs/max';
 import Cookies from 'js-cookie';
 
-const defaultToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiIyMTE5IiwiZXhwIjoxNzA0NDYyMzk1LCJpYXQiOjE2ODU3MTM1OTUsImlzcyI6InRlc3QifQ.jfVomRADsD1IaiEjV37Ovvjuukzarflqx_BFDo0kG5o';
+const defaultToken =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiIyMTE5IiwiZXhwIjoxNzA0NDYyMzk1LCJpYXQiOjE2ODU3MTM1OTUsImlzcyI6InRlc3QifQ.jfVomRADsD1IaiEjV37Ovvjuukzarflqx_BFDo0kG5o';
 // const defaultToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiIyNjAwMDAiLCJleHAiOjE3MDU0MDkzNDksImlhdCI6MTY4NjY2MDU0OSwiaXNzIjoidGVzdCJ9.ACRdI-Y3Mc6UKvOIo7wO2mHVdJKi-97q-hsZEUy0EXE';
 
 export async function wxlogin() {
@@ -18,8 +19,6 @@ export async function wxlogin() {
     window.location.reload();
     return;
   }
-
-  
 
   console.log('wxlogin omain >>>>', domain);
   if (window.WeixinJSBridge) {
@@ -60,10 +59,14 @@ export async function getUserList(params: any) {
   });
 }
 
-
+// 更新用户信息
 export async function updateUser(params: any) {
+  // 使用form的方式提交
   return await request(`/api/chat/user/update`, {
     method: 'POST',
     data: params,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
   });
 }
