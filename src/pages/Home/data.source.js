@@ -1100,7 +1100,7 @@ export const Footer10DataSource = {
         childWrapper: {
           children: [
             {
-              href: '#',
+              href: '/price?type=4',
               name: 'link0',
               children: (
                 <span>
