@@ -983,8 +983,7 @@ export const Footer10DataSource = {
           children: [
             {
               name: 'link0',
-              // href: '/smart-ai',
-              href: '',
+              href: '#',
               children: (
                 <span>
                   <span>
@@ -1034,7 +1033,7 @@ export const Footer10DataSource = {
         childWrapper: {
           children: [
             {
-              href: '',
+              href: '#',
               name: 'link0',
               children: (
                 <span>
@@ -1061,7 +1060,7 @@ export const Footer10DataSource = {
         childWrapper: {
           children: [
             {
-              href: '',
+              href: '#',
               name: 'link0',
               children: (
                 <span>
