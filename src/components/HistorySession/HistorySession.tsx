@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { history } from '@umijs/max';
 import { HistoryOutlined } from '@ant-design/icons';
 import { getSessionList } from '@/service/ai-chat';
+import { useHistorySession } from '@/store/historysession';
 
 
 interface HistorySessionProps {
@@ -21,20 +22,25 @@ const HistorySession: React.FC<HistorySessionProps> = ({
 }) => {
   // 假设这是从服务器获取的历史会话数据
 
-  const [queryArgs, setQueryArgs] = useState<API.ReqChatSessionList>({ chat_type, scene_id, page: 1, per_page: 10 })
+  // const [queryArgs, setQueryArgs] = useState<API.ReqChatSessionList>({ chat_type, scene_id, page: 1, per_page: 10 })
 
-  const [historySessions, setHistorySessions] = useState<API.ChatSession[]>([])
+  // const [historySessions, setHistorySessions] = useState<API.ChatSession[]>([])
 
   console.log('historySessions:', session_id);
+  const historyState = useHistorySession();
 
   useEffect(() => {
-    getSessionList(queryArgs).then(res => {
-      console.log('res session:', res);
-      if (res.errno === 0) {
-        setHistorySessions(res.data.data);
-      }
-    })
-  }, [queryArgs])
+    // getSessionList(queryArgs).then(res => {
+    //   console.log('res session:', res);
+    //   if (res.errno === 0) {
+    //     setHistorySessions(res.data.data);
+    //   }
+    // })
+
+    historyState.actions.setQueryArgs({ chat_type, scene_id, page: 1, per_page: 10 });
+    historyState.actions.fetchHistorySessions();
+
+  }, [chat_type, scene_id])
 
 
   const handleSessionClick = (session_id: number) => {
@@ -50,7 +56,7 @@ const HistorySession: React.FC<HistorySessionProps> = ({
         历史会话
       </h2>
       <List
-        dataSource={historySessions}
+        dataSource={historyState?.historySessions}
         renderItem={(session) => (
           <List.Item
             className={`hover:bg-gray-200 rounded pl-7 h-10 ${session_id === session.id ? 'text-white' : ''}`}
