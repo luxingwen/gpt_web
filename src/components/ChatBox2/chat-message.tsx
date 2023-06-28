@@ -120,7 +120,7 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
             <div className={messageContainerClassName} {...props}>
                 <div
                     className={cn(
-                        'flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-md border shadow',
+                        'flex h-8 w-8 shrink-0 select-none items-center justify-center',
                         isUserMessage ? 'ml-2' : 'mr-2',
                     )}
                 >

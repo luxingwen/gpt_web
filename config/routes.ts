@@ -66,6 +66,13 @@ export default [
         icon: 'robot',
       },
       {
+        name: 'AI问答',
+        path: 'qa/:id',
+        component: './AiChat',
+        icon: 'robot',
+        hideInMenu: true,
+      },
+      {
         name: '百宝袋',
         path: 'tips',
         component: './TipsBag',

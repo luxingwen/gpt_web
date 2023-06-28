@@ -12,6 +12,7 @@ import { message } from 'antd';
 import { useScroll } from 'ahooks';
 import { newChatSession } from '@/service/ai-chat';
 import { history } from '@umijs/max';
+import { useHistorySession } from '@/store/historysession';
 
 
 const IS_PREVIEW = process.env.VERCEL_ENV === 'preview';
@@ -44,6 +45,8 @@ export default function Chat({ id, initialMessages, className, chat_type, scene 
         session_id: session_id,
         scene: scene,
     });
+
+    const historyState = useHistorySession();
 
     const scroll = useScroll(document);
 
@@ -86,6 +89,33 @@ export default function Chat({ id, initialMessages, className, chat_type, scene 
 
         // setMessages((messages) => [...messages, userMessage, aiMessage]);
 
+        if (chat_type === 'ai-chat') {
+            // const quessionRes = queryQuestion(question);
+            const quessionRes = await queryQuestion(message.content)
+            // 剩余次数不足，提示购买次数
+            if (quessionRes.errno == 4002) {
+                showBuyModal();
+                return;
+            }
+            if (quessionRes.errno !== 0) {
+                message.error(quessionRes.errmsg)
+                return
+            }
+            hanedleRequestQuestion(quessionRes.data);
+        }
+        if (chat_type === 'prompt-chat') {
+            const quessionRes = await queryQuestion(message.content, parseInt(scene))
+            if (quessionRes.errno == 4002) {
+                showBuyModal();
+                return;
+            }
+            if (quessionRes.errno !== 0) {
+                message.error(quessionRes.errmsg)
+                return
+            }
+            hanedleRequestQuestion(quessionRes.data);
+        }
+
 
         if (chat_type === 'smart-chat') {
             const quessionRes = await smartChatCompletions({ content: message.content, uuids: scene_uuids, session_id: parseInt(session_id) });
@@ -122,10 +152,43 @@ export default function Chat({ id, initialMessages, className, chat_type, scene 
             user_id: currentUser?.id,
             role: 'assistant',
         };
+
+        if (messages.length === 0) {
+            // 刷新历史会话
+            historyState?.actions?.fetchHistorySessions();
+        }
         setMessages((messages) => [...messages, userMessage, aiMessage]);
 
     };
 
+
+    const showBuyModal = () => {
+        Modal.info({
+            title: '提示',
+            content: (
+                <div>
+                    <p>剩余次数不足，请购买次数</p>
+                </div>
+            ),
+            maskClosable: true,
+            closable: true,
+            cancelText: '取消',
+            okText: '去购买',
+            okButtonProps: {
+                style: {
+                    backgroundColor: '#4b64f3'
+                }
+            },
+
+            onCancel() {
+                console.log('取消');
+            },
+            onOk() {
+                console.log('去购买');
+            },
+        });
+        return;
+    };
 
 
     useEffect(() => {
@@ -254,7 +317,14 @@ export default function Chat({ id, initialMessages, className, chat_type, scene 
             scene_id: '' + scene,
         }).then((res) => {
             if (res.errno === 0) {
-                history.push(`/smart-ai/chat/c/${res.data.id}`);
+                if (chat_type === 'smart-chat') {
+                    console.log('res.data.id:', res.data.id);
+                    history.push(`/smart-ai/chat/c/${res.data.id}`);
+                }
+
+                if (chat_type === 'ai-chat') {
+                    history.push(`/ai/qa/${res.data.id}`);
+                }
             }
         });
     };

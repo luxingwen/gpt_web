@@ -40,4 +40,5 @@ export default defineConfig({
   npmClient: 'pnpm',
   tailwindcss: {},
   icons: {},
+  valtio: {},
 });
