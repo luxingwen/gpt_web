@@ -1,4 +1,5 @@
-import QrcodeImage from '@/assets/images/qrcode.jpg';
+import AIChatQrCode from '@/assets/images/ai-chat-qrcode.png';
+import AIDrawQrCode from '@/assets/images/ai-draw-qrcode.png';
 import { Modal, message } from 'antd';
 
 export const Nav00DataSource = {
@@ -475,7 +476,13 @@ export const Content110DataSource = {
           <span>
             <span>
               <span>
-                <p onClick={() => { message.info("该功能正在开发中，敬请期待。") }}>立即体验</p>
+                <p
+                  onClick={() => {
+                    message.info('该功能正在开发中，敬请期待。');
+                  }}
+                >
+                  立即体验
+                </p>
               </span>
             </span>
           </span>
@@ -487,16 +494,25 @@ export const Content110DataSource = {
 
 const onclickAiBaiBao = () => {
   Modal.info({
-    title: '使用方式',
+    title: null,
+    icon: null,
     content: (
       <div>
-        <p>扫描小程序码：</p>
-        <img src={QrcodeImage} alt="小程序码" />
-        <a href="/ai">在网页上使用</a>
+        <div className="flex flex-col items-center">
+          <p>扫描小程序码：</p>
+          <img src={AIChatQrCode} alt="小程序码" />
+          <a
+            href="/ai"
+            className="text-white bg-blue-500 hover:bg-blue-600 py-2 px-4 rounded-lg mt-4"
+          >
+            在网页上使用
+          </a>
+        </div>
       </div>
     ),
+    closable: true,
     centered: true,
-    okText: '知道了',
+    footer: null,
   });
 };
 
@@ -545,6 +561,31 @@ export const Content112DataSource = {
     },
   },
 };
+
+const onclickAiDraw = () => {
+  Modal.info({
+    title: null,
+    icon: null,
+    content: (
+      <div>
+        <div className="flex flex-col items-center">
+          <p>扫描小程序码：</p>
+          <img src={AIDrawQrCode} alt="小程序码" />
+          <a
+            href="/ai-paint/text-to-image"
+            className="text-white bg-blue-500 hover:bg-blue-600 py-2 px-4 rounded-lg mt-4"
+          >
+            在网页上使用
+          </a>
+        </div>
+      </div>
+    ),
+    closable: true,
+    centered: true,
+    footer: null,
+  });
+};
+
 export const Content111DataSource = {
   show: 'Content111DataSource',
   OverPack: {
@@ -581,10 +622,9 @@ export const Content111DataSource = {
     children: {
       a: {
         className: 'button',
-        href: '/ai-paint/text-to-image',
         children: (
           <span>
-            <p>立即体验</p>
+            <p onClick={onclickAiDraw}>立即体验</p>
           </span>
         ),
       },

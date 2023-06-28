@@ -50,7 +50,7 @@ export function ChatPanel({
         <div className="w-full flex justify-center h-auto">
             <div className="fixed w-full bottom-0">
                 <ButtonScrollToBottom />
-                <div className="mx-auto sm:max-w-2xl sm:px-4">
+                <div className="mx-auto sm:max-w-4xl sm:px-4">
                     <div className="flex h-10 items-center justify-center">
                         {isLoading && (
                             <Button
@@ -65,27 +65,39 @@ export function ChatPanel({
                     </div>
                     <div className="space-y-4 border-t bg-white px-4 py-2 shadow-lg sm:rounded-t-xl sm:border md:py-4">
                         <TooltipProvider>
-                            <PromptForm
-                                onSubmit={async (value) => {
-                                    await append({
-                                        id,
-                                        content: value,
-                                        role: 'user',
-                                    });
-                                }}
-                                input={input}
-                                setInput={setInput}
-                                isLoading={isLoading}
-                            />
+                            <div className="flex items-center"> {/* 修改的部分 */}
+                                <div className="flex justify-center space-x-4 mr-1"> {/* 按钮组 */}
+                                    <button
+                                        onClick={newSession}
+                                        className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg"
+                                    >
+                                        新会话
+                                    </button>
+                                    <button
+                                        onClick={handleJoinCommunity}
+                                        className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg"
+                                    >
+                                        加入社群
+                                    </button>
+                                </div>
+                                <div className="flex-grow"> {/* PromptForm 左侧 */}
+                                    <PromptForm
+                                        onSubmit={async (value) => {
+                                            await append({
+                                                id,
+                                                content: value,
+                                                role: 'user',
+                                            });
+                                        }}
+                                        input={input}
+                                        setInput={setInput}
+                                        isLoading={isLoading}
+                                    />
+                                </div>
+
+                            </div>
                         </TooltipProvider>
-                        <div className="flex justify-center">
-                            <button onClick={newSession} className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg mr-4">
-                                新会话
-                            </button>
-                            <button onClick={handleJoinCommunity} className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg">
-                                加入社群
-                            </button>
-                        </div>
+
 
                         <Modal
                             open={isModalVisible}
@@ -100,7 +112,7 @@ export function ChatPanel({
                         </Modal>
 
 
-                        <FooterText className="hidden sm:block" />
+                        {/* <FooterText className="hidden sm:block" /> */}
                     </div>
                 </div>
             </div>
