@@ -19,7 +19,7 @@ export const getChildrenToRender = (item, i) => {
     message.info('该功能正在开发中，敬请期待。');
   }
 
-  if (tag == 'a' && item.href == '#') {
+  if (tag == 'a' && item.href == '') {
     return React.createElement(tag, { onClick: messageClick, key: i.toString(), ...item }, children);
   }
   return React.createElement(tag, { key: i.toString(), ...item }, children);

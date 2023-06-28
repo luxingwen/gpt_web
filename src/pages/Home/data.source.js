@@ -1,5 +1,5 @@
 import QrcodeImage from '@/assets/images/qrcode.jpg';
-import { Modal } from 'antd';
+import { Modal, message } from 'antd';
 
 export const Nav00DataSource = {
   wrapper: { className: 'header0 home-page-wrapper' },
@@ -470,12 +470,12 @@ export const Content110DataSource = {
     children: {
       a: {
         className: 'button',
-        href: '#',
+        // href: '#',
         children: (
           <span>
             <span>
               <span>
-                <p>立即体验</p>
+                <p onClick={() => { message.info("该功能正在开发中，敬请期待。") }}>立即体验</p>
               </span>
             </span>
           </span>
@@ -581,7 +581,7 @@ export const Content111DataSource = {
     children: {
       a: {
         className: 'button',
-        href: '#',
+        href: '/ai-paint/text-to-image',
         children: (
           <span>
             <p>立即体验</p>
@@ -629,10 +629,10 @@ export const Content113DataSource = {
     children: {
       a: {
         className: 'button',
-        href: '#',
+        href: '/price?type=4',
         children: (
           <span>
-            <p>立即体验</p>
+            <p>联系我们</p>
           </span>
         ),
       },
@@ -669,7 +669,7 @@ export const Feature80DataSource = {
         name: 'button',
         className: 'feature8-button',
         children: {
-          href: '#',
+          href: '/price?type=4',
           children: (
             <span className="flex-c h100">
               <span>
@@ -984,7 +984,7 @@ export const Footer10DataSource = {
             {
               name: 'link0',
               // href: '/smart-ai',
-              href: '#',
+              href: '',
               children: (
                 <span>
                   <span>
@@ -1015,7 +1015,7 @@ export const Footer10DataSource = {
             },
             {
               name: 'link3',
-              href: '#',
+              href: '/price?type=4',
               children: (
                 <span>
                   <p>AIGC解决方案</p>
@@ -1034,7 +1034,7 @@ export const Footer10DataSource = {
         childWrapper: {
           children: [
             {
-              href: '#',
+              href: '',
               name: 'link0',
               children: (
                 <span>
@@ -1061,18 +1061,18 @@ export const Footer10DataSource = {
         childWrapper: {
           children: [
             {
-              href: '#',
+              href: '',
               name: 'link0',
               children: (
                 <span>
                   <span>
-                    <p>咨询热线</p>
+                    <p>联系我们</p>
                   </span>
                 </span>
               ),
             },
             {
-              href: '#',
+              href: '/price?type=4',
               name: 'link1',
               children: (
                 <span>
