@@ -1,6 +1,7 @@
 import { Button, Modal,Input } from 'antd';
 import { useState, forwardRef, useImperativeHandle } from 'react';
-import './index.less'
+import './index.less';
+import {updateUser} from '@/service/user';
 
 const Index = forwardRef((props, ref) => {
   const [loading, setLoading] = useState(false);
@@ -9,10 +10,15 @@ const Index = forwardRef((props, ref) => {
 
   const handleOk = () => {
     setLoading(true);
-    setTimeout(() => {
+    updateUser({nickname:userName}).then(res=>{
+      console.log('updateUser',res);
       setLoading(false);
-      setShow(false);
-    }, 3000);
+      if(res.errno===0){
+        message.success('修改成功');
+        setShow(false);
+      }
+     
+    })
   };
 
   const open = () => {

@@ -61,6 +61,7 @@ export async function getUserList(params: any) {
 }
 
 
+// 更新用户信息
 export async function updateUser(params: any) {
   return await request(`/api/chat/user/update`, {
     method: 'POST',
