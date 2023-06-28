@@ -1,15 +1,15 @@
-
-import { RightOutlined } from '@ant-design/icons';
-import {  message } from 'antd';
-import { useEffect, useState } from 'react';
-import './index.less'
-
+import GroupQrcode from '@/assets/images/group-qrcode.png';
 
 const Index = () => {
-  return <div className='join-comminity-page'>
-    <p>人工客服+加入社区，</p>
-    <p>均跳转到飞书知识库，放各微信社群二维码</p>
-  </div>
-}
+  return (
+    <div className="join-community-page">
+      <p className="text-lg">人工客服+加入社区，</p>
+      <p className="text-lg">使用微信扫一扫</p>
+      <div className="mt-8 flex justify-start">
+        <img className="w-64 h-64" src={GroupQrcode} alt="QR Code" />
+      </div>
+    </div>
+  );
+};
 
 export default Index;

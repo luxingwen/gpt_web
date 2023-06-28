@@ -1,6 +1,7 @@
-import { Button, Modal,Input } from 'antd';
-import { useState, forwardRef, useImperativeHandle } from 'react';
-import './index.less'
+import { updateUser } from '@/service/user';
+import { Button, Input, Modal, message } from 'antd';
+import { forwardRef, useImperativeHandle, useState } from 'react';
+import './index.less';
 
 const Index = forwardRef((props, ref) => {
   const [loading, setLoading] = useState(false);
@@ -8,11 +9,28 @@ const Index = forwardRef((props, ref) => {
   const [show, setShow] = useState(false);
 
   const handleOk = () => {
+    if (userName === '') {
+      message.error('请输入昵称');
+      return;
+    }
+
+    if (userName.length < 3) {
+      message.error('昵称长度不能小于3');
+      return;
+    }
+
     setLoading(true);
-    setTimeout(() => {
+    const formData = new FormData();
+    formData.append('nickname', userName);
+    updateUser(formData).then((res) => {
+      console.log('updateUser', res);
       setLoading(false);
-      setShow(false);
-    }, 3000);
+      if (res.errno === 0) {
+        message.success('修改成功');
+        props?.handdleUpdateUsername(userName);
+        setShow(false);
+      }
+    });
   };
 
   const open = () => {
@@ -24,11 +42,10 @@ const Index = forwardRef((props, ref) => {
     setShow(false);
   };
 
-
   useImperativeHandle(ref, () => ({
     open,
     close,
-  }))
+  }));
 
   return (
     <>
@@ -43,21 +60,23 @@ const Index = forwardRef((props, ref) => {
             type="primary"
             loading={loading}
             onClick={handleOk}
-            className='primary-btn'
+            className="primary-btn"
           >
             确定
-          </Button>
+          </Button>,
         ]}
       >
-        <div className='modal-mian-content'>
+        <div className="modal-mian-content">
           <Input
             value={userName}
-            onChange={(e)=>{setUserName(e.target.value)}}
+            onChange={(e) => {
+              setUserName(e.target.value);
+            }}
             placeholder="请输入"
           />
         </div>
       </Modal>
     </>
-  )
-})
+  );
+});
 export default Index;
