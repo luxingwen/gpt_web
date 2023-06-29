@@ -106,3 +106,13 @@ export async function orderList(params: API.ReqOrdersType) {
     params: params,
   });
 }
+// 获取订单详情
+export async function orderDetail(params: API.ReqChatOrderParams) {
+  return await request<API.Response<API.ChatOrder[]>>(
+    `/api/chat/orders/detail`,
+    {
+      method: 'POST',
+      data: params,
+    },
+  );
+}
