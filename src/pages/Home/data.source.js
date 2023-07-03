@@ -929,7 +929,7 @@ export const Feature80DataSource = {
                     name: 'content',
                     className: 'feature8-block-content',
                     children:
-                      '沟通业务需求，对接人：诚凡、芸彩沟通业务需求，对接人：诚凡、芸彩',
+                      '持续运维优化，即时响应客户的各种需求，助力企业高效业务运营，提升竞争力',
                   },
                 ],
               },
@@ -1073,7 +1073,7 @@ export const Footer10DataSource = {
         childWrapper: {
           children: [
             {
-              href: '#',
+              href: 'https://rvras57tio4.feishu.cn/wiki/LJfIwsuHtij2Xukhihacixk9nS9',
               name: 'link0',
               children: (
                 <span>
@@ -1100,7 +1100,7 @@ export const Footer10DataSource = {
         childWrapper: {
           children: [
             {
-              href: '/price?type=4',
+              href: 'https://rvras57tio4.feishu.cn/wiki/XCzlwYNMlivfDckJePjcg2XenMc',
               name: 'link0',
               children: (
                 <span>

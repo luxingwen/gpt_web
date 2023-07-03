@@ -17,6 +17,7 @@ const TipsBagPage = () => {
   const [categoryList, setCategoryList] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [searchResult, setSearchResult] = useState([]);
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleSearch = (value) => {
     if (value.trim() === '') {
@@ -37,6 +38,7 @@ const TipsBagPage = () => {
   };
 
   useEffect(() => {
+    setIsLoading(true)
     getAllScenes().then((res) => {
       setAllCardData(res.data.all_scenes);
       let categorySenes = {};
@@ -52,7 +54,8 @@ const TipsBagPage = () => {
       setCategoryList(res.data.categories);
       setHotCardData(res.data.hot_scenes);
       setCardData(res.data.all_scenes);
-    });
+      setIsLoading(false)
+    }).catch(_ => setIsLoading(false));
   }, []);
 
   const handleTagClick = (tag, cid) => {
