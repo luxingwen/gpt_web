@@ -130,9 +130,18 @@ export const layout: RunTimeLayoutConfig = ({ location, initialState }) => {
           <Button type="primary" onClick={() => history.push('/')}>
             返回首页
           </Button>
-          <a href="" target="_blank" className="text-black">
-            <QuestionCircleOutlined /> 如何使用AI画涂？
-          </a>
+          {((page: string) => {
+            if (page === "ai") {
+              return (<a href="https://rvras57tio4.feishu.cn/wiki/FX0GwtoY2iChG2k7iXzceWW4n3b" target="_blank" className="text-black">
+                <QuestionCircleOutlined /> 如何使用AI百宝助手？
+              </a>)
+            }
+            return (
+              <a href="https://rvras57tio4.feishu.cn/wiki/SnJTw2OjVi6wDYkLf6cccYaInjh" target="_blank" className="text-black">
+                <QuestionCircleOutlined /> 如何使用AI画涂？
+              </a>
+            )
+          })(history.location.pathname.split('/')[1])}
           <Typography.Text type="secondary">copyright@AI云助手</Typography.Text>
         </Space>
       );

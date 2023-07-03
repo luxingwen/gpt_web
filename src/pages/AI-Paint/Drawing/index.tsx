@@ -218,7 +218,7 @@ function Drawing() {
             <Button onClick={
               handleSaveImage
             }>保存图片</Button>
-            <Button type="primary" className="text-primary bg-secondary">
+            <Button onClick={() => message.info('该功能正在开发中，敬请期待。')} type="primary" className="text-primary bg-secondary">
               分享
             </Button>
             <Button type="primary" onClick={handleShowModal}>展出作品</Button>

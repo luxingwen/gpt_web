@@ -217,8 +217,8 @@ const Header = (props) => {
             mode={isMobile ? 'inline' : 'horizontal'}
             defaultSelectedKeys={['sub0']}
             theme="dark"
+            items={navChildren}
           >
-            {navChildren}
           </Menu>
         </TweenOne>
       </div>

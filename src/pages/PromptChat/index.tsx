@@ -70,7 +70,7 @@ const ChatPage = () => {
         </div>
       </div>
 
-      <Modal title="示例如下" visible={isExampleModalVisible} footer={null}>
+      <Modal title="示例如下" visible={isExampleModalVisible} footer={null} onCancel={handleExampleOk}>
         <div
           style={{
             display: 'flex',
