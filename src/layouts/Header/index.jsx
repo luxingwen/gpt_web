@@ -31,7 +31,7 @@ const Index = () => {
   }, []);
 
   const navList = [
-    { name: '个性化数字人', path: '' },
+    { name: '个性化数字人', path: '/smart-ai' },
     { name: 'AI画涂', path: '/ai-paint/' },
     { name: 'AI百宝助手', path: '/ai' },
     { name: 'AIGC解决方案', path: '' },

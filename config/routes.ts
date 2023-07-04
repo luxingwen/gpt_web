@@ -175,7 +175,7 @@ export default [
     name: '个性化数字人',
     path: '/smart-ai',
     component: './SmartChat',
-    hideInMenu: true,
+    hideInMenu: false,
   },
   {
     name: '场景广场',
