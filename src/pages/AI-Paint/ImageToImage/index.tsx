@@ -349,7 +349,9 @@ export default function TextToImage() {
             renderItem={(item) => {
               return (
                 <div className="flex flex-col items-center relative">
-                  <img src={item?.image} className="w-20 h-20" />
+                  <div className="w-20 h-20 overflow-hidden">
+                    <img src={item?.image} className="w-full h-full object-cover" />
+                  </div>
                   <span className=" w-full bg-black/50 text-xs text-white text-center absolute bottom-0">
                     {item.label}
                   </span>
